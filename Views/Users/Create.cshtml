@@ -30,15 +30,21 @@
                 <div class="form-group mb-3">
                     @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10 mt-2">
-                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        <div class="input-group">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput" })
+                            <span class="input-group-text">
+                                <i class="bi bi-eye" id="togglePassword"></i>
+                            </span>
+                        </div>
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+
                 <div class="form-group mb-3">
                     @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10 mt-2">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } } )
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -60,20 +66,20 @@
                 </div>
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Stato, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Stato, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Stato, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Stato, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Stato, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Stato, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
 
                 <div class="form-group mb-3">
                     @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label col-md-4" })
@@ -147,3 +153,18 @@
 
     </div>
 </div>
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('passwordInput');
+
+            togglePassword.addEventListener('click', function (e) {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('bi-eye');
+                this.classList.toggle('bi-eye-slash');
+            });
+        });
+    </script>
+}

@@ -147,30 +147,19 @@ body, html {
 
 .profile-background {
     min-height: 100vh;
-    background-image: url('img/backgroundprofilo.jpg');
+    background-image: url('img/sfondo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background-attachment: fixed;*/
 }
 
-.btn-danger-custom {
-    background-color: #a94442; /* Un rosso bordeaux scuro */
-    border-color: #7b2e2f; /* Un bordo leggermente più scuro per il bottone */
+.btn-details {
+    background-color: #D291BC;
 }
 
-.btn-detail-custom {
-    background-color: #6c757d; /* Grigio bluastro per un look più neutro */
-    border-color: #545b62; /* Bordo più scuro per contrasto */
+.btn-details:hover {
+    background-color: #BA5370;
+    border-color: #A04360; 
+    color: #ecf0f1; 
 }
 
-/* Assicurati che il testo sui bottoni sia leggibile */
-.btn-danger-custom, .btn-detail-custom {
-    color: white;
-}
-
-    /* Aggiungi gli effetti hover per fornire feedback interattivo */
-    .btn-danger-custom:hover, .btn-detail-custom:hover {
-        background-color: #8d3c3f; /* Scurisci il colore al passaggio del mouse */
-        border-color: #642f30;
-    }

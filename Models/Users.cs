@@ -38,7 +38,6 @@ namespace Whisper.Models
         [RegularExpression("(?=.*[A-Z]).{8,}", ErrorMessage = "La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola.")] //[RegularExpression("(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}", ErrorMessage = "La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, un numero e un carattere speciale.")]
         public string Password { get; set; }
 
-
         [Required]
         [StringLength(255)]
         [EmailAddress] 

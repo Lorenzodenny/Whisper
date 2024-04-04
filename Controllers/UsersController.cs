@@ -63,6 +63,7 @@ namespace Whisper.Controllers
 
             if (ModelState.IsValid)
             {
+
                 var existingUserByEmail = db.Users.FirstOrDefault(u => u.Email == users.Email);
                 if (existingUserByEmail != null)
                 {
