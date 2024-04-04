@@ -1,0 +1,22 @@
+﻿@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successo!</strong>✔ @TempData["success"].ToString()
+    </div>
+}
+
+
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Errore!</strong>❌ @TempData["error"].ToString()
+    </div>
+}
+
+<script>
+    window.setTimeout(function () {
+        $(".alert-dismissible").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 3500);
+</script>

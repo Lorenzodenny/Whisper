@@ -1,0 +1,75 @@
+﻿@model Whisper.Models.Users
+
+@{
+    ViewBag.Title = "Profilo di " + Model.Username;
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+
+<div class="container mt-4 login-box">
+    <h2 class="mb-4">Profilo di @Model.Username</h2>
+    <div class="card">
+        <div class="card-header">
+            Dettagli Utente
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Username
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Username
+                </dd>
+
+                <dt class="col-sm-4">
+                    Email
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Email
+                </dd>
+
+                <dt class="col-sm-4">
+                    Nome
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Nome
+                </dd>
+
+                <dt class="col-sm-4">
+                    Cognome
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Cognome
+                </dd>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <dt class="col-sm-4">
+                        Ruolo
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Role
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        Stato
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Stato
+                    </dd>
+                }
+
+                <dt class="col-sm-4">
+                    Codice Fiscale
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.CodiceFiscale
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="mt-4">
+        @Html.ActionLink("Modifica", "Edit", new { id = Model.UserId }, new { @class = "btn btn-login" })
+        @Html.ActionLink("Elimina", "Delete", new { id = Model.UserId }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Home", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>

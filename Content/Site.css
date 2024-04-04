@@ -1,0 +1,176 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.bg-lilla {
+    background-color: #c1a1bc;
+}
+
+.logo {
+    width: 3.5%;
+    border-radius: 10px;
+    margin-right: 2%;
+}
+
+
+
+.login-box {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+}
+
+
+.register-link {
+    color: black;
+    margin-top: 20px;
+    display: block;
+}
+
+.register-link a {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/*sfondo*/
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.login-box {
+    background-color: ffffff;
+    margin: 5% 0 0 0;
+}
+
+/* Stile di base per i pulsanti */
+.btn {
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+/* Stile per il pulsante di login */
+.btn-login {
+    background-color: #3B185F; 
+}
+
+.btn-login:hover {
+    background-color: #502750; 
+}
+
+/* Stile per il pulsante di registrazione */
+.btn-register {
+    background-color: #ECD4F4;
+}
+
+.btn-register:hover {
+    background-color: #D291BC;
+}
+
+/* Stile per le icone */
+.icon {
+    color: #C3B1E1; 
+}
+
+/* Stile per il pulsante di logout e altri pulsanti secondari */
+.btn-logout {
+    background-color: #3B185F;
+}
+
+.btn-logout:hover {
+    background-color: #502750;
+}
+
+.btn-back {
+    background-color: #9E9E9E; 
+    border: 2px solid #957DAD; 
+    color: white; 
+}
+
+.btn-back:hover {
+    background-color: #B4B4B4; 
+    border-color: #A084B0; 
+}
+
+.aphorism-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 750px; 
+}
+
+.login-background {
+    background-image: url('img/background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.create-background {
+    min-height: 100vh;
+    background-image: url('img/background.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+}
+
+.profile-background {
+    min-height: 100vh;
+    background-image: url('img/backgroundprofilo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*background-attachment: fixed;*/
+}
+
+.btn-danger-custom {
+    background-color: #a94442; /* Un rosso bordeaux scuro */
+    border-color: #7b2e2f; /* Un bordo leggermente più scuro per il bottone */
+}
+
+.btn-detail-custom {
+    background-color: #6c757d; /* Grigio bluastro per un look più neutro */
+    border-color: #545b62; /* Bordo più scuro per contrasto */
+}
+
+/* Assicurati che il testo sui bottoni sia leggibile */
+.btn-danger-custom, .btn-detail-custom {
+    color: white;
+}
+
+    /* Aggiungi gli effetti hover per fornire feedback interattivo */
+    .btn-danger-custom:hover, .btn-detail-custom:hover {
+        background-color: #8d3c3f; /* Scurisci il colore al passaggio del mouse */
+        border-color: #642f30;
+    }

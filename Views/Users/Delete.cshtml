@@ -1,0 +1,26 @@
+﻿@model Whisper.Models.Users
+
+@{
+    ViewBag.Title = "Elimina Account";
+}
+
+<div class="container profile-container login-box">
+    <h2>Elimina Account</h2>
+    <p class="alert alert-danger">Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.</p>
+
+    @using (Html.BeginForm("Delete", "Users", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.UserId)
+
+        <div class="form-group mb-3">
+            <label class="mb-2" for="ConfirmPassword">Conferma Password per eliminare</label>
+            <input type="password" class="form-control" name="ConfirmPassword" id="ConfirmPassword" required />
+        </div>
+
+        <div class="form-actions">
+            <input type="submit" value="Elimina Account" class="btn btn-danger" />
+            @Html.ActionLink("Annulla", "Details", new { id = Model.UserId }, new { @class = "btn btn-default btn-back ms-2" })
+        </div>
+    }
+</div>

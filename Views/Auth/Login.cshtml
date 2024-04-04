@@ -1,0 +1,37 @@
+﻿@using Whisper.Models
+@model Users
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="login-container">
+    <div class="login-box">
+        <h2>Benvenuto su Whisper!</h2>
+        <h3>Login</h3>
+        <div class="icon-container text-center mb-4">
+            <i class="fa fa-user-circle fa-5x icon"></i>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Password, new { @class = "form-label" })
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-login my-2">Login</button>
+        }
+
+        <div class="register-link">
+            Non sei ancora registrato? <a href="@Url.Action("Create", "Users")">Registrati qui</a>
+        </div>
+    </div>
+</div>
+
+

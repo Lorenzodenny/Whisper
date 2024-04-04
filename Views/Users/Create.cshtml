@@ -1,0 +1,149 @@
+﻿@model Whisper.Models.Users
+
+@{
+    ViewBag.Title = "Registrazione";
+}
+
+<div class="login-container ">
+    <div class="login-box ">
+        <h2>Benvenuto su Whisper!</h2>
+        <h3>Registrati</h3>
+        <div class="icon-container text-center mb-4">
+            <i class="fa fa-user-circle fa-5x icon"></i>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } } )
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Cognome, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.Cognome, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Cognome, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Stato, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Stato, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Stato, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.CodiceFiscale, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CodiceFiscale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="form-group mb-3">
+                    <div class="col-md-10">
+                        <p>
+
+                            Sono dell'idea che viviamo in un periodo in cui si stà perdendo un pò l'umanità delle persone, e che l'apparenza faccia sempre più da padrona.
+                            Nel corso della mia vita ho avuto la possiblità, anche grazie al mio carattere
+                            espansivo, di conoscere molte persone. Ognuna di esse aveva una storia ovviamente,
+                            e ho notato la facilità con cui a volte, riusciamo ad aprirci e parlare di noi
+                            stessi più con gli sconosciuti, che con persone con cui abbiamo legami stretti,
+                            penso che questo sia dovuto proprio alla mancanza della preoccupazione dell'essere
+                            giudicati.
+
+                            <br />
+                            <br />
+
+                            qui nasce la mia idea, che ha già un nome ovvero " Whisper ",
+                            dall'inglese bisbigli. Questo sarà un social dove le persone possono interagire, parlare dei propri problemi,
+                            delle proprie perplessità, dei propri pensieri in modo totalmente anonimo, e allo stesso modo ricevere commenti da altri utenti sempre in modo anonimo.
+
+                            <br />
+                            <br />
+
+                            Perchè l'anonimato ?
+
+                            <br />
+                            <br />
+
+                            L'idea è quella di sviluppare un' applicazione che possa aiutare le persone,
+                            a prescindere dal loro aspetto esteriore, classe sociale o qualsiasi altra sovrastruttura, un ambiente che innalza le idee,
+                            e soprattutto il supporto umano, e il rapporto umano, un ambiente che possa mettere in contatto il banchiere con il contadino,
+                            la " bella " con l'escluso. Un contesto che apre le nostre menti ai suggerimenti ed all'ascolto, basandoci sul messaggio, non sul mittente,
+                            e a cercare, commentando, di aiutare gli altri senza sapere chi stiamo aiutando. Umanità che interagisce con umanità, questa è l'idea.
+
+                            <br />
+                            <br />
+
+                            Così anche quelle persone introverse, che dubitano spesso di se stesse possono sentirsi parte di qualcosa, sentirsi ascoltate.
+
+                            <br />
+                            <br />
+
+                            Un sorriso, o una chiacchiera regalata a uno sconosciuto, può salvarci.
+
+                        </p>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="acceptTerms" required> Accetto il regolamento
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <input type="submit" value="Registrati" class="btn btn-info btn-login me-2" />
+                    @Html.ActionLink("Go To Login", "Login", "Auth", null, new { @class = "btn btn-warning btn-back" })
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>

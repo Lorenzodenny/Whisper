@@ -1,0 +1,24 @@
+﻿<div id="aphorismContainer" class="aphorism-container text-white" title="">
+    <!-- L'aforisma casuale verrà visualizzato qui -->
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function updateAphorism() {
+            fetch('/Aphorisms/GetRandomAphorism')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Questo mostrerà l'intero oggetto ricevuto dal server nella console.
+                    const aphorismContainer = document.getElementById('aphorismContainer');
+                    aphorismContainer.innerText = data.frase;
+                    aphorismContainer.title = data.frase; // Imposta il titolo con la frase intera per il tooltip
+                })
+                .catch(error => console.error('Errore nel recupero dell\'aforisma:', error));
+        }
+
+        updateAphorism(); // Chiama immediatamente la funzione per ottenere il primo aforisma
+        setInterval(updateAphorism, 15000); // Imposta l'intervallo per aggiornamenti futuri
+    });
+</script>
+
