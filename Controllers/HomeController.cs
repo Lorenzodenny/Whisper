@@ -10,6 +10,11 @@ namespace Whisper.Controllers
     {
         public ActionResult Index()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Posts");
+            }
+
             ViewBag.Title = "Home Page";
 
             return View();

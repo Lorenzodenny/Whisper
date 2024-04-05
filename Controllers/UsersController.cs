@@ -54,11 +54,18 @@ namespace Whisper.Controllers
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserId,Username,Password,Email,Nome,Cognome,Role,Stato,CodiceFiscale")] Users users)
+        public ActionResult Create([Bind(Include = "UserId,Username,Password,Email,Nome,Cognome,Role,Stato,CodiceFiscale")] Users users, string confermaPassword)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
+            }
+
+            // Aggiungi qui il controllo della corrispondenza delle password
+            if (users.Password != confermaPassword)
+            {
+                TempData["error"] = "Le password non combaciano";
+                return View(users);
             }
 
             if (ModelState.IsValid)
@@ -124,7 +131,7 @@ namespace Whisper.Controllers
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,Username,Password,Email,Nome,Cognome,Role,Stato,CodiceFiscale")] Users users, string ConfirmPassword)
+        public ActionResult Edit([Bind(Include = "UserId,Username,Password,Email,Nome,Cognome,Role,Stato,CodiceFiscale")] Users users, string OldPassword, string confermaPassword)
         {
             var userInDb = db.Users.Find(users.UserId);
 
@@ -133,7 +140,14 @@ namespace Whisper.Controllers
                 return HttpNotFound();
             }
 
-            if (userInDb.Password != ConfirmPassword)
+            // Aggiungi qui il controllo della corrispondenza delle password
+            if (users.Password != confermaPassword)
+            {
+                TempData["error"] = "Le password non combaciano";
+                return View(users);
+            }
+
+            if (userInDb.Password != OldPassword)
             {
                 TempData["error"] = "la Password non è corretta";
                 return View(users);

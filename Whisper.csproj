@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AphorismsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -206,6 +207,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Img\Background.jpg" />
+    <Content Include="Content\Img\BackgroundPost.jpg" />
     <Content Include="Content\Img\BackgroundProfilo.jpg" />
     <Content Include="Content\Img\BakcgroundUtenti.jpg" />
     <Content Include="Content\Img\fata.jpg" />
@@ -272,6 +274,11 @@
     <Content Include="Views\Aphorisms\Edit.cshtml" />
     <Content Include="Views\Aphorisms\Index.cshtml" />
     <Content Include="Views\Shared\_Notification.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

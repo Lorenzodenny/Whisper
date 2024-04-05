@@ -1,0 +1,55 @@
+﻿@model Whisper.Models.Posts
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+
+<div class="login-container">
+    <div class="login-box">
+
+        <p class="alert alert-danger">Sei sicuro di voler eliminare il tuo Bisbiglio? Questa azione è irreversibile.</p>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+               
+
+                <dt class="color-wine">
+                    @Html.DisplayNameFor(model => model.Users.Username)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Users.Username)
+                </dd>
+
+                <dt class="color-wine">
+                    <label>Contenuto del Bisbiglio</label>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Contents)
+                </dd>
+
+                <dt class="color-wine">
+                    <label>Creato il</label>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PostedAt)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+        <div class="form-actions">
+            <input type="submit" value="Elimina Bisbiglio" class="btn btn-login text-white" />
+            @Html.ActionLink("Annulla", "Index", new { id = Model.UserId }, new { @class = "btn btn-default btn-back ms-2" })
+        </div>
+            }
+        </div>
+    </div>
+</div>

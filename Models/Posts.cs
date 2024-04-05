@@ -21,7 +21,7 @@ namespace Whisper.Models
         [Required]
         public string Contents { get; set; }
 
-        public DateTime? PostedAt { get; set; }
+        public DateTime? PostedAt { get; set; } 
 
         public int UserId { get; set; }
 
