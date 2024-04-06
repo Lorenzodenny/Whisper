@@ -21,43 +21,17 @@ namespace Whisper.Controllers
             var posts = db.Posts
                 .Include(p => p.Likes)
                 .Include(p => p.Users)
+                .Include(p => p.Comments)
                 .Select(p => new PostViewModel
                 {
                     Post = p,
-                    LikedByUser = p.Likes.Any(l => l.UserId == userId)
+                    LikedByUser = p.Likes.Any(l => l.UserId == userId),
+                    TotalLikes = p.Likes.Count(),
+                     Comments = p.Comments.ToList()
                 }).ToList();
 
             return View(posts);
         }
-
-
-        [HttpPost]
-        public ActionResult Like(int postId)
-        {
-            var userId = int.Parse(User.Identity.Name); // Assicurati che questo sia l'ID dell'utente corretto
-
-            var like = db.Likes.FirstOrDefault(l => l.PostId == postId && l.UserId == userId);
-            if (like == null)
-            {
-                // Aggiungi un nuovo like
-                db.Likes.Add(new Likes { PostId = postId, UserId = userId, EmoticonId = 1 /* Assumi che 1 sia l'ID per il pollice su */ });
-            }
-            else
-            {
-                // Rimuovi il like esistente
-                db.Likes.Remove(like);
-            }
-            db.SaveChanges();
-
-            if (Request.IsAjaxRequest()) // Controlla se la richiesta è una richiesta AJAX
-            {
-                return Json(new { success = true, message = "Like aggiunto con successo!" }); // Risposta AJAX
-            }
-
-            return RedirectToAction("Index");
-        }
-
-
 
         // GET: Posts/Details/5
         public ActionResult Details(int? id)

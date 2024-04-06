@@ -10,7 +10,8 @@ namespace Whisper.Models
         {
             public Posts Post { get; set; }
             public bool LikedByUser { get; set; }
-
+            public int TotalLikes { get; set; }
+            public List<Comments> Comments { get; set; }
         }
 
     

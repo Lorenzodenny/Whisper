@@ -31,44 +31,169 @@
             }
 
         </div>
-
-        <div class="post-content mt-2 fw-bold">
+        <div class="post-content mt-2 fw-bold border-bottom border-bottom-1 py-3">
             @Html.DisplayFor(modelItem => item.Post.Contents)
         </div>
-        <form action="@Url.Action("Like", "Posts")" method="post">
-            <input type="hidden" name="postId" value="@item.Post.PostId" />
-            <button class="like-button btn btn-login mt-1 text-white" data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "Mi Piace")</button>
-        </form>
+
+
+        @if (item.TotalLikes > 0 || (item.Comments != null && item.Comments.Count > 0))
+        {
+            <div class="d-flex justify-content-between border-bottom border-bottom-1 py-3">
+                @if (item.TotalLikes > 1)
+                {
+                    <a href="#" class="likes-count text-decoration-none text-body" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#likesModal-@item.Post.PostId">
+                        @item.TotalLikes Likes
+                    </a>
+                }
+                else if (item.TotalLikes > 0)
+                {
+                    <a href="#" class="likes-count text-decoration-none text-body" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#likesModal-@item.Post.PostId">
+                        @item.TotalLikes Like
+                    </a>
+                }
+                else
+                {
+
+
+                    <div class="flex-grow-1"></div>
+                }
+
+                @if (item.Comments != null && item.Comments.Count > 0)
+                {
+                    <a href="#" class="text-decoration-none text-body" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#commentsModal-@item.Post.PostId">
+                        Visualizza i commenti (@item.Comments.Count)
+                    </a>
+                }
+            </div>
+        }
+
+        <div class="d-flex border-bottom border-bottom-1 py-3">
+            <form action="@Url.Action("Like", "Likes")" method="post">
+                <input type="hidden" name="postId" value="@item.Post.PostId" />
+                <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
+            </form>
+
+
+            @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(_ => loggedInUserId)
+                @Html.Hidden("PostId", item.Post.PostId)
+                <button type="submit" class="btn btn-sm btn-login text-white ms-3">Scrivi Commento</button>
+            }
+
+        </div>
+
+
+
+
+        @*MODALE PER LEGGERE I COMMENTI*@
+        <div class="modal fade" id="commentsModal-@item.Post.PostId" tabindex="-1" aria-labelledby="commentsModalLabel-@item.Post.PostId" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-5" id="commentsModalLabel-@item.Post.PostId">Commenti per il post id @item.Post.Users.Username</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @foreach (var comment in item.Post.Comments)
+                        {
+                            <div class="comment border-bottom border-bottom-1 py-3">
+                                <div class="d-flex justify-content-between">
+                                    <p class=" fw-bold icon-pro">@comment.Users.Username</p>
+                                    @if (comment.UserId.ToString() == loggedInUserId)
+                                    {
+                                        <span class="post-actions">
+                                            <a href="@Url.Action("Edit", "Comments", new { id = comment.CommentId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
+                                            <a href="@Url.Action("Delete", "Comments", new { id = comment.CommentId })"><i class="fa fa-trash icon-pro"></i></a>
+                                        </span>
+                                    }
+                                </div>
+                                
+                                <span class="posted-at text-muted " style="font-size: 0.8em;">@(comment.PostedAt.HasValue ? item.Post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+                                <p class="mt-3">@comment.Contents</p>
+
+                            </div>
+                            
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-back text-white" data-bs-dismiss="modal">Chiudi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*MODALE PER I LIKE*@
+        <div class="modal fade" id="likesModal-@item.Post.PostId" tabindex="-1" aria-labelledby="likesModalLabel-@item.Post.PostId" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-5" id="likesModalLabel-@item.Post.PostId">Utenti che hanno messo like</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            @foreach (var like in item.Post.Likes)
+                            {
+                                <div class="py-3">
+                                    <p class="icon-pro fw-bold">@like.Users.Username 💜</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-back text-white" data-bs-dismiss="modal">Chiudi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
-<script type="text/javascript">
+
+<script>
     $(document).ready(function () {
-        $('.like-button').click(function (e) {
-            e.preventDefault(); // Prevenire l'azione predefinita del pulsante
+    $('.like-button').click(function (e) {
+        e.preventDefault();
+        var postId = $(this).data('post-id');
+        var button = $(this);
 
-            var postId = $(this).data('post-id'); // Ottieni l'ID del post dal data attribute
-            var button = $(this); // Riferimento al pulsante cliccato
+        // Prima chiamata AJAX per impostare o rimuovere il like
+        $.ajax({
+            url: '@Url.Action("Like", "Likes")', // Assicurati che l'URL sia corretto per la tua app
+            type: 'POST',
+            data: { postId: postId },
+            success: function (response) {
+                if (response.success) {
+                    // Aggiorna il testo del pulsante "Like"
+                    var newText = button.text() === "👍 Mi Piace" ? "Ti piace" : "👍 Mi Piace";
+                    button.text(newText);
+                    window.location.reload();
+                    // Seconda chiamata AJAX per ottenere il conteggio aggiornato dei like
+                    $.ajax({
+                        url: '@Url.Action("GetLikeCount", "Likes")', // URL del nuovo endpoint
+                        type: 'GET',
+/*                        dataType: 'json',*/
+                        data: { postId: postId },
+                        success: function (response) {
+                            // Trova l'elemento che mostra il conteggio dei like e aggiorna il suo testo
+                            var likesCountElement = button.closest('.post-container').find('.likes-count');
+                            likesCountElement.text(response.likeCount);
+                        }
+                    });
 
-            $.ajax({
-                url: '@Url.Action("Like", "Posts")', // L'URL dell'azione Like
-                type: 'POST',
-                data: { postId: postId },
-                success: function (response) {
-                    if (response.success) {
-                        // Aggiorna il testo del pulsante in base alla risposta
-                        var newText = button.text() === "Mi Piace" ? "Ti piace" : "Mi Piace";
-                        button.text(newText);
-                    } else {
-                        // Gestisci il caso in cui la risposta non segnala successo
-                        alert("Operazione non riuscita. Per favore riprova.");
-                    }
-                },
-                error: function () {
-                    alert("Si è verificato un errore nel processo di like. Riprova.");
+                    button.toggleClass('liked');
+                } else {
+                    alert("Operazione non riuscita. Per favore riprova.");
                 }
-            });
+            },
+            error: function () {
+                alert("Si è verificato un errore nel processo di like. Riprova.");
+            }
         });
     });
+});
+
 </script>
+
 

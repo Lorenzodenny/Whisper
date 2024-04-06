@@ -183,7 +183,7 @@ body, html {
 
 .posts-background {
     min-height: 100vh;
-    background-image: url('img/backgroundpost.jpg');
+    background-image: url('Img/BakcgroundUtenti.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -313,4 +313,11 @@ body, html {
     width: 0px; 
 }
 
+.comments-background {
+    min-height: 100vh;
+    background-image: url('Img/BakcgroundUtenti.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 

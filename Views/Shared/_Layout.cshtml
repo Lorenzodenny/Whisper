@@ -112,6 +112,10 @@
         {
             return "posts-background";
         }
+        else if (controller == "Comments" && action == "Index" || controller == "Comments" && action == "Create" || controller == "Comments" && action == "Delete" || controller == "Comments" && action == "Edit" || controller == "Comments" && action == "Details")
+        {
+            return "comments-background";
+        }
         else
         {
             return string.Empty;

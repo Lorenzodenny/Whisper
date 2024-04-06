@@ -28,6 +28,10 @@ namespace Whisper.Models
         [Required]
         public string Contents { get; set; }
 
+    
+        public virtual Posts Posts { get; set; }
+
+
         public int? LikeId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
