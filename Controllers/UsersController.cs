@@ -24,19 +24,36 @@ namespace Whisper.Controllers
         }
 
         // GET: Users/Details/5
+        // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Users users = db.Users.Find(id);
-            if (users == null)
+
+            Users user = db.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(users);
+
+            // Assumi che ci sia una relazione tra Users e Posts nel tuo database
+            var posts = db.Posts.Where(p => p.UserId == id)
+                    .OrderByDescending(p => p.PostedAt)
+                    .ToList();
+
+            // Crea un nuovo ViewModel se non ne hai già uno che includa sia i dati dell'utente che i post
+            var viewModel = new UserProfileViewModel
+            {
+                Users = user,
+                Posts = posts,
+                LoggedInUserId = User.Identity.Name
+            };
+
+            return View(viewModel); // Assicurati di avere un ViewModel che possa gestire sia l'utente che i post
         }
+
 
         // GET: Users/Create
         public ActionResult Create()

@@ -25,9 +25,9 @@ namespace Whisper.Models
 
         public int UserId { get; set; }
 
-        public int? LikeId { get; set; }
+        //public int? LikeId { get; set; }
 
-        public virtual Likes Likes { get; set; }
+        //public virtual Likes Likes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notifications> Notifications { get; set; }
@@ -36,5 +36,7 @@ namespace Whisper.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reports> Reports { get; set; }
+
+        public virtual ICollection<Likes> Likes { get; set; }
     }
 }

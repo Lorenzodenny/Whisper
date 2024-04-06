@@ -12,7 +12,6 @@ namespace Whisper.Models
         public Likes()
         {
             Comments = new HashSet<Comments>();
-            Posts = new HashSet<Posts>();
         }
 
         [Key]
@@ -24,6 +23,8 @@ namespace Whisper.Models
 
         public int EmoticonId { get; set; }
 
+        public virtual Posts Posts { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comments> Comments { get; set; }
 
@@ -31,7 +32,5 @@ namespace Whisper.Models
 
         public virtual Users Users { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Posts> Posts { get; set; }
     }
 }

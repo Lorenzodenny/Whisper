@@ -1,75 +1,70 @@
-﻿@model Whisper.Models.Users
+﻿@using Whisper.Models
+@model UserProfileViewModel
 
 @{
-    ViewBag.Title = "Profilo di " + Model.Username;
-    Layout = "~/Views/Shared/_Layout.cshtml"; 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Profilo di " + Model.Users.Username;
 }
 
-<div class="container mt-4 login-box">
-    <h2 class="mb-4">Profilo di @Model.Username</h2>
-    <div class="card">
-        <div class="card-header">
-            Dettagli Utente
+<div class="container mt-5">
+    <div class="row">
+        <!-- Profilo utente -->
+        <div class="col-md-5 profile-section">
+            <div class="card mt-4">
+                <div class="card-header">
+                    Benvenuto, @Model.Users.Username
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Username</dt>
+                        <dd class="col-sm-8">@Model.Users.Username</dd>
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Users.Email</dd>
+                        <dt class="col-sm-4">Nome</dt>
+                        <dd class="col-sm-8">@Model.Users.Nome</dd>
+                        <dt class="col-sm-4">Cognome</dt>
+                        <dd class="col-sm-8">@Model.Users.Cognome</dd>
+                        <dt class="col-sm-4">Codice Fiscale</dt>
+                        <dd class="col-sm-8">@Model.Users.CodiceFiscale</dd>
+                    </dl>
+                </div>
+                <div class="mb-2 ms-3">
+                    @Html.ActionLink("Modifica", "Edit", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                    @Html.ActionLink("Elimina", "Delete", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                    @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back" })
+                </div>
+            </div>
+            
         </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">
-                    Username
-                </dt>
-                <dd class="col-sm-8">
-                    @Model.Username
-                </dd>
 
-                <dt class="col-sm-4">
-                    Email
-                </dt>
-                <dd class="col-sm-8">
-                    @Model.Email
-                </dd>
-
-                <dt class="col-sm-4">
-                    Nome
-                </dt>
-                <dd class="col-sm-8">
-                    @Model.Nome
-                </dd>
-
-                <dt class="col-sm-4">
-                    Cognome
-                </dt>
-                <dd class="col-sm-8">
-                    @Model.Cognome
-                </dd>
-
-                @if (User.IsInRole("Admin"))
+        <!-- Lista dei post con funzionalità di modifica e cancellazione -->
+        <div class="col-md-7 posts-section">
+            @*<h3 class="icon-pro">Post di @Model.Users.Username</h3>*@
+            <div class="posts-container ">
+                @foreach (var post in Model.Posts)
                 {
-                    <dt class="col-sm-4">
-                        Ruolo
-                    </dt>
-                    <dd class="col-sm-8">
-                        @Model.Role
-                    </dd>
-
-                    <dt class="col-sm-4">
-                        Stato
-                    </dt>
-                    <dd class="col-sm-8">
-                        @Model.Stato
-                    </dd>
+                    <div class="post my-1 p-3 bg-white rounded shadow">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex flex-column">
+                                <span class="username">@post.Users.Username</span>
+                                <span class="posted-at text-muted" style="font-size: 0.8em;">@(post.PostedAt.HasValue ? post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+                            </div>
+                            @if (post.UserId.ToString() == Model.LoggedInUserId)
+                            {
+                                <div class="post-actions">
+                                    <a href="@Url.Action("Edit", "Posts", new { id = post.PostId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
+                                    <a href="@Url.Action("Delete", "Posts", new { id = post.PostId })"><i class="fa fa-trash icon-pro"></i></a>
+                                </div>
+                            }
+                        </div>
+                        <div class="post-content mt-2">
+                            <p>@post.Contents</p>
+                        </div>
+                    </div>
                 }
-
-                <dt class="col-sm-4">
-                    Codice Fiscale
-                </dt>
-                <dd class="col-sm-8">
-                    @Model.CodiceFiscale
-                </dd>
-            </dl>
+            </div>
         </div>
-    </div>
-    <div class="mt-4">
-        @Html.ActionLink("Modifica", "Edit", new { id = Model.UserId }, new { @class = "btn btn-login text-white" })
-        @Html.ActionLink("Elimina", "Delete", new { id = Model.UserId }, new { @class = "btn btn-login text-white" })
-        @Html.ActionLink("Home", "Index", null, new { @class = "btn btn-back" })
+
     </div>
 </div>
+

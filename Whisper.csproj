@@ -182,9 +182,11 @@
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\Notifications.cs" />
     <Compile Include="Models\Posts.cs" />
+    <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Models\Reports.cs" />
     <Compile Include="Models\RoleManager.cs" />
     <Compile Include="Models\Sponsors.cs" />
+    <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
