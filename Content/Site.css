@@ -315,7 +315,7 @@ body, html {
 
 .comments-background {
     min-height: 100vh;
-    background-image: url('Img/BakcgroundUtenti.jpg');
+    background-image: url('img/commentbackground.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

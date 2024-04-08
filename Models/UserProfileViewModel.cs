@@ -10,5 +10,6 @@ namespace Whisper.Models
         public Users Users { get; set; }
         public IEnumerable<Posts> Posts { get; set; }
         public string LoggedInUserId { get; internal set; }
+
     }
 }

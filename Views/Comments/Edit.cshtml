@@ -4,66 +4,58 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="login-container">
+    <div class="login-box">
+        <h2>Edita il tuo commento💜</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Comments</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.CommentId)
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.CommentId)
+
+
+                <div class="form-group">
+                    <label class="icon fw-bold">C'è sempre tempo di cambiare le cose</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Contents, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?", @id = "post-contents", @maxlength = "500" })
+                        @Html.ValidationMessageFor(model => model.Contents, "", new { @class = "text-danger" })
+                        <span id="post-char-count" class="text-secondary">0/500</span>
+                    </div>
+                </div>
+
+
+                <div class="form-group mt-2 ms-6">
+                    <div class="d-flex">
+                        <input type="submit" value="Modifica" class="btn btn-sm btn-login me-2 text-white" />
+                        @Html.ActionLink("Home", "Index", "Posts", null, new { @class = "btn btn-sm btn-back" })
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PostId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PostId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PostId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PostedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PostedAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PostedAt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Contents, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Contents, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LikeId, "LikeId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("LikeId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.LikeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+        }
         </div>
     </div>
-}
+        
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var postContents = document.getElementById('post-contents');
+    var postCharCountElement = document.getElementById('post-char-count');
+
+    // Funzione per aggiornare il conteggio dei caratteri
+    function updatePostCharCount() {
+        var textLength = postContents.value.length;
+        postCharCountElement.textContent = `${textLength}/500`;
+    }
+
+    // Aggiorna il conteggio dei caratteri all'avvio
+    updatePostCharCount();
+
+    // Aggiorna il conteggio dei caratteri ogni volta che l'utente digita
+    postContents.addEventListener('input', updatePostCharCount);
+});
+</script>

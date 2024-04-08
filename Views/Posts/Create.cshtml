@@ -13,27 +13,48 @@
         {
             @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        
-        <div class="form-group ms-6" >
-            <label class="icon fw-bold">Come va?</label>
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Contents, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?" })
-                @Html.ValidationMessageFor(model => model.Contents, "", new { @class = "text-danger" })
+
+                <div class="form-group ms-6">
+                    <label class="icon fw-bold">Come va?</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Contents, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?", @id = "post-contents", @maxlength = "500" })
+                        @Html.ValidationMessageFor(model => model.Contents, "", new { @class = "text-danger" })
+                        <span id="post-char-count" class="text-secondary">0/500</span>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group mt-2 ms-6">
+                    <div class="d-flex">
+                        <input type="submit" value="Bisbiglia" class="btn btn-sm btn-login me-2 text-white" />
+                        @Html.ActionLink("Home", "Index", "Posts", null, new { @class = "btn btn-sm btn-back" })
+                    </div>
+                </div>
             </div>
-        </div>
-
-
-        <div class="form-group mt-2 ms-6">
-            <div class="d-flex">
-                <input type="submit" value="Bisbiglia" class="btn btn-sm btn-login me-2 text-white" />
-                @Html.ActionLink("Home", "Index", "Posts", null, new { @class = "btn btn-sm btn-back" })
-            </div>
-        </div>
-    </div>
         }
-        </div>
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var postContents = document.getElementById('post-contents');
+    var postCharCountElement = document.getElementById('post-char-count');
+
+    // Funzione per aggiornare il conteggio dei caratteri
+    function updatePostCharCount() {
+        var textLength = postContents.value.length;
+        postCharCountElement.textContent = `${textLength}/500`;
+    }
+
+    // Aggiorna il conteggio dei caratteri all'avvio
+    updatePostCharCount();
+
+    // Aggiorna il conteggio dei caratteri ogni volta che l'utente digita
+    postContents.addEventListener('input', updatePostCharCount);
+});
+</script>

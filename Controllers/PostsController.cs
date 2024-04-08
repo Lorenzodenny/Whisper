@@ -22,12 +22,13 @@ namespace Whisper.Controllers
                 .Include(p => p.Likes)
                 .Include(p => p.Users)
                 .Include(p => p.Comments)
+                .OrderByDescending(p => p.PostedAt)
                 .Select(p => new PostViewModel
                 {
                     Post = p,
                     LikedByUser = p.Likes.Any(l => l.UserId == userId),
                     TotalLikes = p.Likes.Count(),
-                     Comments = p.Comments.ToList()
+                    Comments = p.Comments.OrderByDescending(c => c.PostedAt).ToList()
                 }).ToList();
 
             return View(posts);
@@ -116,7 +117,7 @@ namespace Whisper.Controllers
                 return RedirectToAction("Index");
             }
 
-            TempData["error"] = "C'è stato qualche problema con la diffusione del Bisbiglio";
+            TempData["error"] = "C'è stato qualche problema con la modifica del Bisbiglio";
             return View(postForm);
         }
 

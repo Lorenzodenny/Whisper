@@ -1,0 +1,80 @@
+﻿@model Whisper.Models.Reports
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Reports</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments.Contents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comments.Contents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments1.Contents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comments1.Contents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Messages.Testo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Messages.Testo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Posts.Contents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Posts.Contents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Users.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Users.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DescrizioneReport)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescrizioneReport)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

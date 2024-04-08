@@ -4,8 +4,6 @@
     ViewBag.Title = "Create Comments";
 }
 
-
-
 <div class="login-container">
     <div class="login-box">
         <h2>Scrivi il tuo commento💜</h2>
@@ -15,33 +13,58 @@
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                @* Campo nascosto per l'UserId, assicurati che questo valore sia impostato nel controller *@
                 @Html.HiddenFor(model => model.UserId)
-
-                @* Se il PostId viene passato alla vista, non è necessario mostrare questo campo *@
                 @Html.HiddenFor(model => model.PostId)
 
                 <div class="form-group ms-6">
                     <label class="icon fw-bold">Cosa vuoi dirmi?</label>
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Contents, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?" })
-                        @Html.ValidationMessageFor(model => model.Contents, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(model => model.Contents, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?", @id = "contents", @maxlength = "500" })
+                        <span id="contents-validation-message" class="text-danger" style="display:none;">Il campo Contents è obbligatorio.</span>
+                        <span id="char-count" class="text-secondary">0/500</span>
                     </div>
                 </div>
 
                 <div class="form-group mt-2 ms-6">
                     <div class="d-flex">
-                        <input type="submit" value="Commenta" class="btn btn-sm btn-login me-2 text-white" />
+                        <input type="submit" value="Commenta" class="btn btn-sm btn-login me-2 text-white submit-comment" />
                         @Html.ActionLink("Home", "Index", "Posts", null, new { @class = "btn btn-sm btn-back" })
                     </div>
                 </div>
             </div>
         }
-
-        
-        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var contents = document.getElementById('contents');
+        var validationMessageElement = document.getElementById('contents-validation-message');
+        var charCountElement = document.getElementById('char-count');
+
+        // Funzione per aggiornare il conteggio dei caratteri
+        function updateCharCount() {
+            var textLength = contents.value.length;
+            charCountElement.textContent = `${textLength}/500`;
+        }
+
+        // Aggiorna il conteggio dei caratteri all'avvio
+        updateCharCount();
+
+        // Aggiorna il conteggio dei caratteri ogni volta che l'utente digita
+        contents.addEventListener('input', updateCharCount);
+
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            if (!contents.value.trim()) {
+                validationMessageElement.style.display = 'block';
+                event.preventDefault();
+            } else {
+                validationMessageElement.style.display = 'none';
+            }
+        });
+    });
+</script>
+

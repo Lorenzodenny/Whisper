@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Whisper.Models.Reports>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Comments.Contents)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comments1.Contents)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Messages.Testo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Posts.Contents)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Users.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescrizioneReport)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comments.Contents)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comments1.Contents)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Messages.Testo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Posts.Contents)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Users.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescrizioneReport)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ReportId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ReportId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ReportId })
+        </td>
+    </tr>
+}
+
+</table>

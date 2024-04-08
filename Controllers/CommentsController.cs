@@ -81,8 +81,7 @@ namespace Whisper.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.LikeId = new SelectList(db.Likes, "LikeId", "LikeId", comments.LikeId);
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", comments.UserId);
+            
             return View(comments);
         }
 
@@ -91,16 +90,25 @@ namespace Whisper.Controllers
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CommentId,UserId,PostId,PostedAt,Contents,LikeId")] Comments comments)
+        public ActionResult Edit(int id, [Bind(Include = "Contents")] Comments comments)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comments).State = EntityState.Modified;
+                var comment = db.Comments.Find(id);
+                if (comment == null)
+                {
+                    return HttpNotFound();
+                }
+
+                comment.Contents = comments.Contents;
+                comment.PostedAt = DateTime.Now;
+                db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["success"] = "Commento modificato con successo";
+                return RedirectToAction("Index", "Posts");
             }
-            ViewBag.LikeId = new SelectList(db.Likes, "LikeId", "LikeId", comments.LikeId);
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", comments.UserId);
+
+            TempData["error"] = "C'è stato un problema con la modifica del commento";
             return View(comments);
         }
 
@@ -127,7 +135,7 @@ namespace Whisper.Controllers
             Comments comments = db.Comments.Find(id);
             db.Comments.Remove(comments);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Posts");
         }
 
         protected override void Dispose(bool disposing)

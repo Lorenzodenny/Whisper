@@ -1,0 +1,47 @@
+﻿@model Whisper.Models.Reports
+
+@{
+    ViewBag.Title = "Create Report";
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        Errore interno: @ViewBag.Error
+    </div>
+}
+
+<div class="login-container">
+    <div class="login-box">
+        <h2>Spiegaci cosa c'è che non và? 💔</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(model => model.PostId)
+                @Html.HiddenFor(model => model.ReportedByUserId)
+                @Html.HiddenFor(model => model.ReportDate, new { @Value = DateTime.Now })
+
+                <div class="form-group">
+                    <label class="icon fw-bold">Scrivi il tuo Report</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.DescrizioneReport, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?", @id = "post-contents", @maxlength = "500" })
+                        @Html.ValidationMessageFor(model => model.DescrizioneReport, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mt-2 ms-6">
+                    <div class="d-flex">
+                        <input type="submit" value="Riporta" class="btn btn-sm btn-login me-2 text-white" />
+                        @Html.ActionLink("Home", "Index", "Posts", null, new { @class = "btn btn-sm btn-back" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

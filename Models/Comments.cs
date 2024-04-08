@@ -26,6 +26,7 @@ namespace Whisper.Models
         public DateTime? PostedAt { get; set; }
 
         [Required]
+        [StringLength(500, ErrorMessage = "Il contenuto può essere lungo al massimo 500 caratteri.")]
         public string Contents { get; set; }
 
     
