@@ -15,7 +15,7 @@ namespace Whisper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Posts");
             }
 
             return View();
@@ -26,12 +26,19 @@ namespace Whisper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                var currentUser = db.Users.FirstOrDefault(u => u.UserId.ToString() == User.Identity.Name);
+                if (currentUser != null && currentUser.Role == "Admin")
+                {
+                    return RedirectToAction("Index", "Reports");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Posts");
+                }
             }
 
             var loggedUser = db.Users.FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
 
-            
             if (loggedUser == null || loggedUser.Stato == "Bannato")
             {
                 if (loggedUser != null && loggedUser.Stato == "Bannato")
@@ -46,11 +53,20 @@ namespace Whisper.Controllers
                 return RedirectToAction("Login");
             }
 
-           
             FormsAuthentication.SetAuthCookie(loggedUser.UserId.ToString(), true);
-            TempData["success"] = "Login effettuato con successo.";
-            return RedirectToAction("Index", "Home");
+
+            if (loggedUser.Role == "Admin")
+            {
+                TempData["success"] = "Login effettuato con successo come Admin.";
+                return RedirectToAction("Index", "Reports");
+            }
+            else
+            {
+                TempData["success"] = "Login effettuato con successo.";
+                return RedirectToAction("Index", "Posts");
+            }
         }
+
 
 
         public ActionResult Logout()

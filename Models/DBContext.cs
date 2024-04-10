@@ -32,10 +32,10 @@ namespace Whisper.Models
                 .WithOptional(e => e.Comments)
                 .HasForeignKey(e => e.CommentId);
 
-            modelBuilder.Entity<Comments>()
-                .HasMany(e => e.Reports1)
-                .WithOptional(e => e.Comments1)
-                .HasForeignKey(e => e.CommentId);
+            //modelBuilder.Entity<Comments>()
+            //    .HasMany(e => e.Reports1)
+            //    .WithOptional(e => e.Comments1)
+            //    .HasForeignKey(e => e.CommentId);
 
             modelBuilder.Entity<Conversations>()
                 .HasMany(e => e.Messages)

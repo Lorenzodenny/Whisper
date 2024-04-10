@@ -321,3 +321,11 @@ body, html {
     background-repeat: no-repeat;
 }
 
+.reports-background {
+    min-height: 100vh;
+    background-image: url('img/backgroundreports.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+

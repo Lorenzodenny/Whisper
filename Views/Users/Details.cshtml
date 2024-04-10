@@ -34,19 +34,55 @@
                         <dd class="col-sm-8">@Model.Users.CodiceFiscale</dd>
                     </dl>
                 </div>
+                
+
                 @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                 {
                     <div class="mb-2 ms-3">
                         @Html.ActionLink("Modifica", "Edit", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-white" })
                         @Html.ActionLink("Elimina", "Delete", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-white" })
-                        @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back" })
+                        @if (Model.Users.Role == "Admin")
+                        {
+                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back" })
+                        }
+                        else if (Model.Users.Role == "User")
+                        {
+                            @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back" })
+                        }
                     </div>
                 }
                 else
                 {
-                    <div class="mb-2 ms-3">
-                        @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back" })
-                    </div>
+            <div class="mb-2 ms-3">
+                @if (User.IsInRole("Admin") && Model.Users.UserId.ToString() != User.Identity.Name)
+                {
+                    if (Model.Users.Stato != "Bannato")
+                    {
+                        using (Html.BeginForm("BanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", Model.Users.UserId)
+                            <button type="submit" class="btn btn-sm btn-danger">Banna Utente</button>
+                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back" })
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("UnbanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", Model.Users.UserId)
+                            <button type="submit" class="btn btn-sm btn-warning">Sospendi Ban</button>
+                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back" })
+                        }
+                    }
+
+                }
+                else if (Model.Users.Role == "User")
+                {
+                    @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back" })
+                }
+            </div>
                 }
 
             </div>

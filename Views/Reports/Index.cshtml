@@ -1,69 +1,64 @@
 ﻿@model IEnumerable<Whisper.Models.Reports>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Index Reports";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Comments.Contents)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comments1.Contents)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Messages.Testo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Posts.Contents)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Users.Username)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DescrizioneReport)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReportDate)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comments.Contents)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comments1.Contents)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Messages.Testo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Posts.Contents)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Users.Username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DescrizioneReport)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReportDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ReportId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ReportId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ReportId })
-        </td>
-    </tr>
+@foreach (var item in Model)
+{
+    <div class="report-container my-3 p-3 bg-white rounded shadow">
+        <div class="d-flex justify-content-between">
+            <div>
+                <span class="font-weight-bold">@item.Users.Username ha riportato:</span>
+                <div class="mt-2">
+                    @Html.DisplayFor(modelItem => item.ReportDate)
+
+                </div>
+            </div>
+            <div class="report-actions">
+                @if (item.PostId.HasValue)
+                {
+                    if (item.Posts.Users.Stato != "Bannato")
+                    {
+                        @Html.ActionLink("Dettagli Autore Post", "Details", "Users", new { id = item.Posts.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Utente del post Bannato 💔", "Details", "Users", new { id = item.Posts.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                    }
+                }
+                else if (item.CommentId.HasValue)
+                {
+                    if (item.Comments.Users.Stato != "Bannato")
+                    {
+                        @Html.ActionLink("Dettagli Autore Commento", "Details", "Users", new { id = item.Comments.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Utente del commento Bannato 💔", "Details", "Users", new { id = item.Posts.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                    }
+                }
+                @Html.ActionLink("Elimina", "Delete", new { id = item.ReportId }, new { @class = "btn btn-danger btn-sm" })
+            </div>
+
+        </div>
+        <div class="report-content mt-3">
+            <p>@Html.DisplayFor(modelItem => item.DescrizioneReport)</p>
+        </div>
+        @if (item.PostId.HasValue)
+        {
+            <div class="reported-content mt-2">
+                <p class="fw-bold">Post riportato: @Html.DisplayFor(modelItem => item.Posts.Contents)</p>
+            </div>
+        }
+        @if (item.CommentId.HasValue)
+        {
+            <div class="reported-content mt-2">
+                <p class="fw-bold">Commento riportato: @Html.DisplayFor(modelItem => item.Comments.Contents)</p>
+            </div>
+        }
+
+    </div>
 }
-
-</table>

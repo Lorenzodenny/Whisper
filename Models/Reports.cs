@@ -27,8 +27,6 @@ namespace Whisper.Models
 
         public virtual Comments Comments { get; set; }
 
-        public virtual Comments Comments1 { get; set; }
-
         public virtual Messages Messages { get; set; }
 
         public virtual Posts Posts { get; set; }

@@ -24,16 +24,18 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 @Html.HiddenFor(model => model.PostId)
+                @Html.HiddenFor(model => model.CommentId) 
                 @Html.HiddenFor(model => model.ReportedByUserId)
                 @Html.HiddenFor(model => model.ReportDate, new { @Value = DateTime.Now })
 
-                <div class="form-group">
-                    <label class="icon fw-bold">Scrivi il tuo Report</label>
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.DescrizioneReport, new { @class = "form-control-area", @rows = "5", @placeholder = "A cosa stai pensando?", @id = "post-contents", @maxlength = "500" })
-                        @Html.ValidationMessageFor(model => model.DescrizioneReport, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group">
+                <label class="icon fw-bold">Scrivi il tuo Report</label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.DescrizioneReport, new { @class = "form-control-area", @rows = "5", @placeholder = "Cosa c'è che non và?", @id = "report-description", @maxlength = "500" })
+                    <span id="report-validation-message" class="text-danger" style="display:none;">Il campo Descrizione Report è obbligatorio.</span>
+                    <span id="report-char-count" class="text-secondary">0/500</span>
                 </div>
+            </div>
 
                 <div class="form-group mt-2 ms-6">
                     <div class="d-flex">
@@ -45,3 +47,32 @@
         }
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var reportDescription = document.getElementById('report-description');
+        var validationMessageElement = document.getElementById('report-validation-message');
+        var charCountElement = document.getElementById('report-char-count');
+
+        // Funzione per aggiornare il conteggio dei caratteri
+        function updateCharCount() {
+            var textLength = reportDescription.value.length;
+            charCountElement.textContent = `${textLength}/500`;
+        }
+
+        // Aggiorna il conteggio dei caratteri all'avvio
+        updateCharCount();
+
+        // Aggiorna il conteggio dei caratteri ogni volta che l'utente digita
+        reportDescription.addEventListener('input', updateCharCount);
+
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            if (!reportDescription.value.trim()) {
+                validationMessageElement.style.display = 'block';
+                event.preventDefault();
+            } else {
+                validationMessageElement.style.display = 'none';
+            }
+        });
+    });
+</script>

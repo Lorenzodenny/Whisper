@@ -228,6 +228,44 @@ namespace Whisper.Controllers
             return RedirectToAction("Login", "Auth");
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")] 
+        public ActionResult BanUser(int id)
+        {
+            var user = db.Users.Find(id);
+            if (user != null && user.Stato != "Bannato")
+            {
+                user.Stato = "Bannato";
+                db.SaveChanges();
+                TempData["success"] = "Utente bannato con successo.";
+            }
+            else
+            {
+                TempData["error"] = "Non è possibile bannare l'utente( utente bannato in precedenza )";
+            }
+
+            return RedirectToAction("Index", "Reports");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult UnbanUser(int id)
+        {
+            var userToUnban = db.Users.Find(id);
+            if (userToUnban != null && userToUnban.Stato == "Bannato")
+            {
+                userToUnban.Stato = "Attivo";
+                db.SaveChanges();
+                TempData["success"] = "Ban dell'utente sospeso con successo.";
+            }
+            else
+            {
+                TempData["error"] = "Non è possibile sospendere il ban dell'utente.";
+            }
+
+            return RedirectToAction("Index", "Reports");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

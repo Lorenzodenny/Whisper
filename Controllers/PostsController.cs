@@ -17,7 +17,10 @@ namespace Whisper.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            var userId = int.Parse(User.Identity.Name); 
+            var userId = int.Parse(User.Identity.Name);
+            var user = db.Users.FirstOrDefault(u => u.UserId == userId);
+            var username = user != null ? user.Username : "Utente non trovato";
+
             var posts = db.Posts
                 .Include(p => p.Likes)
                 .Include(p => p.Users)
@@ -31,6 +34,7 @@ namespace Whisper.Controllers
                     Comments = p.Comments.OrderByDescending(c => c.PostedAt).ToList()
                 }).ToList();
 
+            ViewBag.Username = username;
             return View(posts);
         }
 

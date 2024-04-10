@@ -13,7 +13,7 @@ namespace Whisper.Models
         {
             Notifications = new HashSet<Notifications>();
             Reports = new HashSet<Reports>();
-            Reports1 = new HashSet<Reports>();
+            //Reports1 = new HashSet<Reports>();
         }
 
         [Key]
@@ -45,7 +45,7 @@ namespace Whisper.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reports> Reports { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reports> Reports1 { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<Reports> Reports1 { get; set; }
     }
 }

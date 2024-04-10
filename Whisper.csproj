@@ -172,6 +172,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Filters\CheckBanStatusFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -213,6 +214,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Img\Background.jpg" />
     <Content Include="Content\Img\BackgroundProfilo.jpg" />
+    <Content Include="Content\Img\BackgroundReports.jpg" />
     <Content Include="Content\Img\BakcgroundUtenti.jpg" />
     <Content Include="Content\Img\CommentBackground.jpg" />
     <Content Include="Content\Img\fata.jpg" />

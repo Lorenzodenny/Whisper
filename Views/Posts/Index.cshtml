@@ -6,7 +6,7 @@
 
 @if (Model.Any())
 {
-    <h2 class="color-wine text-center">Benvenuto, @Model.First().Post.Users.Username</h2>
+    <h2 class="color-wine text-center">Benvenuto, @ViewBag.Username</h2>
 }
 
 
@@ -67,30 +67,33 @@
             </div>
         }
 
-    <div class="d-flex border-bottom border-bottom-1 py-3">
-        <form action="@Url.Action("Like", "Likes")" method="post">
-            <input type="hidden" name="postId" value="@item.Post.PostId" />
-            <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
-        </form>
+        <div class="d-flex border-bottom border-bottom-1 py-3">
+            <form action="@Url.Action("Like", "Likes")" method="post">
+                <input type="hidden" name="postId" value="@item.Post.PostId" />
+                <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
+            </form>
 
 
-        @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(_ => loggedInUserId)
-            @Html.Hidden("PostId", item.Post.PostId)
-            <button type="submit" class="btn btn-sm btn-login text-white ms-3">Scrivi Commento</button>
-        }
+            @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(_ => loggedInUserId)
+                @Html.Hidden("PostId", item.Post.PostId)
+                <button type="submit" class="btn btn-sm btn-login text-white ms-3">Scrivi Commento</button>
+            }
 
-        @using (Html.BeginForm("Create", "Reports", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(_ => loggedInUserId)
-            @Html.Hidden("PostId", item.Post.PostId)
-            <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
-        }
+            @if (item.Post.UserId.ToString() != loggedInUserId)
+            {
+                using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(_ => loggedInUserId)
+                    @Html.Hidden("PostId", item.Post.PostId)
+                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                }
+            }
 
-    </div>
+        </div>
 
 
 
@@ -117,6 +120,16 @@
                                             <a href="@Url.Action("Edit", "Comments", new { id = comment.CommentId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
                                             <a href="@Url.Action("Delete", "Comments", new { id = comment.CommentId })"><i class="fa fa-trash icon-pro"></i></a>
                                         </span>
+                                    }
+                                    @if (comment.UserId.ToString() != loggedInUserId)
+                                    {
+                                        using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.HiddenFor(_ => loggedInUserId)
+                                            @Html.Hidden("CommentId", comment.CommentId)
+                                            <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                                        }
                                     }
                                 </div>
 

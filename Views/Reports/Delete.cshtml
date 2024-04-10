@@ -4,77 +4,81 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Reports</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Comments.Contents)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Comments.Contents)
-        </dd>
+<div class="login-container">
+    <div class="login-box">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Comments1.Contents)
-        </dt>
+        <p class="alert alert-danger">Sei sicuro di voler eliminare questo Report? Questa azione è irreversibile.</p>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                @if (Model.CommentId.HasValue)
+                {
+                    <dt>
+                        <label>Contenuto del Commento segnalato</label>
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Comments1.Contents)
-        </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.Comments.Contents)
+                    </dd>
+                }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Messages.Testo)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Messages.Testo)
-        </dd>
+                @*<dt>
+                @Html.DisplayNameFor(model => model.Messages.Testo)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Posts.Contents)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Messages.Testo)
+            </dd>*@
+                @if (Model.PostId.HasValue)
+                {
+                    <dt>
+                        <label>Contenuto del Post segnalato</label>
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Posts.Contents)
-        </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.Posts.Contents)
+                    </dd>
+                }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Users.Username)
-        </dt>
+                <dt>
+                    <label>Report da parte dell' utente</label>
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Users.Username)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Users.Username)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DescrizioneReport)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DescrizioneReport)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.DescrizioneReport)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.DescrizioneReport)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ReportDate)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReportDate)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ReportDate)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.ReportDate)
+                </dd>
 
-    </dl>
+            </dl>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+                <div class="form-actions no-color">
+                    <input type="submit" value="Elimina Report" class="btn btn-sm btn-danger text-white" />
+                    @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2" })
+
+                </div>
+            }
         </div>
-    }
+        </div>
 </div>
