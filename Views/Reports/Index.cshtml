@@ -11,10 +11,9 @@
     <div class="report-container my-3 p-3 bg-white rounded shadow">
         <div class="d-flex justify-content-between">
             <div>
-                <span class="font-weight-bold">@item.Users.Username ha riportato:</span>
-                <div class="mt-2">
-                    @Html.DisplayFor(modelItem => item.ReportDate)
-
+                <span class="fw-bold color-wine ">Report fatto dall'utente:</span> <span>@item.Users.Username</span> 
+                <div class="mt-3">
+                    <span class="fw-bold color-wine">In Data:</span> @Html.DisplayFor(modelItem => item.ReportDate)
                 </div>
             </div>
             <div class="report-actions">
@@ -45,18 +44,18 @@
 
         </div>
         <div class="report-content mt-3">
-            <p>@Html.DisplayFor(modelItem => item.DescrizioneReport)</p>
+            <p><span class="fw-bold color-wine">Descrizione del report:</span> @Html.DisplayFor(modelItem => item.DescrizioneReport)</p>
         </div>
         @if (item.PostId.HasValue)
         {
-            <div class="reported-content mt-2">
-                <p class="fw-bold">Post riportato: @Html.DisplayFor(modelItem => item.Posts.Contents)</p>
+            <div class="reported-content mt-2 d-flex">
+                <p class="fw-bold color-wine">Post riportato:</p> <span class="ms-2">@Html.DisplayFor(modelItem => item.Posts.Contents)</span> 
             </div>
         }
         @if (item.CommentId.HasValue)
         {
             <div class="reported-content mt-2">
-                <p class="fw-bold">Commento riportato: @Html.DisplayFor(modelItem => item.Comments.Contents)</p>
+                <p class="fw-bold color-wine">Commento riportato:</p> <span class="ms-2">@Html.DisplayFor(modelItem => item.Comments.Contents)</span>
             </div>
         }
 

@@ -9,10 +9,21 @@
     <h2 class="color-wine text-center">Benvenuto, @ViewBag.Username</h2>
 }
 
+@if (User.IsInRole("User"))
+{
+    <p>
+        @Html.ActionLink("Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-login text-white" })
+    </p>
+}
 
-<p>
-    @Html.ActionLink("Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-login text-white" })
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-login text-white" })
+    </p>
+}
+
+
 
 @foreach (var item in Model)
 {
@@ -67,33 +78,39 @@
             </div>
         }
 
-        <div class="d-flex border-bottom border-bottom-1 py-3">
-            <form action="@Url.Action("Like", "Likes")" method="post">
-                <input type="hidden" name="postId" value="@item.Post.PostId" />
-                <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
-            </form>
+        @if (User.IsInRole("User"))
+        {
+            <div class="d-flex border-bottom border-bottom-1 py-3">
+
+                <form action="@Url.Action("Like", "Likes")" method="post">
+                    <input type="hidden" name="postId" value="@item.Post.PostId" />
+                    <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
+                </form>
 
 
-            @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(_ => loggedInUserId)
-                @Html.Hidden("PostId", item.Post.PostId)
-                <button type="submit" class="btn btn-sm btn-login text-white ms-3">Scrivi Commento</button>
-            }
-
-            @if (item.Post.UserId.ToString() != loggedInUserId)
-            {
-                using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(_ => loggedInUserId)
                     @Html.Hidden("PostId", item.Post.PostId)
-                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">Scrivi Commento</button>
                 }
-            }
 
-        </div>
+                @if (item.Post.UserId.ToString() != loggedInUserId)
+                {
+                    using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(_ => loggedInUserId)
+                        @Html.Hidden("PostId", item.Post.PostId)
+                        <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                    }
+                }
+
+            </div>
+        }
+
+
 
 
 
@@ -123,12 +140,15 @@
                                     }
                                     @if (comment.UserId.ToString() != loggedInUserId)
                                     {
-                                        using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                                        if (User.IsInRole("User"))
                                         {
-                                            @Html.AntiForgeryToken()
-                                            @Html.HiddenFor(_ => loggedInUserId)
-                                            @Html.Hidden("CommentId", comment.CommentId)
-                                            <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                                            using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.HiddenFor(_ => loggedInUserId)
+                                                @Html.Hidden("CommentId", comment.CommentId)
+                                                <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                                            }
                                         }
                                     }
                                 </div>

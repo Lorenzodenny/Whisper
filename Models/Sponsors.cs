@@ -16,10 +16,9 @@ namespace Whisper.Models
         public string Titolo { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [StringLength(500, ErrorMessage = "Il contenuto può essere lungo al massimo 500 caratteri.")]
         public string Description { get; set; }
 
-        [Required]
         public string Foto { get; set; }
 
         public int UserId { get; set; }

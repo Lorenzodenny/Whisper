@@ -15,95 +15,88 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
+    <div class="form-horizontal">
 
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 mt-2">
-                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                    </div>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 mt-2">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-3 precision">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 mt-2 ">
+                <div class="input-group">
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput" })
+                    <span class="input-group-text">
+                        <i class="bi bi-eye" id="togglePassword"></i>
+                    </span>
                 </div>
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                <div class="form-group mb-3 precision">
-                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 mt-2 ">
-                        <div class="input-group">
-                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput" })
-                            <span class="input-group-text">
-                                <i class="bi bi-eye" id="togglePassword"></i>
-                            </span>
-                        </div>
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
+        <div class="form-group mb-3 precision">
+            @Html.Label("Conferma Password", new { @class = "control-label col-md-5" })
+            <div class="col-md-10 mt-2 ">
+                <div class="input-group">
+                    <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" />
+                    <span class="input-group-text">
+                        <i class="bi bi-eye" id="toggleConfirmPassword"></i>
+                    </span>
                 </div>
+            </div>
+        </div>
 
-                <div class="form-group mb-3 precision">
-                    @Html.Label("Conferma Password", new { @class = "control-label col-md-5" })
-                    <div class="col-md-10 mt-2 ">
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" />
-                            <span class="input-group-text">
-                                <i class="bi bi-eye" id="toggleConfirmPassword"></i>
-                            </span>
-                        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 mt-2">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 mt-2">
+                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.Cognome, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 mt-2">
+                @Html.EditorFor(model => model.Cognome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cognome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-10 mt-2">
+                @Html.EditorFor(model => model.CodiceFiscale, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CodiceFiscale, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">L'idea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-
-
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 mt-2">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 mt-2">
-                        @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.Cognome, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 mt-2">
-                        @Html.EditorFor(model => model.Cognome, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Cognome, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                @*<div class="form-group">
-                        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Stato, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Stato, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Stato, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
-
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-10 mt-2">
-                        @Html.EditorFor(model => model.CodiceFiscale, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.CodiceFiscale, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <br />
-                <br />
-                <div class="form-group mb-3">
-                    <div class="col-md-10">
+                    <div class="modal-body">
                         <p>
 
                             Sono dell'idea che viviamo in un periodo in cui si stà perdendo un pò l'umanità delle persone, e che l'apparenza faccia sempre più da padrona.
@@ -146,20 +139,35 @@
                             Un sorriso, o una chiacchiera regalata a uno sconosciuto, può salvarci.
 
                         </p>
-
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="acceptTerms" required> Accetto il regolamento
-                            </label>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-back text-white" data-bs-dismiss="modal">Chiudi</button>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="d-flex">
-                    <input type="submit" value="Registrati" class="btn btn-sm btn-login me-2" />
-                    @Html.ActionLink("Go To Login", "Login", "Auth", null, new { @class = "btn btn-sm btn-back" })
+        <div class="form-group mb-3">
+            <div class="col-md-10">
+
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="acceptTerms" required> Accetto il regolamento
+                    </label>
                 </div>
             </div>
+        </div>
+
+        <div class="d-flex mb-3">
+            <input type="submit" value="Registrati" class="btn btn-sm btn-login me-2 text-white" />
+            @Html.ActionLink("Go To Login", "Login", "Auth", null, new { @class = "btn btn-sm btn-back text-white" })
+        </div>
+
+        <a href="#" class="text-link color-wine fw-bold mb-3 text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Scopri l'idea dietro all'app 💜
+        </a>
+    </div>
         }
 
 

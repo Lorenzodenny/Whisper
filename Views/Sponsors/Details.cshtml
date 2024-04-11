@@ -1,0 +1,53 @@
+﻿@model Whisper.Models.Sponsors
+
+@{
+    ViewBag.Title = "Sponsor Details";
+}
+
+<div class="login-container">
+    <div class="login-box">
+        <div>
+
+            <dt>
+                <label class="fw-bold color-wine">Foto</label>
+            </dt>
+            <dd>
+                <img src="@Url.Content(Model.Foto)" alt="Immagine" style="max-width: 100%;" />
+            </dd>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    <label class="fw-bold color-wine">Admin</label>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Users.Username)
+                </dd>
+
+                <dt>
+                    <label class="fw-bold color-wine">Titolo Sponsor</label>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Titolo)
+                </dd>
+
+                <dt>
+                    <label class="fw-bold color-wine">Contenuto Sponsor</label>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+
+
+
+            </dl>
+        </div>
+        <div class="form-actions no-color">
+            @Html.ActionLink("Modifica", "Edit", null, new { @class = "btn btn-sm btn-login text-white" })
+            @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-white" })
+        </div>
+
+        </div>
+</div>

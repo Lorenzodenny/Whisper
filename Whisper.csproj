@@ -170,6 +170,7 @@
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\SponsorsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Filters\CheckBanStatusFilter.cs" />
@@ -219,6 +220,7 @@
     <Content Include="Content\Img\CommentBackground.jpg" />
     <Content Include="Content\Img\fata.jpg" />
     <Content Include="Content\Img\sfondo.jpg" />
+    <Content Include="Content\Img\SponsorBakcground.jpg" />
     <Content Include="Content\Img\WhisperLogo.jpg" />
     <Content Include="Content\Img\WhisperLogo2.jpg" />
     <Content Include="favicon.ico" />
@@ -296,9 +298,15 @@
     <Content Include="Views\Reports\Details.cshtml" />
     <Content Include="Views\Reports\Edit.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Sponsors\Create.cshtml" />
+    <Content Include="Views\Sponsors\Delete.cshtml" />
+    <Content Include="Views\Sponsors\Details.cshtml" />
+    <Content Include="Views\Sponsors\Edit.cshtml" />
+    <Content Include="Views\Sponsors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
     <Folder Include="Views\Likes\" />
   </ItemGroup>
   <ItemGroup>

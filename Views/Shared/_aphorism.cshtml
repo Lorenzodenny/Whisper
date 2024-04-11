@@ -22,3 +22,27 @@
     });
 </script>
 
+
+@*aforismi in movimento
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    function updateAphorism() {
+        fetch('/Aphorisms/GetRandomAphorism')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const aphorismContainer = document.getElementById('aphorismContainer');
+                const aphorismText = document.createElement('span');
+                aphorismText.innerText = data.frase;
+                aphorismText.title = data.frase;
+                aphorismContainer.innerHTML = ''; 
+                aphorismContainer.appendChild(aphorismText);
+            })
+            .catch(error => console.error('Errore nel recupero dell\'aforisma:', error));
+    }
+
+    updateAphorism();
+    setInterval(updateAphorism, 15000);
+});
+
+</script>*@
