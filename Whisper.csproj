@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AphorismsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\FriendshipsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
@@ -304,6 +305,11 @@
     <Content Include="Views\Sponsors\Edit.cshtml" />
     <Content Include="Views\Sponsors\Index.cshtml" />
     <Content Include="Views\Shared\_RandomSponsor.cshtml" />
+    <Content Include="Views\Friendships\Create.cshtml" />
+    <Content Include="Views\Friendships\Delete.cshtml" />
+    <Content Include="Views\Friendships\Details.cshtml" />
+    <Content Include="Views\Friendships\Edit.cshtml" />
+    <Content Include="Views\Friendships\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,15 +8,50 @@
 
 <div class="container mt-5">
     <div class="row">
+        
         <!-- Profilo utente -->
         <div class="col-md-5 profile-section">
             <div class="card mt-4">
-                <div class="card-header">
-                    @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+                        {
+                            <span>Benvenuto,</span>
+                        }
+                        <span class="color-wine fw-bold"> @Model.Users.Username</span>
+                    </div>
+                    @if (User.IsInRole("User"))
                     {
-                        <span>Benvenuto,</span>
-                    } <span class="color-wine fw-bold"> @Model.Users.Username</span>
+                        if (Model.Users.UserId.ToString() != Model.LoggedInUserId)
+                        {
+                            <div>
+                                @if (Model.IsFriend)
+                                {
+                                    <!-- Mostra il pulsante per smettere di seguire -->
+                                    <form action="@Url.Action("Unfollow", "Friendships")" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="userId" value="@Model.Users.UserId" />
+                                        <button type="submit" class="btn btn-sm btn-warning text-white">
+                                            <i class="bi bi-person-dash"></i> Smetti di Origliare
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <!-- Mostra il pulsante per iniziare a seguire -->
+                                    <form action="@Url.Action("Follow", "Friendships")" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="userId" value="@Model.Users.UserId" />
+                                        <button type="submit" class="btn btn-sm btn-login text-white">
+                                            <i class="bi bi-person-add"></i> Origlia
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                    }
                 </div>
+
                 <div class="card-body">
                     <dl class="row">
                         <dt class="col-sm-4">Username</dt>
@@ -34,7 +69,19 @@
                         <dd class="col-sm-8">@Model.Users.CodiceFiscale</dd>
                     </dl>
                 </div>
-                
+
+
+                @*@if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+                {
+                    <h3>Le mie amicizie</h3>
+                    <ul>
+                        @foreach (var friendship in Model.Friendships)
+                        {
+                            <li>@friendship.UserMittenteId / @friendship.UserRiceventeId</li>
+                        }
+                    </ul>
+                }*@
+
 
                 @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                 {
@@ -53,40 +100,40 @@
                 }
                 else
                 {
-            <div class="mb-2 ms-3">
-                @if (User.IsInRole("Admin") && Model.Users.UserId.ToString() != User.Identity.Name)
-                {
-                    if (Model.Users.Stato != "Bannato")
-                    {
-                        using (Html.BeginForm("BanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                    <div class="mb-2 ms-3">
+                        @if (User.IsInRole("Admin") && Model.Users.UserId.ToString() != User.Identity.Name)
                         {
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("id", Model.Users.UserId)
-                            <button type="submit" class="btn btn-sm btn-danger text-white">Banna Utente</button>
-                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
+                            if (Model.Users.Stato != "Bannato")
+                            {
+                                using (Html.BeginForm("BanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("id", Model.Users.UserId)
+                                    <button type="submit" class="btn btn-sm btn-danger text-white">Banna Utente</button>
+                                    @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("UnbanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("id", Model.Users.UserId)
+                                    <button type="submit" class="btn btn-sm btn-warning text-white">Sospendi Ban</button>
+                                    @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
+                                }
+                            }
+
                         }
-                    }
-                    else
-                    {
-                        using (Html.BeginForm("UnbanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                        else if (Model.Users.Role == "User")
                         {
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("id", Model.Users.UserId)
-                            <button type="submit" class="btn btn-sm btn-warning text-white">Sospendi Ban</button>
-                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
+                            @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back text-white" })
                         }
-                    }
-
-                }
-                else if (Model.Users.Role == "User")
-                {
-                    @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back text-white" })
-                }
-            </div>
+                    </div>
                 }
 
             </div>
-            
+
         </div>
 
         <!-- Lista dei post con funzionalità di modifica e cancellazione -->

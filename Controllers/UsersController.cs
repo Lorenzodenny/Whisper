@@ -24,7 +24,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Users/Details/5
-        // GET: Users/Details/5
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -38,6 +38,18 @@ namespace Whisper.Controllers
                 return HttpNotFound();
             }
 
+            // logica per le amicizie
+            var loggedInUserId = int.Parse(User.Identity.Name);
+            var isFriend = db.Friendships.Any(f =>
+                (f.UserMittenteId == loggedInUserId && f.UserRiceventeId == id.Value) ||
+                (f.UserRiceventeId == loggedInUserId && f.UserMittenteId == id.Value));
+
+            // recupera tutte le amicie dell'utente loggato
+
+            var friendships = db.Friendships
+            .Where(f => f.UserMittenteId == loggedInUserId || f.UserRiceventeId == loggedInUserId)
+            .ToList();
+
             // Assumi che ci sia una relazione tra Users e Posts nel tuo database
             var posts = db.Posts.Where(p => p.UserId == id)
                     .OrderByDescending(p => p.PostedAt)
@@ -48,7 +60,9 @@ namespace Whisper.Controllers
             {
                 Users = user,
                 Posts = posts,
-                LoggedInUserId = User.Identity.Name
+                LoggedInUserId = User.Identity.Name,
+                IsFriend = isFriend,
+                Friendships = friendships
             };
 
             return View(viewModel); // Assicurati di avere un ViewModel che possa gestire sia l'utente che i post
