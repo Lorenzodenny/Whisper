@@ -98,6 +98,19 @@ namespace Whisper.Controllers
         }
 
 
+        // Pubblicità random
+        public ActionResult RandomSponsor()
+        {
+            var sponsorsList = db.Sponsors.ToList();
+            if (sponsorsList.Any())
+            {
+                var randomIndex = new Random().Next(sponsorsList.Count);
+                var randomSponsor = sponsorsList[randomIndex];
+                return PartialView("_RandomSponsor", randomSponsor);
+            }
+
+            return new EmptyResult(); // Nessuno sponsor da mostrare
+        }
 
         // GET: Sponsors/Edit/5
         public ActionResult Edit(int? id)

@@ -303,6 +303,7 @@
     <Content Include="Views\Sponsors\Details.cshtml" />
     <Content Include="Views\Sponsors\Edit.cshtml" />
     <Content Include="Views\Sponsors\Index.cshtml" />
+    <Content Include="Views\Shared\_RandomSponsor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

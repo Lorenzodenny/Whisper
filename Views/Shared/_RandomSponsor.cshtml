@@ -1,0 +1,37 @@
+﻿@model Whisper.Models.Sponsors
+
+
+    @if (!string.IsNullOrEmpty(Model.Foto))
+    {
+        <img class="img-fluid rounded" src="@Url.Content(Model.Foto)" alt="Sponsor" />
+    }
+    <h3 class="mt-3">@Model.Titolo</h3>
+    <p>@Model.Description</p>
+
+
+@if (Model != null)
+{
+    <script>
+        if (typeof window.updateRandomSponsor === 'undefined') {
+            window.updateRandomSponsor = function() {
+                fetch('@Url.Action("RandomSponsor", "Sponsors")')
+                    .then(response => response.text())
+                    .then(html => {
+                        var container = document.querySelector('.sponsor-container');
+                        if(container) {
+                            container.innerHTML = html;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore nel caricamento della pubblicità:', error);
+                    });
+            };
+
+            // Esegui la funzione immediatamente per caricare il primo sponsor
+            window.updateRandomSponsor();
+
+            // Imposta l'intervallo per aggiornare lo sponsor ogni 30 secondi
+            setInterval(window.updateRandomSponsor, 30000);
+        }
+    </script>
+}
