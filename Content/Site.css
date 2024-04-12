@@ -384,3 +384,44 @@ body, html {
         display: inline-block;
         animation: scrollText 10s linear infinite;
     }*/
+
+.comment-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        resize: none; /* Impedisce all'utente di ridimensionare la textarea */
+        height: 100px; /* Fissa l'altezza della textarea */
+    }
+
+    .comment-form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-right: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+
+    .comment-form .cancel-comment {
+        background-color: #6c757d; /* Colore per il pulsante Annulla */
+    }
+
+        .comment-form .cancel-comment:hover {
+            background-color: #5a6268;
+        }

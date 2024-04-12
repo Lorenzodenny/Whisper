@@ -116,21 +116,48 @@ namespace Whisper.Controllers
         }
 
         // POST: Sponsors/Edit/5
-        // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
-        // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SponsorId,Titolo,Description,Foto,UserId")] Sponsors sponsors)
+        public ActionResult Edit(int id, [Bind(Include = "SponsorId,Titolo,Description")] Sponsors sponsors, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sponsors).State = EntityState.Modified;
+                var existingSponsor = db.Sponsors.Find(id);
+                if (existingSponsor == null)
+                {
+                    return HttpNotFound();
+                }
+
+                existingSponsor.Titolo = sponsors.Titolo;
+                existingSponsor.Description = sponsors.Description;
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(upload.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Uploads"), fileName);
+
+                    try
+                    {
+                        upload.SaveAs(path);
+                        existingSponsor.Foto = "~/Uploads/" + fileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", "Errore durante il salvataggio del file: " + ex.Message);
+                        return View(sponsors);
+                    }
+                }
+
+                db.Entry(existingSponsor).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["success"] = "Sponsor aggiornato correttamente";
                 return RedirectToAction("Index");
             }
+
             ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", sponsors.UserId);
             return View(sponsors);
         }
+
 
         // GET: Sponsors/Delete/5
         public ActionResult Delete(int? id)

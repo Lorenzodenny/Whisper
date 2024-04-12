@@ -86,15 +86,9 @@
                     <input type="hidden" name="postId" value="@item.Post.PostId" />
                     <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
                 </form>
+                <button type="button" class="btn btn-sm btn-login text-white ms-3 comment-button" data-post-id="@item.Post.PostId">Scrivi Commento</button>
 
 
-                @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(_ => loggedInUserId)
-                    @Html.Hidden("PostId", item.Post.PostId)
-                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">Scrivi Commento</button>
-                }
 
                 @if (item.Post.UserId.ToString() != loggedInUserId)
                 {
@@ -111,7 +105,18 @@
         }
 
 
+    <div id="comment-form-container-@item.Post.PostId" class="comment-form-container d-none">
+        @using (Html.BeginForm("Create", "Comments", FormMethod.Post, new { id = $"comment-form-{item.Post.PostId}" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(_ => loggedInUserId)
+            @Html.Hidden("PostId", item.Post.PostId)
+            <textarea name="Contents" class="form-control my-2" placeholder="Scrivi un commento..." maxlength="500" style="resize: none;"></textarea>
 
+            <button type="submit" class="btn btn-sm btn-login text-white">Pubblica Commento</button>
+            <span id="char-count-@item.Post.PostId">0/500</span>
+        }
+    </div>
 
 
 
@@ -196,37 +201,25 @@
 
 
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
     $('.like-button').click(function (e) {
         e.preventDefault();
         var postId = $(this).data('post-id');
         var button = $(this);
 
-        // Prima chiamata AJAX per impostare o rimuovere il like
         $.ajax({
-            url: '@Url.Action("Like", "Likes")', // Assicurati che l'URL sia corretto per la tua app
+            url: '@Url.Action("Like", "Likes")',
             type: 'POST',
             data: { postId: postId },
             success: function (response) {
                 if (response.success) {
-                    // Aggiorna il testo del pulsante "Like"
-                    var newText = button.text() === "👍 Mi Piace" ? "Ti piace" : "👍 Mi Piace";
-                    button.text(newText);
-                    window.location.reload();
-                    // Seconda chiamata AJAX per ottenere il conteggio aggiornato dei like
-                    $.ajax({
-                        url: '@Url.Action("GetLikeCount", "Likes")', // URL del nuovo endpoint
-                        type: 'GET',
-/*                        dataType: 'json',*/
-                        data: { postId: postId },
-                        success: function (response) {
-                            // Trova l'elemento che mostra il conteggio dei like e aggiorna il suo testo
-                            var likesCountElement = button.closest('.post-container').find('.likes-count');
-                            likesCountElement.text(response.likeCount);
-                        }
-                    });
-
+                    // Toggle la classe "liked" per cambiare il testo del pulsante.
                     button.toggleClass('liked');
+                    var newText = button.hasClass('liked') ? "Ti piace" : "👍 Mi Piace";
+                    button.text(newText);
+
+                    // Ricarica la pagina per aggiornare il conteggio dei "like"
+                    window.location.reload();
                 } else {
                     alert("Operazione non riuscita. Per favore riprova.");
                 }
@@ -236,8 +229,24 @@
             }
         });
     });
-});
 
+
+    // Aggiungi gestore eventi per il bottone "Scrivi Commento"
+    $('.comment-button').click(function () {
+        var postId = $(this).data('post-id');
+        var commentFormContainer = $('#comment-form-container-' + postId);
+
+        // Mostra o nasconde la textarea per i commenti
+        commentFormContainer.toggleClass('d-none');
+
+    });
+     $(document).on('input', 'textarea[name="Contents"]', function() {
+        var charCount = $(this).val().length;
+        var postId = $(this).closest('form').find('input[name="PostId"]').val();
+        $('#char-count-' + postId).text(charCount + '/500');
+    });
+});
 </script>
+
 
 

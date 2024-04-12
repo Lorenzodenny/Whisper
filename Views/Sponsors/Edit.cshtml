@@ -4,58 +4,109 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="login-container">
+    <div class="login-box">
+        <h2>Modifica pubblicità <i class="bi bi-pencil-square"></i></h2>
+        @using (Html.BeginForm("Edit", "Sponsors", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Sponsors</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.SponsorId)
+            @Html.HiddenFor(model => model.SponsorId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Titolo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Titolo, new { htmlAttributes = new { @class = "form-control" } })
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <label class="color-wine fw-bold">Titolo Sponsor</label>
+                @Html.EditorFor(model => model.Titolo, new { htmlAttributes = new { @class = "form-control", id = "Titolo" } })
                 @Html.ValidationMessageFor(model => model.Titolo, "", new { @class = "text-danger" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-group">
+                <label class="color-wine fw-bold">Descrizione Sponsor</label>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", placeholder = "Inserisci una descrizione per lo sponsor...", id = "Description", maxlength = "500", style = "resize: none;" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                <span id="description-validation-message" class="text-danger" style="display:none;">Il campo Descrizione è obbligatorio.</span>
+                <span id="char-count" class="text-secondary">0/500</span>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Foto, new { htmlAttributes = new { @class = "form-control" } })
+            <!-- Anteprima immagine esistente -->
+            <div class="form-group existing-image-preview">
+                <label class="color-wine fw-bold">Anteprima Immagine Attuale</label>
+                <img src="@Url.Content(Model.Foto)" alt="Anteprima immagine attuale" class="existing-image-preview" style="max-width: 100%; height: auto;" />
+            </div>
+            <div class="form-group image-preview-container" style="text-align: center;">
+                <!-- L'anteprima dell'immagine verrà inserita qui -->
+            </div>
+
+
+            <div class="form-group custom-file-upload">
+                <!-- Caricamento nuova immagine -->
+                <label for="Foto" class="file-upload-container btn btn-sm btn-warning my-2" style="background-color: #ffc107; color: black;">
+                    <i class="bi bi-upload"></i> Carica una nuova foto
+                    <input type="file" name="upload" id="Foto" class="form-control-file" hidden />
+                </label>
                 @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-sm btn-login text-white" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-sm btn-back text-white" })
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        }
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script type="text/javascript">
+    document.getElementById('Foto').onchange = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            // Nasconde o rimuove l'anteprima dell'immagine esistente
+            var existingImagePreview = document.querySelector('.existing-image-preview');
+            if (existingImagePreview) {
+                existingImagePreview.style.display = 'none';
+            }
+
+            // Crea o aggiorna l'anteprima della nuova immagine caricata
+            var newImagePreview = document.getElementById('imagePreview');
+            if (!newImagePreview) {
+                newImagePreview = document.createElement('img');
+                newImagePreview.id = 'imagePreview';
+                newImagePreview.style = 'max-width: 100%; height: auto; display: block; margin: 0 auto;';
+            }
+            newImagePreview.src = reader.result;
+
+            // Aggiunge l'anteprima dell'immagine nel contenitore specificato
+            document.querySelector('.image-preview-container').appendChild(newImagePreview);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var description = document.getElementById('Description');
+        var validationMessageElement = document.getElementById('description-validation-message');
+        var charCountElement = document.getElementById('char-count');
+
+        function updateCharCount() {
+            var textLength = description.value.length;
+            charCountElement.textContent = `${textLength}/500`;
+        }
+
+        updateCharCount();
+        description.addEventListener('input', updateCharCount);
+
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            if (!description.value.trim()) {
+                validationMessageElement.style.display = 'block';
+                event.preventDefault();
+            } else {
+                validationMessageElement.style.display = 'none';
+            }
+        });
+    });
+</script>
