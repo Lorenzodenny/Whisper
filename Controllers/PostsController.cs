@@ -59,20 +59,44 @@ namespace Whisper.Controllers
             return View();
         }
 
+      
         // POST: Posts/Create
-        // Per proteggerti da attacchi di overposting, abilita solo le proprietà che vuoi essere legate.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Contents")] Posts post)
         {
             if (ModelState.IsValid)
             {
-                post.PostedAt = DateTime.Now; // Imposta la data e l'ora corrente del post
-
-                post.UserId = int.Parse(User.Identity.Name); // Converto l'ID utente da stringa a int
+                var userId = int.Parse(User.Identity.Name); // ID dell'utente attuale
+                post.PostedAt = DateTime.Now;
+                post.UserId = userId;
 
                 db.Posts.Add(post);
                 db.SaveChanges();
+
+                // Ottieni tutti gli ID degli utenti che seguono l'utente che ha fatto il post
+                var followerIds = db.Friendships
+                    .Where(f => f.UserRiceventeId == userId) // solo coloro che hanno l'utente come seguito
+                    .Select(f => f.UserMittenteId) // prendi gli ID degli utenti che seguono l'utente loggato
+                    .Distinct()
+                    .ToList();
+
+                // Crea una notifica per ciascun follower
+                foreach (var followerId in followerIds)
+                {
+                    var notification = new Notifications
+                    {
+                        UserID = followerId,
+                        TriggeredByUserID = userId,
+                        PostID = post.PostId, // l'ID del nuovo post
+                        NotificationType = "Post",
+                        ReadStatus = false,
+                        NotificationDate = DateTime.Now
+                    };
+                    db.Notifications.Add(notification);
+                }
+
+                db.SaveChanges(); // Salva tutte le notifiche in una volta sola
                 TempData["success"] = "Bisbiglio diffuso con successo";
                 return RedirectToAction("Index");
             }
@@ -80,6 +104,9 @@ namespace Whisper.Controllers
             TempData["error"] = "C'è stato qualche problema con la diffusione del Bisbiglio";
             return View(post);
         }
+
+
+
 
 
 
@@ -146,11 +173,20 @@ namespace Whisper.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Posts posts = db.Posts.Find(id);
-            db.Posts.Remove(posts);
+            // Trova tutte le notifiche collegate al post che stai eliminando
+            var notifications = db.Notifications.Where(n => n.PostID == id).ToList();
+            foreach (var notification in notifications)
+            {
+                db.Notifications.Remove(notification);
+            }
+
+            // Ora puoi eliminare il post
+            Posts post = db.Posts.Find(id);
+            db.Posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {

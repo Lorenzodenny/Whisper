@@ -16,4 +16,5 @@ namespace Whisper.Models
         public IEnumerable<Friendships> Friendships { get; set; }
 
     }
+
 }

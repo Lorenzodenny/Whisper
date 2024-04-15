@@ -31,8 +31,12 @@
                 <div id="post-@item.Post.PostId" class="post @*mx-auto*@ my-3 p-3 bg-white rounded shadow">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex flex-column">
-                            <span class="username icon-pro">@Html.DisplayFor(modelItem => item.Post.Users.Username)</span>
-                            <span class="posted-at text-muted" style="font-size: 0.8em;">@(item.Post.PostedAt.HasValue ? item.Post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+                            <a href="@Url.Action("Details", "Users", new { id = item.Post.UserId })" class="username icon-pro text-decoration-none">
+                                @Html.DisplayFor(modelItem => item.Post.Users.Username)
+                            </a>
+                            <span class="posted-at text-muted" style="font-size: 0.8em;">
+                                @(item.Post.PostedAt.HasValue ? item.Post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)
+                            </span>
                         </div>
                         @if (item.Post.UserId.ToString() == loggedInUserId)
                         {

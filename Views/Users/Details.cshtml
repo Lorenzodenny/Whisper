@@ -71,17 +71,6 @@
                 </div>
 
 
-                @*@if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
-                {
-                    <h3>Le mie amicizie</h3>
-                    <ul>
-                        @foreach (var friendship in Model.Friendships)
-                        {
-                            <li>@friendship.UserMittenteId / @friendship.UserRiceventeId</li>
-                        }
-                    </ul>
-                }*@
-
 
                 @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                 {
@@ -133,6 +122,39 @@
                 }
 
             </div>
+
+            @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+            {
+                <!-- Sezione Amicizie -->
+                <div class="col-md-12 mt-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+                            {
+                                <h3 class="card-title">Amicizie</h3>
+                                if (Model.Friendships.Any(f => f.UserMittenteId.ToString() == Model.LoggedInUserId))
+                                {
+                                    <div class="list-group" style="max-height: 400px; overflow-y: auto;">
+                                        @foreach (var friendship in Model.Friendships.Where(f => f.UserMittenteId.ToString() == Model.LoggedInUserId))
+                                        {
+                                            var friendUsername = ViewBag.FriendUsernames.ContainsKey(friendship.UserRiceventeId) ? ViewBag.FriendUsernames[friendship.UserRiceventeId] : "Utente non trovato";
+                                            <a href="@Url.Action("Details", "Users", new { id = friendship.UserRiceventeId })" class="list-group-item list-group-item-action fw-bold color-wine">
+                                                @friendUsername 💜
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Non hai ancora amicizie.</p>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+
 
         </div>
 

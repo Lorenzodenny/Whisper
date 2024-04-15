@@ -41,19 +41,25 @@ namespace Whisper.Controllers
             // logica per le amicizie
             var loggedInUserId = int.Parse(User.Identity.Name);
             var isFriend = db.Friendships.Any(f =>
-                (f.UserMittenteId == loggedInUserId && f.UserRiceventeId == id.Value) ||
-                (f.UserRiceventeId == loggedInUserId && f.UserMittenteId == id.Value));
+                (f.UserMittenteId == loggedInUserId && f.UserRiceventeId == id.Value));
 
             // recupera tutte le amicie dell'utente loggato
 
             var friendships = db.Friendships
-            .Where(f => f.UserMittenteId == loggedInUserId || f.UserRiceventeId == loggedInUserId)
+            .Where(f => f.UserMittenteId == loggedInUserId)
             .ToList();
 
             // Assumi che ci sia una relazione tra Users e Posts nel tuo database
             var posts = db.Posts.Where(p => p.UserId == id)
                     .OrderByDescending(p => p.PostedAt)
                     .ToList();
+
+            // Crea un dizionario degli usernames basato solo su queste amicizie
+            var friendUsernames = friendships
+                .Select(f => db.Users.Find(f.UserRiceventeId))
+                .ToDictionary(u => u.UserId, u => u.Username);
+
+            ViewBag.FriendUsernames = friendUsernames;
 
             // Crea un nuovo ViewModel se non ne hai già uno che includa sia i dati dell'utente che i post
             var viewModel = new UserProfileViewModel
@@ -65,7 +71,7 @@ namespace Whisper.Controllers
                 Friendships = friendships
             };
 
-            return View(viewModel); // Assicurati di avere un ViewModel che possa gestire sia l'utente che i post
+            return View(viewModel); 
         }
 
 
