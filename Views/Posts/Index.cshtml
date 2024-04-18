@@ -12,7 +12,7 @@
     @if (User.IsInRole("User"))
     {
         <p>
-            @Html.ActionLink("Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-login text-white" })
+            @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-login text-white" })
         </p>
     }
 
@@ -25,7 +25,7 @@
 
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9"  style="max-height: 90vh; overflow-y: auto;">
             @foreach (var item in Model)
             {
                 <div id="post-@item.Post.PostId" class="post @*mx-auto*@ my-3 p-3 bg-white rounded shadow">
@@ -91,7 +91,7 @@
                                 <input type="hidden" name="postId" value="@item.Post.PostId" />
                                 <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
                             </form>
-                            <button type="button" class="btn btn-sm btn-login text-white ms-3 comment-button" data-post-id="@item.Post.PostId">Scrivi Commento</button>
+                            <button type="button" class="btn btn-sm btn-login text-white ms-3 comment-button" data-post-id="@item.Post.PostId">🗨 Scrivi Commento</button>
 
 
 
@@ -102,7 +102,7 @@
                                     @Html.AntiForgeryToken()
                                     @Html.HiddenFor(_ => loggedInUserId)
                                     @Html.Hidden("PostId", item.Post.PostId)
-                                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">🚫 Riporta Contenuto</button>
                                 }
                             }
 
@@ -118,7 +118,7 @@
                             @Html.Hidden("PostId", item.Post.PostId)
                             <textarea name="Contents" class="form-control my-2" placeholder="Scrivi un commento..." maxlength="500" style="resize: none;"></textarea>
 
-                            <button type="submit" class="btn btn-sm btn-login text-white">Pubblica Commento</button>
+                            <button type="submit" class="btn btn-sm btn-login text-white">✔ Pubblica Commento</button>
                             <span id="char-count-@item.Post.PostId">0/500</span>
                         }
                     </div>
@@ -136,7 +136,7 @@
                                 <div class="modal-body">
                                     @foreach (var comment in item.Post.Comments)
                                     {
-                                        <div class="comment border-bottom border-bottom-1 py-3">
+                                        <div id="comment-@comment.CommentId" class="comment border-bottom border-bottom-1 py-3">
                                             <div class="d-flex justify-content-between">
                                                 <a href="@Url.Action("Details", "Users", new { id = comment.UserId })" class="text-decoration-none">
                                                     <p class="fw-bold icon-pro">@comment.Users.Username</p>
@@ -157,7 +157,7 @@
                                                             @Html.AntiForgeryToken()
                                                             @Html.HiddenFor(_ => loggedInUserId)
                                                             @Html.Hidden("CommentId", comment.CommentId)
-                                                            <button type="submit" class="btn btn-sm btn-login text-white ms-3">Riporta Contenuto</button>
+                                                            <button type="submit" class="btn btn-sm btn-login text-white ms-3">🚫 Riporta Contenuto</button>
                                                         }
                                                     }
                                                 }
@@ -204,7 +204,11 @@
                 </div>
             }
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="max-height: 90vh; overflow-y: auto;">
+            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded">
+                @*partial view per le pubblicità random*@
+                @Html.Action("RandomSponsor", "Sponsors")
+            </div>
             <div class="sponsor-container text-center my-3 p-3 bg-light border rounded">
                 @*partial view per le pubblicità random*@
                 @Html.Action("RandomSponsor", "Sponsors")

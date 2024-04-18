@@ -31,7 +31,7 @@
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10 mt-2 ">
                 <div class="input-group">
-                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput" })
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput", required = "required" })
                     <span class="input-group-text">
                         <i class="bi bi-eye" id="togglePassword"></i>
                     </span>
@@ -44,7 +44,7 @@
             @Html.Label("Conferma Password", new { @class = "control-label col-md-5" })
             <div class="col-md-10 mt-2 ">
                 <div class="input-group">
-                    <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" />
+                    <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" required = "required"/>
                     <span class="input-group-text">
                         <i class="bi bi-eye" id="toggleConfirmPassword"></i>
                     </span>

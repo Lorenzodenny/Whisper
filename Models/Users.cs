@@ -32,7 +32,7 @@ namespace Whisper.Models
         [StringLength(50)]
         public string Username { get; set; }
 
-        [Required]
+        
         [StringLength(255, MinimumLength = 8)] 
         [DataType(DataType.Password)]
         [RegularExpression("(?=.*[A-Z]).{8,}", ErrorMessage = "La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola.")] //[RegularExpression("(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}", ErrorMessage = "La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, un numero e un carattere speciale.")]
@@ -64,6 +64,8 @@ namespace Whisper.Models
         [StringLength(16)]
         [DisplayName("Codice Fiscale")]
         public string CodiceFiscale { get; set; }
+
+        public int? AvatarId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comments> Comments { get; set; }
@@ -97,5 +99,7 @@ namespace Whisper.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sponsors> Sponsors { get; set; }
+
+        public virtual Avatars Avatars { get; set; }
     }
 }

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Whisper.Models.Notifications>
+
+<div class="container mt-3" style="max-height: 90vh; overflow-y: auto;">
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Non ci sono notifiche da mostrare.</div>
+    }
+    else
+    {
+        foreach (var notification in Model)
+        {
+            <div class="alert alert-secondary">
+                <p>
+                    <strong>Da:</strong>
+                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                       class="text-decoration-none fw-bold color-wine">
+                        @notification.Users.Username
+                    </a>
+                </p>
+                <p>
+                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                       class="btn btn-login text-white btn-sm"
+                       onclick="markAsRead(@notification.NotificationID, '@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })'); return false;">
+                        Vai al profilo
+                    </a>
+                </p>
+                <p><strong>Data:</strong> @notification.NotificationDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                <p>
+                    <strong>Stato:</strong>
+                    @(notification.ReadStatus.HasValue && notification.ReadStatus.Value ? "Letta ✔" : "Non Letta ❌")
+                </p>
+            </div>
+        }
+    }
+</div>
+
+<script>
+    function markAsRead(notificationId, redirectTo) {
+        $.post('@Url.Action("MarkNotificationAsRead")', { notificationId: notificationId }, function(response) {
+            if (response.success) {
+                window.location.href = redirectTo;
+            } else {
+                alert(response.message);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Whisper.Models.Notifications>
+
+<div class="container mt-3">
+    <h2>Notifiche di messaggi</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Non ci sono notifiche da mostrare.</div>
+    }
+    else
+    {
+        foreach (var notification in Model)
+        {
+            <div class="alert alert-secondary">
+                <p>
+                    <strong>Conversazione:</strong>
+                    <a href="@Url.Action("Details", "Conversations", new { id = notification.ConversationID })"
+                       class="text-decoration-none fw-bold color-wine">
+                        Conversazione @notification.ConversationID
+                    </a>
+                </p>
+                <p>
+                    <strong>Da:</strong>
+                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                       class="text-decoration-none fw-bold color-wine">
+                        @notification.Users1.Username
+                    </a>
+                </p>
+                <p><strong>Data:</strong> @notification.NotificationDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                <p>
+                    <strong>Stato:</strong>
+                    @(notification.ReadStatus.HasValue && notification.ReadStatus.Value ? "Letta" : "Non Letta")
+                </p>
+            </div>
+        }
+    }
+</div>
+

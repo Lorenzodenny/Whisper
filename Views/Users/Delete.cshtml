@@ -15,7 +15,12 @@
 
         <div class="form-group mb-3">
             <label class="mb-2" for="ConfirmPassword">Conferma Password per eliminare</label>
-            <input type="password" class="form-control" name="ConfirmPassword" id="ConfirmPassword" required />
+            <div class="input-group">
+                <input type="password" class="form-control" name="ConfirmPassword" id="ConfirmPassword" required />
+                <span class="input-group-text">
+                    <i class="bi bi-eye" id="toggleDeletePassword"></i>
+                </span>
+            </div>
         </div>
 
         <div class="form-actions">
@@ -24,3 +29,21 @@
         </div>
     }
 </div>
+
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gestione del toggle per la password nella vista di eliminazione
+            const toggleDeletePassword = document.getElementById('toggleDeletePassword');
+            const deletePasswordInput = document.getElementById('ConfirmPassword');
+            toggleDeletePassword.addEventListener('click', function (e) {
+                // Mostra/Nascondi password
+                const type = deletePasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                deletePasswordInput.setAttribute('type', type);
+                // Toggle dell'icona occhio/occhio barrato
+                this.classList.toggle('bi-eye');
+                this.classList.toggle('bi-eye-slash');
+            });
+        });
+    </script>
+}

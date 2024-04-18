@@ -165,20 +165,25 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AphorismsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\AvatarsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\FriendshipsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SponsorsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Filters\CheckBanStatusFilter.cs" />
+    <Compile Include="Filters\NotificationsCountFilter.cs" />
+    <Compile Include="Filters\UsernameInViewBagAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Aphorisms.cs" />
+    <Compile Include="Models\Avatars.cs" />
     <Compile Include="Models\Comments.cs" />
     <Compile Include="Models\Conversations.cs" />
     <Compile Include="Models\DBContext.cs" />
@@ -214,12 +219,15 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Img\Avatars2Background.jpg" />
     <Content Include="Content\Img\Background.jpg" />
+    <Content Include="Content\Img\BackgroundNotifiche2.jpg" />
     <Content Include="Content\Img\BackgroundProfilo.jpg" />
     <Content Include="Content\Img\BackgroundReports.jpg" />
     <Content Include="Content\Img\BakcgroundUtenti.jpg" />
     <Content Include="Content\Img\CommentBackground.jpg" />
     <Content Include="Content\Img\fata.jpg" />
+    <Content Include="Content\Img\NotificationBackground.jpg" />
     <Content Include="Content\Img\sfondo.jpg" />
     <Content Include="Content\Img\SponsorBakcground.jpg" />
     <Content Include="Content\Img\WhisperLogo.jpg" />
@@ -310,6 +318,12 @@
     <Content Include="Views\Friendships\Details.cshtml" />
     <Content Include="Views\Friendships\Edit.cshtml" />
     <Content Include="Views\Friendships\Index.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Notifications\Friendships.cshtml" />
+    <Content Include="Views\Notifications\Messages.cshtml" />
+    <Content Include="Views\Avatars\Create.cshtml" />
+    <Content Include="Views\Avatars\Delete.cshtml" />
+    <Content Include="Views\Avatars\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

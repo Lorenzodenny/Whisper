@@ -164,11 +164,10 @@ namespace Whisper.Controllers
         }
 
         // POST: Users/Edit/5
-        // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
-        // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,Username,Password,Email,Nome,Cognome,Role,Stato,CodiceFiscale")] Users users, string OldPassword, string confermaPassword)
+        public ActionResult Edit([Bind(Include = "UserId,Username,Email,Nome,Cognome,Role,Stato,CodiceFiscale,Password")] Users users, string OldPassword, string confermaPassword)
         {
             var userInDb = db.Users.Find(users.UserId);
 
@@ -177,29 +176,51 @@ namespace Whisper.Controllers
                 return HttpNotFound();
             }
 
-            // Aggiungi qui il controllo della corrispondenza delle password
-            if (users.Password != confermaPassword)
+            // Verifica vecchia password 
+            if (!String.Equals(userInDb.Password, OldPassword)) 
             {
+                TempData["error"] = "La vecchia password non è corretta.";
+                return View(users);
+            }
+
+            // Controllo se una delle due nuove password è stata inserita ma non entrambe
+            if (string.IsNullOrWhiteSpace(users.Password) != string.IsNullOrWhiteSpace(confermaPassword))
+            {
+                TempData["error"] = "Entrambe i campi della nuova password devono essere compilati.";
+                return View(users);
+            }
+
+            // Se le nuove password non sono inserite
+            if (string.IsNullOrWhiteSpace(users.Password) && string.IsNullOrWhiteSpace(confermaPassword))
+            {
+                users.Password = userInDb.Password; 
+            }
+            else if (users.Password != confermaPassword)
+            {
+                // Se sono state inserite, ma non combaciano
                 TempData["error"] = "Le password non combaciano";
                 return View(users);
             }
-
-            if (userInDb.Password != OldPassword)
+            else
             {
-                TempData["error"] = "la Password non è corretta";
-                return View(users);
+                userInDb.Password = users.Password;
             }
 
-            if (ModelState.IsValid)
-            {
-                db.Entry(userInDb).CurrentValues.SetValues(users);
-                db.SaveChanges();
-                TempData["success"] = "Modifiche avvenute con successo";
-                return RedirectToAction("Index");
-            }
+            // Aggiorna le altre proprietà
+            userInDb.Username = users.Username;
+            userInDb.Email = users.Email;
+            userInDb.Nome = users.Nome;
+            userInDb.Cognome = users.Cognome;
+            userInDb.Role = users.Role;
+            userInDb.Stato = users.Stato;
+            userInDb.CodiceFiscale = users.CodiceFiscale;
 
-            return View(users);
+            db.Entry(userInDb).State = EntityState.Modified;
+            db.SaveChanges();
+            TempData["success"] = "Modifiche avvenute con successo";
+            return RedirectToAction("Index");
         }
+
 
 
         // GET: Users/Delete/5
@@ -286,6 +307,15 @@ namespace Whisper.Controllers
             return RedirectToAction("Index", "Reports");
         }
 
+        //public ActionResult UtenteLoggato()
+        //{
+        //    var userId = int.Parse(User.Identity.Name);
+        //    var user = db.Users.Find(userId); 
+
+        //    ViewBag.Username = user != null ? user.Username : "Utente non trovato";
+
+        //    return View();
+        //}
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -24,6 +24,7 @@ namespace Whisper.Models
         public virtual DbSet<Reports> Reports { get; set; }
         public virtual DbSet<Sponsors> Sponsors { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Avatars> Avatars { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -115,6 +116,11 @@ namespace Whisper.Models
                 .HasMany(e => e.Sponsors)
                 .WithRequired(e => e.Users)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
+                .HasOptional(u => u.Avatars) 
+                .WithMany()
+                .HasForeignKey(u => u.AvatarId);
         }
     }
 }

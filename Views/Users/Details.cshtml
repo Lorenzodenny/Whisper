@@ -58,7 +58,7 @@
                         <dd class="col-sm-8">@Model.Users.Username</dd>
                         <dt class="col-sm-4">Email</dt>
                         <dd class="col-sm-8">@Model.Users.Email</dd>
-                        @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+                        @if (Model.Users.UserId.ToString() == Model.LoggedInUserId || User.IsInRole("Admin"))
                         {
                             <dt class="col-sm-4">Nome</dt>
                             <dd class="col-sm-8">@Model.Users.Nome</dd>
@@ -181,7 +181,7 @@
                         <div class="post-content mt-2">
                             <p>@post.Contents</p>
                             <a href="@Url.Action("Index", "Posts")#post-@post.PostId" class="btn btn-sm btn-login text-white">
-                                Portami al commento specifico
+                                📌 Portami al commento specifico
                             </a>
                         </div>
                     </div>

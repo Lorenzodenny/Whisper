@@ -106,7 +106,7 @@
     <div class="form-group mb-3 precision-2">
         <label class="mt-2">Conferma la vecchia pass per modificare</label>
         <div class="input-group">
-            @Html.Password("OldPassword", null, new { @class = "form-control", id = "oldPasswordInput" })
+            @Html.Password("OldPassword", null, new { @class = "form-control", id = "oldPasswordInput", required = "required" })
             <span class="input-group-text">
                 <i class="bi bi-eye" id="toggleOldPassword"></i>
             </span>

@@ -1,0 +1,46 @@
+﻿@model Whisper.Models.Avatars
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="login-container">
+    <div class="login-box">
+        <h2>Aggiungi Avatar</h2>
+        @using (Html.BeginForm("Create", "Avatars", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group custom-file-upload">
+                <!-- anteprima dell'immagine -->
+                <img id="imagePreview" src="#" alt="Anteprima immagine" style="max-width: 100%; height: auto; display: none;" />
+
+                <label for="upload" class="file-upload-container btn btn-sm btn-warning my-2" style="background-color: #ffc107; color: black;">
+                    <i class="bi bi-upload"></i> Carica un'immagine
+                    <input type="file" name="upload" id="upload" class="form-control-file" hidden />
+                </label>
+                @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-sm btn-login text-white" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-sm btn-back text-white" })
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('upload').onchange = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>
