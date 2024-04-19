@@ -185,7 +185,19 @@ namespace Whisper.Controllers
         public ActionResult Edit([Bind(Include = "UserId,Username,Email,Nome,Cognome,Role,Stato,CodiceFiscale,Password,AvatarId")] Users users, string OldPassword, string confermaPassword)
         {
 
+            // Ricarica l'avatar dall'ID se è presente
+            if (users.AvatarId.HasValue)
+            {
+                users.Avatars = db.Avatars.Find(users.AvatarId.Value);
+            }
+            else
+            {
+                // Se l'AvatarId non è presente, ricarica l'utente con l'oggetto Avatars incluso
+                users = db.Users.Include(u => u.Avatars).FirstOrDefault(u => u.UserId == users.UserId);
+            }
+
             ViewBag.AvailableAvatars = db.Avatars.ToList();
+            
             // Controlla prima se il modello è valido
             if (ModelState.IsValid)
             {
@@ -201,7 +213,6 @@ namespace Whisper.Controllers
                 if (existingUserByEmail != null)
                 {
                     TempData["error"] = "L'email esiste già";
-                    return View(users);
                 }
 
                 // Controllo che il codice fiscale non sia già usato da un altro utente
@@ -210,7 +221,6 @@ namespace Whisper.Controllers
                 if (existingUserByCodiceFiscale != null)
                 {
                     TempData["error"] = "Il Codice Fiscale esiste già";
-                    return View(users);
                 }
 
                 // Controllo che lo username non sia già usato da un altro utente
@@ -219,7 +229,6 @@ namespace Whisper.Controllers
                 if (existingUserByUsername != null)
                 {
                     TempData["error"] = "Lo username esiste già";
-                    return View(users);
                 }
 
                 // Controlla se l'username è uguale al nome
@@ -227,13 +236,24 @@ namespace Whisper.Controllers
                 if (usernameEqualToName)
                 {
                     TempData["error"] = "Lo username non può essere uguale al nome";
-                    return View(users);
                 }
 
                 // Controllo della password
                 if (!String.Equals(userInDb.Password, OldPassword))
                 {
                     TempData["error"] = "La vecchia password non è corretta.";
+                    // Ricarica l'avatar dall'ID se è presente
+                    if (users.AvatarId.HasValue)
+                    {
+                        users.Avatars = db.Avatars.Find(users.AvatarId.Value);
+                    }
+                    else
+                    {
+                        // Se l'AvatarId non è presente, ricarica l'utente con l'oggetto Avatars incluso
+                        users = db.Users.Include(u => u.Avatars).FirstOrDefault(u => u.UserId == users.UserId);
+                    }
+
+                    ViewBag.AvailableAvatars = db.Avatars.ToList();
                     return View(users);
                 }
                 else if (!string.IsNullOrWhiteSpace(users.Password))
@@ -246,6 +266,18 @@ namespace Whisper.Controllers
                     else
                     {
                         TempData["error"] = "Le password non combaciano.";
+                        // Ricarica l'avatar dall'ID se è presente
+                        if (users.AvatarId.HasValue)
+                        {
+                            users.Avatars = db.Avatars.Find(users.AvatarId.Value);
+                        }
+                        else
+                        {
+                            // Se l'AvatarId non è presente, ricarica l'utente con l'oggetto Avatars incluso
+                            users = db.Users.Include(u => u.Avatars).FirstOrDefault(u => u.UserId == users.UserId);
+                        }
+
+                        ViewBag.AvailableAvatars = db.Avatars.ToList();
                         return View(users);
                     }
                 }
@@ -271,15 +303,21 @@ namespace Whisper.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
-            // Se ModelState non è valido o ci sono stati errori nel controllo della password, ripopola i dati necessari per la vista
-            if (users.AvatarId.HasValue)
+            if (!ModelState.IsValid)
             {
-                var avatar = db.Avatars.Find(users.AvatarId);
-                if (avatar != null)
+                // Ricarica l'avatar dall'ID se è presente
+                if (users.AvatarId.HasValue)
                 {
-                    users.Avatars = avatar; // Assicurati che l'oggetto Avatars sia associato a Users
+                    users.Avatars = db.Avatars.Find(users.AvatarId.Value);
                 }
+                else
+                {
+                    // Se l'AvatarId non è presente, ricarica l'utente con l'oggetto Avatars incluso
+                    users = db.Users.Include(u => u.Avatars).FirstOrDefault(u => u.UserId == users.UserId);
+                }
+
+                ViewBag.AvailableAvatars = db.Avatars.ToList();
+                return View(users);
             }
             return View(users);
         }
