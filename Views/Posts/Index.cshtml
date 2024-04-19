@@ -25,27 +25,41 @@
 
 
     <div class="row">
-        <div class="col-md-9"  style="max-height: 90vh; overflow-y: auto;">
+        <div class="col-md-9" style="max-height: 90vh; overflow-y: auto;">
             @foreach (var item in Model)
             {
-                <div id="post-@item.Post.PostId" class="post @*mx-auto*@ my-3 p-3 bg-white rounded shadow">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="d-flex flex-column">
-                            <a href="@Url.Action("Details", "Users", new { id = item.Post.UserId })" class="username icon-pro text-decoration-none">
-                                @Html.DisplayFor(modelItem => item.Post.Users.Username)
-                            </a>
-                            <span class="posted-at text-muted" style="font-size: 0.8em;">
-                                @(item.Post.PostedAt.HasValue ? item.Post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)
-                            </span>
+                <div id="post-@item.Post.PostId" class="post my-3 p-3 bg-white rounded shadow-sm">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <!-- Avatar -->
+                            @if (item?.Post?.Users?.Avatars?.Foto != null)
+                            {
+                                <img src="@Url.Content(item.Post.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;" />
+                            }
+                            else
+                            {
+                                <i class="fa fa-user-circle fa-5x icon me-2" style="width: 50px; height: 50px;"></i>
+                            }
+
+                            <!-- Username and Posted Time -->
+                            <div class="d-flex flex-column">
+                                <a href="@Url.Action("Details", "Users", new { id = item.Post.UserId })" class="username text-decoration-none color-wine">
+                                    @Html.DisplayFor(modelItem => item.Post.Users.Username)
+                                </a>
+                                <span class="text-muted" style="font-size: 0.8em;">
+                                    @(item.Post.PostedAt.HasValue ? item.Post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)
+                                </span>
+                            </div>
                         </div>
+
+                        <!-- Post Actions for the Author -->
                         @if (item.Post.UserId.ToString() == loggedInUserId)
                         {
-                            <div class="post-actions">
+                            <div class="ms-auto">
                                 <a href="@Url.Action("Edit", "Posts", new { id = item.Post.PostId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
                                 <a href="@Url.Action("Delete", "Posts", new { id = item.Post.PostId })"><i class="fa fa-trash icon-pro"></i></a>
                             </div>
                         }
-
                     </div>
                     <div class="post-content mt-2 fw-bold border-bottom border-bottom-1 py-3">
                         @Html.DisplayFor(modelItem => item.Post.Contents)
@@ -138,36 +152,35 @@
                                     {
                                         <div id="comment-@comment.CommentId" class="comment border-bottom border-bottom-1 py-3">
                                             <div class="d-flex justify-content-between">
-                                                <a href="@Url.Action("Details", "Users", new { id = comment.UserId })" class="text-decoration-none">
-                                                    <p class="fw-bold icon-pro">@comment.Users.Username</p>
-                                                </a>
-                                                @if (comment.UserId.ToString() == loggedInUserId)
+                                                <div class="d-flex align-items-center">
+                                                    <!-- Avatar -->
+                                                    @if (comment.Users.Avatars?.Foto != null)
+                                                    {
+                                                        <img src="@Url.Content(comment.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-user-circle fa-2x icon me-2"></i>
+                                                    }
+                                                    <div>
+                                                        <a href="@Url.Action("Details", "Users", new { id = comment.UserId })" class="text-decoration-none fw-bold color-wine">
+                                                            @comment.Users.Username
+                                                        </a>
+                                                        <br>
+                                                        <span class="text-muted" style="font-size: 0.8em;">@(comment.PostedAt.HasValue ? comment.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+                                                    </div>
+                                                </div>
+                                                @if (comment.UserId.ToString() == loggedInUserId || User.IsInRole("Admin"))
                                                 {
-                                                    <span class="post-actions">
+                                                    <div class="post-actions">
                                                         <a href="@Url.Action("Edit", "Comments", new { id = comment.CommentId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
                                                         <a href="@Url.Action("Delete", "Comments", new { id = comment.CommentId })"><i class="fa fa-trash icon-pro"></i></a>
-                                                    </span>
-                                                }
-                                                @if (comment.UserId.ToString() != loggedInUserId)
-                                                {
-                                                    if (User.IsInRole("User"))
-                                                    {
-                                                        using (Html.BeginForm("Create", "Reports", FormMethod.Post))
-                                                        {
-                                                            @Html.AntiForgeryToken()
-                                                            @Html.HiddenFor(_ => loggedInUserId)
-                                                            @Html.Hidden("CommentId", comment.CommentId)
-                                                            <button type="submit" class="btn btn-sm btn-login text-white ms-3">🚫 Riporta Contenuto</button>
-                                                        }
-                                                    }
+                                                    </div>
                                                 }
                                             </div>
-
-                                            <span class="posted-at text-muted " style="font-size: 0.8em;">@(comment.PostedAt.HasValue ? comment.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
                                             <p class="mt-3">@comment.Contents</p>
                                         </div>
                                     }
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-sm btn-back text-white" data-bs-dismiss="modal">Chiudi</button>
@@ -175,6 +188,7 @@
                             </div>
                         </div>
                     </div>
+
                     @*MODALE PER I LIKE*@
                     <div class="modal fade" id="likesModal-@item.Post.PostId" tabindex="-1" aria-labelledby="likesModalLabel-@item.Post.PostId" aria-hidden="true">
                         <div class="modal-dialog">
@@ -187,7 +201,15 @@
                                     <div class="modal-body">
                                         @foreach (var like in item.Post.Likes)
                                         {
-                                            <div class="py-3">
+                                            <div class="py-3 d-flex align-items-center">
+                                                @if (like.Users.Avatars?.Foto != null)
+                                                {
+                                                    <img src="@Url.Content(like.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;" />
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-user-circle fa-2x icon me-2"></i>
+                                                }
                                                 <a href="@Url.Action("Details", "Users", new { id = like.UserId })" class="text-decoration-none">
                                                     <p class="icon-pro fw-bold">@like.Users.Username 💜</p>
                                                 </a>

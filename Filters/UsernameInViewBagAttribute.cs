@@ -20,6 +20,11 @@ namespace Whisper.Filters
                     if (user != null)
                     {
                         filterContext.Controller.ViewBag.Username = user.Username;
+
+                        // Gestione sicura degli avatars
+                        var profileImage = user.Avatars?.Foto; 
+                        filterContext.Controller.ViewBag.ProfileImage = profileImage;
+                        filterContext.Controller.ViewBag.ShowDefaultIcon = profileImage == null;
                     }
                 }
             }

@@ -8,165 +8,230 @@
 
 
 <div class="login-box">
-    <h2>Edit</h2>
+    <h2>Modifica Profilo</h2>
+
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Users</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.UserId)
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.AvatarId)
 
-    <div class="form-group mb-3">
-        @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10 mt-2">
-            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        <div class="icon-container d-flex justify-content-center mt-4">
+            @if (Model.Avatars != null && !string.IsNullOrWhiteSpace(Model.Avatars.Foto))
+            {
+                <img id="avatarPreview" src="@Url.Content(Model.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 100px; height: 100px;" />
+            }
+            else
+            {
+                <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon"></i>
+            }
+            @Model.AvatarId
         </div>
-    </div>
-
-    <div class="form-group mb-3 precision">
-        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10 mt-2 ">
-            <div class="input-group">
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput" })
-                <span class="input-group-text">
-                    <i class="bi bi-eye" id="togglePassword"></i>
-                </span>
-            </div>
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group mb-3 precision">
-        @Html.Label("Conferma Password", new { @class = "control-label col-md-5" })
-        <div class="col-md-10 mt-2 ">
-            <div class="input-group">
-                <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" />
-                <span class="input-group-text">
-                    <i class="bi bi-eye" id="toggleConfirmPassword"></i>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10 mt-2">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10 mt-2">
-            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        @Html.LabelFor(model => model.Cognome, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10 mt-2">
-            @Html.EditorFor(model => model.Cognome, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Cognome, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    @if (User.IsInRole("Admin"))
-    {
-        <div class="form-group mb-3">
-            @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 mt-2">
-                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group mb-3">
-            @Html.LabelFor(model => model.Stato, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 mt-2">
-                @Html.EditorFor(model => model.Stato, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Stato, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    }
-
-    <div class="form-group mb-3">
-        @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-10 mt-2">
-            @Html.EditorFor(model => model.CodiceFiscale, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.CodiceFiscale, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group mb-3 precision-2">
-        <label class="mt-2">Conferma la vecchia pass per modificare</label>
-        <div class="input-group">
-            @Html.Password("OldPassword", null, new { @class = "form-control", id = "oldPasswordInput", required = "required" })
-            <span class="input-group-text">
-                <i class="bi bi-eye" id="toggleOldPassword"></i>
+            <span class="btn btn-sm btn-register rounded rounded-5 pennello2" data-bs-toggle="modal" data-bs-target="#avatarModal">
+                <i class="bi bi-brush color-wine"></i> Cambia
             </span>
-        </div>
-        @Html.ValidationMessage("OldPassword")
-    </div>
+             @*Modal per la selezione dell'avatar*@ 
+            <div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="avatarModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="avatarModalLabel">Scegli il tuo Avatar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @foreach (var avatar in ViewBag.AvailableAvatars)
+                            {
+                                 <img src="@Url.Content(avatar.Foto)" alt="Avatar" class="selectable-avatar" data-id="@avatar.AvatarId" onclick="selectAvatar(this)" style="cursor: pointer; width: 100px; height: 100px;" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
-    <div class="form-group mb-3">
-        <div class="col-md-offset-2 col-md-10 d-flex mt-2">
-            <input type="submit" value="Save" class="btn btn-default btn-login ms-2 text-white" />
-            @Html.ActionLink("Annulla", "Details", "Users", new { id = User.Identity.Name }, new { @class = "btn btn-back ms-3" })
+            <div class="form-group mb-3">
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 mt-2">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-3 precision">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 mt-2 ">
+                    <div class="input-group">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "passwordInput" })
+                        <span class="input-group-text">
+                            <i class="bi bi-eye" id="togglePassword"></i>
+                        </span>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-3 precision">
+                @Html.Label("Conferma Password", new { @class = "control-label col-md-5" })
+                <div class="col-md-10 mt-2 ">
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" />
+                        <span class="input-group-text">
+                            <i class="bi bi-eye" id="toggleConfirmPassword"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 mt-2">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 mt-2">
+                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(model => model.Cognome, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 mt-2">
+                    @Html.EditorFor(model => model.Cognome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Cognome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.Stato, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 mt-2">
+                        @Html.EditorFor(model => model.Stato, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Stato, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-10 mt-2">
+                    @Html.EditorFor(model => model.CodiceFiscale, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CodiceFiscale, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-3 precision-2">
+                <label class="mt-2">Conferma la vecchia pass per modificare</label>
+                <div class="input-group">
+                    @Html.Password("OldPassword", null, new { @class = "form-control", id = "oldPasswordInput", required = "required" })
+                    <span class="input-group-text">
+                        <i class="bi bi-eye" id="toggleOldPassword"></i>
+                    </span>
+                </div>
+                @Html.ValidationMessage("OldPassword")
+            </div>
+
+
+            <div class="form-group mb-3">
+                <div class="col-md-offset-2 col-md-10 d-flex mt-2">
+                    <input type="submit" value="Save" class="btn btn-default btn-login ms-2 text-white" />
+                    @Html.ActionLink("Annulla", "Details", "Users", new { id = User.Identity.Name }, new { @class = "btn btn-back ms-3" })
+                </div>
+            </div>
         </div>
-    </div>
-</div>
     }
 
 
 </div>
 
-@section scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Gestione del toggle per la password
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('passwordInput');
-            togglePassword.addEventListener('click', function (e) {
-                // Mostra/Nascondi password
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                // Toggle dell'icona occhio/occhio barrato
-                this.classList.toggle('bi-eye');
-                this.classList.toggle('bi-eye-slash');
-            });
 
-            // Gestione del toggle per la conferma della password
-            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-            const confirmPasswordInput = document.getElementById('confirmPasswordInput');
-            toggleConfirmPassword.addEventListener('click', function (e) {
-                // Mostra/Nascondi conferma password
-                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                confirmPasswordInput.setAttribute('type', type);
-                // Toggle dell'icona occhio/occhio barrato
-                this.classList.toggle('bi-eye');
-                this.classList.toggle('bi-eye-slash');
-            });
 
-            // Gestione del toggle per la vecchia password
-            const toggleOldPassword = document.getElementById('toggleOldPassword');
-            const oldPasswordInput = document.getElementById('oldPasswordInput');
-            toggleOldPassword.addEventListener('click', function (e) {
-                // Mostra/Nascondi vecchia password
-                const type = oldPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                oldPasswordInput.setAttribute('type', type);
-                // Toggle dell'icona occhio/occhio barrato
-                this.classList.toggle('bi-eye');
-                this.classList.toggle('bi-eye-slash');
-            });
+    @section scripts {
+        <script>
+            // Funzione per aggiornare l'anteprima dell'avatar e impostare il valore corretto nel campo nascosto del form.
+            function updateAvatarPreview(src, avatarId) {
+                var avatarPreview = document.getElementById('avatarPreview');
+                var defaultAvatarIcon = document.getElementById('defaultAvatarIcon');
+                if (avatarPreview) {
+                    avatarPreview.src = src;
+                    avatarPreview.style.display = 'block';
+                    if (defaultAvatarIcon) {
+                        defaultAvatarIcon.style.display = 'none';
+                    }
+                }
+                // Imposta l'ID dell'avatar nel campo nascosto del form.
+                var avatarIdField = document.getElementById('AvatarId');
+                if (avatarIdField) {
+                    avatarIdField.value = avatarId;
+                }
+            }
 
-        });
-    </script>
-}
+            // Funzione richiamata quando un avatar viene selezionato dalla modale.
+            function selectAvatar(element) {
+                var avatarId = element.getAttribute('data-id');
+                var avatarSrc = element.getAttribute('src');
+
+                // Aggiorna l'anteprima e chiude la modale.
+                updateAvatarPreview(avatarSrc, avatarId);
+                $('#avatarModal').modal('hide');
+            }
+
+            // Funzione per alternare la visibilità della password.
+            function togglePasswordVisibility(buttonId, inputId) {
+                var toggleButton = document.getElementById(buttonId);
+                var passwordInput = document.getElementById(inputId);
+                if (toggleButton && passwordInput) {
+                    toggleButton.onclick = function () {
+                        var type = passwordInput.type === 'password' ? 'text' : 'password';
+                        passwordInput.type = type;
+                        this.classList.toggle('bi-eye');
+                        this.classList.toggle('bi-eye-slash');
+                    };
+                }
+            }
+
+            // Aggiungi event listener al caricamento del documento.
+            document.addEventListener('DOMContentLoaded', function () {
+                // Ripristina l'anteprima dell'avatar dal valore precedentemente salvato nel campo nascosto del form.
+                var avatarIdField = document.getElementById('AvatarId');
+                if (avatarIdField && avatarIdField.value) {
+                    var avatarImg = document.querySelector('img.selectable-avatar[data-id="' + avatarIdField.value + '"]');
+                    if (avatarImg) {
+                        updateAvatarPreview(avatarImg.src, avatarIdField.value);
+                    }
+                }
+
+                // Configurazione dei toggle delle visibilità delle password.
+                togglePasswordVisibility('togglePassword', 'passwordInput');
+                togglePasswordVisibility('toggleConfirmPassword', 'confirmPasswordInput');
+                togglePasswordVisibility('toggleOldPassword', 'oldPasswordInput');
+            });
+        </script>
+    }
+
+
+
+
+
+
+
+
 

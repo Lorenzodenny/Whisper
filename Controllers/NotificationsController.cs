@@ -25,6 +25,32 @@ namespace Whisper.Controllers
             return View(userNotifications);
         }
 
+        [HttpPost]
+        public ActionResult MarkAllPostsLikesCommentsAsRead()
+        {
+            var userId = int.Parse(User.Identity.Name);
+            var notificationsToMarkRead = db.Notifications
+                                             .Where(n => n.UserID == userId
+                                                         && (n.PostID.HasValue || n.LikeID.HasValue || n.CommentID.HasValue)
+                                                         && (!n.ReadStatus.HasValue || !n.ReadStatus.Value))
+                                             .ToList();
+
+            if (!notificationsToMarkRead.Any())
+            {
+                return Json(new { success = false, message = "Nessuna notifica da aggiornare." });
+            }
+
+            foreach (var notification in notificationsToMarkRead)
+            {
+                notification.ReadStatus = true;
+            }
+
+            db.SaveChanges();
+
+            return Json(new { success = true, message = "Tutte le notifiche di post, like e commenti sono state segnate come lette." });
+        }
+
+
 
         // GET : Amicizie
 
@@ -40,6 +66,31 @@ namespace Whisper.Controllers
 
             return View(userNotifications);
         }
+
+        public ActionResult MarkAllFriendshipAsRead()
+        {
+            var userId = int.Parse(User.Identity.Name);
+            var friendshipNotifications = db.Notifications
+                         .Where(n => n.UserID == userId
+                                     && n.FriendshipID.HasValue // Solo le notifiche di amicizia
+                                     && (!n.ReadStatus.HasValue || !n.ReadStatus.Value)) // Non lette
+                         .ToList();
+
+            if (!friendshipNotifications.Any())
+            {
+                return Json(new { success = false, message = "Nessuna notifica di amicizia da aggiornare." });
+            }
+
+            foreach (var notification in friendshipNotifications)
+            {
+                notification.ReadStatus = true;
+            }
+
+            db.SaveChanges();
+
+            return Json(new { success = true, message = "Tutte le notifiche di amicizia sono state segnate come lette." });
+        }
+
 
         // GET : Messaggi
 

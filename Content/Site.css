@@ -460,3 +460,32 @@ body, html {
     background-repeat: no-repeat;
 }
 
+.pennello {
+    display: inline-block;
+    min-width: 20px;
+    padding: 6px 6px;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 10px;
+    position: relative;
+    top: -25px;   
+    right: -30px;  
+}
+
+.pennello2 {
+    display: inline-block;
+    min-width: 20px;
+    padding: 6px 6px;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 10px;
+    position: relative;
+    top: -25px; 
+    right: -190px;
+} 

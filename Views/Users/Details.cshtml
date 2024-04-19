@@ -53,22 +53,35 @@
                 </div>
 
                 <div class="card-body">
-                    <dl class="row">
-                        <dt class="col-sm-4">Username</dt>
-                        <dd class="col-sm-8">@Model.Users.Username</dd>
-                        <dt class="col-sm-4">Email</dt>
-                        <dd class="col-sm-8">@Model.Users.Email</dd>
-                        @if (Model.Users.UserId.ToString() == Model.LoggedInUserId || User.IsInRole("Admin"))
-                        {
-                            <dt class="col-sm-4">Nome</dt>
-                            <dd class="col-sm-8">@Model.Users.Nome</dd>
-                            <dt class="col-sm-4">Cognome</dt>
-                            <dd class="col-sm-8">@Model.Users.Cognome</dd>
-                        }
-                        <dt class="col-sm-4">Codice Fiscale</dt>
-                        <dd class="col-sm-8">@Model.Users.CodiceFiscale</dd>
-                    </dl>
-                </div>
+                    @if (Model.Users.Avatars?.Foto != null)
+                    {
+                        <span class="d-flex justify-content-center">
+                            <img src="@Url.Content(Model.Users.Avatars.Foto)" alt="Avatar" class="user-avatar mb-4" style="width:20%; height:20%;"/>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="icon-container d-flex justify-content-center mb-4">
+                            <i class="fa fa-user-circle fa-5x icon" style="width:20%; height:20%;"></i>
+                        </span>
+                    }
+
+                <dl class="row">
+                    <dt class="col-sm-4">Username</dt>
+                    <dd class="col-sm-8">@Model.Users.Username</dd>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">@Model.Users.Email</dd>
+                    @if (Model.Users.UserId.ToString() == Model.LoggedInUserId || User.IsInRole("Admin"))
+                    {
+                        <dt class="col-sm-4">Nome</dt>
+                        <dd class="col-sm-8">@Model.Users.Nome</dd>
+                        <dt class="col-sm-4">Cognome</dt>
+                        <dd class="col-sm-8">@Model.Users.Cognome</dd>
+                    }
+                    <dt class="col-sm-4">Codice Fiscale</dt>
+                    <dd class="col-sm-8">@Model.Users.CodiceFiscale</dd>
+                </dl>
+            </div>
 
 
 
@@ -138,11 +151,21 @@
                                         @foreach (var friendship in Model.Friendships.Where(f => f.UserMittenteId.ToString() == Model.LoggedInUserId))
                                         {
                                             var friendUsername = ViewBag.FriendUsernames.ContainsKey(friendship.UserRiceventeId) ? ViewBag.FriendUsernames[friendship.UserRiceventeId] : "Utente non trovato";
-                                            <a href="@Url.Action("Details", "Users", new { id = friendship.UserRiceventeId })" class="list-group-item list-group-item-action fw-bold color-wine">
-                                                @friendUsername 💜
+
+                                            <a href="@Url.Action("Details", "Users", new { id = friendship.UserRiceventeId })" class="list-group-item list-group-item-action fw-bold color-wine d-flex align-items-center">
+                                                @if (friendship.Users1.Avatars?.Foto != null)
+                                                {
+                                                    <img src="@Url.Content(friendship.Users1.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;" />
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-user-circle fa-2x icon me-2" style="font-size: 40px; line-height: 40px;"></i>
+                                                }
+                                                <span>@friendUsername 💜</span>
                                             </a>
                                         }
                                     </div>
+
                                 }
                                 else
                                 {
@@ -167,7 +190,22 @@
                     <div class="post my-1 p-3 bg-white rounded shadow">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="d-flex flex-column">
-                                <span class="username color-wine">@post.Users.Username</span>
+                                <span class="username color-wine d-flex">
+                                    @if (Model.Users.Avatars?.Foto != null)
+                                    {
+                                        <span class="text-center mb-4">
+                                            <img src="@Url.Content(Model.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width:30px; height:30px;" />
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="icon-container text-center mb-2" style="width:30px; height:30px;">
+                                            <i class="fa fa-user-circle icon" style="font-size:30px;"></i>
+                                        </span>
+                                    }
+                                    <span class="ms-2">@post.Users.Username</span>
+                                </span>
+
                                 <span class="posted-at text-muted" style="font-size: 0.8em;">@(post.PostedAt.HasValue ? post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
                             </div>
                             @if (post.UserId.ToString() == Model.LoggedInUserId)

@@ -8,14 +8,58 @@
     <div class="login-box ">
         <h2>Benvenuto su Whisper!</h2>
         <h3>Registrati</h3>
-        <div class="icon-container text-center mb-4">
-            <i class="fa fa-user-circle fa-5x icon"></i>
-        </div>
+        
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.AvatarId)
+
 
     <div class="form-horizontal">
+
+        <div class="icon-container text-center mt-4">
+            <div>
+                <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon"></i>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <img id="avatarPreview" src="" alt="Avatar" style="display: none; width: 100px; height: 100px;" />
+            </div>
+
+            <span type="button" class="btn btn-sm btn-register rounded rounded-5 pennello" data-bs-toggle="modal" data-bs-target="#avatarModal">
+                <i class="bi bi-brush color-wine "></i>
+            </span>
+        </div>
+
+
+
+
+        <!-- Modal per la selezione dell'avatar -->
+        <div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="avatarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="avatarModalLabel">Scegli il tuo Avatar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if (ViewBag.AvailableAvatars != null)
+                        {
+                            foreach (var avatar in ViewBag.AvailableAvatars as IEnumerable<Whisper.Models.Avatars>)
+                            {
+                                <img src="@Url.Content(avatar.Foto)" alt="Avatar" class="selectable-avatar" data-id="@avatar.AvatarId" onclick="selectAvatar(this)" />
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-danger">Non ci sono Avatar disponibili al momento</p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -44,7 +88,7 @@
             @Html.Label("Conferma Password", new { @class = "control-label col-md-5" })
             <div class="col-md-10 mt-2 ">
                 <div class="input-group">
-                    <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" required = "required"/>
+                    <input type="password" class="form-control" id="confirmPasswordInput" name="confermaPassword" required="required" />
                     <span class="input-group-text">
                         <i class="bi bi-eye" id="toggleConfirmPassword"></i>
                     </span>
@@ -175,6 +219,28 @@
 </div>
 @section scripts {
     <script>
+        function selectAvatar(element) {
+            var avatarId = element.getAttribute('data-id');
+            var avatarSrc = element.getAttribute('src');
+
+            // Aggiorna il valore del campo nascosto con l'ID dell'avatar selezionato
+            document.getElementById('AvatarId').value = avatarId;
+
+            // Ottieni l'icona di default e l'elemento di anteprima dell'avatar
+            var defaultAvatarIcon = document.getElementById('defaultAvatarIcon');
+            var avatarPreview = document.getElementById('avatarPreview');
+
+            // Nascondi l'icona di default e mostra l'avatar selezionato
+            if (defaultAvatarIcon && avatarPreview) {
+                defaultAvatarIcon.style.display = 'none'; // Nasconde l'icona di FontAwesome
+                avatarPreview.src = avatarSrc;             // Imposta il percorso dell'avatar selezionato
+                avatarPreview.style.display = 'block';     // Mostra l'avatar selezionato
+            }
+
+            // Chiudi la modal dopo la selezione
+            $('#avatarModal').modal('hide');
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             // Gestione del toggle per la password
             const togglePassword = document.getElementById('togglePassword');
@@ -201,5 +267,6 @@
             });
         });
     </script>
+
 }
 

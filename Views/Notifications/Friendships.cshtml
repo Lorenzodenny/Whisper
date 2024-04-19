@@ -8,15 +8,25 @@
     }
     else
     {
+
+        <button id="markAllRead" class="btn btn-sm text-white btn-login mb-3"> Segna tutte come lette ✔</button>
         foreach (var notification in Model)
         {
             <div class="alert alert-secondary">
-                <p>
-                    <strong>Da:</strong>
+                <p class="d-flex align-items-center">
+                    @if (notification.Friendships.Users.Avatars?.Foto != null)
+                    {
+                        <img id="avatarPreview" src="@Url.Content(notification.Friendships.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 50px; height: 50px;" />
+                    }
+                    else
+                    {
+                        <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
+                    }
                     <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
-                       class="text-decoration-none fw-bold color-wine">
+                       class="text-decoration-none fw-bold color-wine ms-2">
                         @notification.Users.Username
                     </a>
+                    <span class="ms-1">Ha iniziato a seguirti</span>
                 </p>
                 <p>
                     <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
@@ -36,6 +46,18 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+        $('#markAllRead').click(function() {
+            $.post('@Url.Action("MarkAllFriendshipAsRead")', function(response) {
+                if (response.success) {
+                    location.reload(); 
+                } else {
+                    alert(response.message);
+                }
+            });
+        });
+    });
+
     function markAsRead(notificationId, redirectTo) {
         $.post('@Url.Action("MarkNotificationAsRead")', { notificationId: notificationId }, function(response) {
             if (response.success) {
