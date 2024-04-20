@@ -1,78 +1,39 @@
 ﻿@model IEnumerable<Whisper.Models.Users>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Index Users";
 }
 
-<div class="bg-white">
-    <h2>Index</h2>
+<div class="container my-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold color-wine">Elenco Utenti</h2>
+        @Html.ActionLink("Crea Nuovo", "Create", null, new { @class = "btn btn-sm btn-login text-white" })
+    </div>
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cognome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stato)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodiceFiscale)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cognome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stato)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CodiceFiscale)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
-                </td>
-            </tr>
-        }
-
-    </table>
+    @foreach (var item in Model)
+    {
+        <div class="user-container my-3 p-3 bg-white rounded shadow-sm">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="fw-bold color-wine">@Html.DisplayNameFor(model => model.Username):</div>
+                    <span>@Html.DisplayFor(modelItem => item.Username)</span>
+                    <!-- Aggiungi qui altre proprietà se necessario -->
+                </div>
+                <div class="user-actions">
+                    @Html.ActionLink("Modifica", "Edit", new { id = item.UserId }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Dettagli", "Details", new { id = item.UserId }, new { @class = "btn btn-info btn-sm" })
+                    @Html.ActionLink("Elimina", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger btn-sm" })
+                </div>
+            </div>
+            <div class="user-details mt-3">
+               
+                <p class="mb-1"><span class="fw-bold color-wine">@Html.DisplayNameFor(model => model.Email):</span> @Html.DisplayFor(modelItem => item.Email)</p>
+                <p class="mb-1"><span class="fw-bold color-wine">@Html.DisplayNameFor(model => model.Nome):</span> @Html.DisplayFor(modelItem => item.Nome)</p>
+                <p class="mb-1"><span class="fw-bold color-wine">@Html.DisplayNameFor(model => model.Cognome):</span> @Html.DisplayFor(modelItem => item.Cognome)</p>
+                <p class="mb-1"><span class="fw-bold color-wine">@Html.DisplayNameFor(model => model.Role):</span> @Html.DisplayFor(modelItem => item.Role)</p>
+                <p class="mb-1"><span class="fw-bold color-wine">@Html.DisplayNameFor(model => model.Stato):</span> @Html.DisplayFor(modelItem => item.Stato)</p>
+                <p class="mb-1"><span class="fw-bold color-wine">@Html.DisplayNameFor(model => model.CodiceFiscale):</span> @Html.DisplayFor(modelItem => item.CodiceFiscale)</p>
+            </div>
+        </div>
+    }
 </div>

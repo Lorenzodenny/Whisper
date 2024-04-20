@@ -44,6 +44,7 @@ namespace Whisper.Controllers
 
                 db.Avatars.Add(avatars);
                 db.SaveChanges();
+                TempData["success"] = "Avatar caricato con successo";
                 return RedirectToAction("Index");
             }
 
@@ -73,6 +74,7 @@ namespace Whisper.Controllers
             Avatars avatars = db.Avatars.Find(id);
             db.Avatars.Remove(avatars);
             db.SaveChanges();
+            TempData["success"] = "Avatar eliminato con successo";
             return RedirectToAction("Index");
         }
 

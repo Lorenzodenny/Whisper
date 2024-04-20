@@ -11,8 +11,8 @@
         
         <!-- Profilo utente -->
         <div class="col-md-5 profile-section">
-            <div class="card mt-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card mt-4 cont-3d">
+                <div class="card-header d-flex justify-content-between align-items-center @*cont-3d*@">
                     <div>
                         @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                         {
@@ -56,7 +56,7 @@
                     @if (Model.Users.Avatars?.Foto != null)
                     {
                         <span class="d-flex justify-content-center">
-                            <img src="@Url.Content(Model.Users.Avatars.Foto)" alt="Avatar" class="user-avatar mb-4" style="width:20%; height:20%;"/>
+                            <img src="@Url.Content(Model.Users.Avatars.Foto)" alt="Avatar" class="user-avatar mb-4 avatar-img" style="width:20%; height:20%;"/>
                         </span>
                     }
                     else
@@ -88,8 +88,11 @@
                 @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                 {
                     <div class="mb-2 ms-3">
-                        @Html.ActionLink("Modifica", "Edit", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-white" })
-                        @Html.ActionLink("Elimina", "Delete", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-white" })
+                        @Html.ActionLink("Modifica", "Edit", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login" })
+                        @if (User.IsInRole("User"))
+                        {
+                        @Html.ActionLink("Elimina", "Delete", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login" })
+                        }
                         @if (Model.Users.Role == "Admin")
                         {
                             @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back" })
@@ -136,10 +139,10 @@
 
             </div>
 
-            @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
+            @if (Model.Users.UserId.ToString() == Model.LoggedInUserId && User.IsInRole("User"))
             {
                 <!-- Sezione Amicizie -->
-                <div class="col-md-12 mt-3">
+                <div class="col-md-12 mt-3 cont-3d">
                     <div class="card mb-3">
                         <div class="card-body">
                             @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
@@ -155,7 +158,7 @@
                                             <a href="@Url.Action("Details", "Users", new { id = friendship.UserRiceventeId })" class="list-group-item list-group-item-action fw-bold color-wine d-flex align-items-center">
                                                 @if (friendship.Users1.Avatars?.Foto != null)
                                                 {
-                                                    <img src="@Url.Content(friendship.Users1.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;" />
+                                                    <img src="@Url.Content(friendship.Users1.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2 avatar-img" style="width: 40px; height: 40px; object-fit: cover;" />
                                                 }
                                                 else
                                                 {
@@ -187,14 +190,14 @@
             <div class="posts-container ">
                 @foreach (var post in Model.Posts)
                 {
-                    <div class="post my-1 p-3 bg-white rounded shadow">
+                    <div class="post my-1 p-3 bg-white rounded cont-3d mb-2">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="d-flex flex-column">
                                 <span class="username color-wine d-flex">
                                     @if (Model.Users.Avatars?.Foto != null)
                                     {
                                         <span class="text-center mb-4">
-                                            <img src="@Url.Content(Model.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width:30px; height:30px;" />
+                                            <img src="@Url.Content(Model.Users.Avatars.Foto)" alt="Avatar" class="user-avatar avatar-img" style="width:30px; height:30px;" />
                                         </span>
                                     }
                                     else
@@ -218,7 +221,7 @@
                         </div>
                         <div class="post-content mt-2">
                             <p>@post.Contents</p>
-                            <a href="@Url.Action("Index", "Posts")#post-@post.PostId" class="btn btn-sm btn-login text-white">
+                            <a href="@Url.Action("Index", "Posts")#post-@post.PostId" class="btn btn-sm btn-login">
                                 📌 Portami al commento specifico
                             </a>
                         </div>

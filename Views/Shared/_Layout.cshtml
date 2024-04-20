@@ -22,13 +22,24 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    @Html.Partial("_aphorism")
+                @if (User.IsInRole("User"))
+                {
+                    <span class="text-white">@Html.Partial("_aphorism")</span>
+                }
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-end">
+
+
                     <ul class="navbar-nav ml-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.IsInRole("Admin"))
                             {
+                                
+                                <li class="nav-item ml-auto ">
+                                    <a href="@Url.Action("Index", "Aphorisms", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                        <i class="bi bi-brilliance"></i> Aforismi
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="@Url.Action("Index", "Avatars", new { area = "" })" class="nav-link btn ms-2 text-white">
                                         <i class="bi bi-emoji-smile-upside-down"></i> Avatar
@@ -105,7 +116,7 @@
                                 else
                                 {
                                     <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn text-white">
-                                        <img src="@Url.Content(ViewBag.ProfileImage)" alt="Profile Image" style="width:25px; height:25px"> @ViewBag.Username
+                                        <img src="@Url.Content(ViewBag.ProfileImage)" class="avatar-img" alt="Profile Image" style="width:25px; height:25px"> @ViewBag.Username
                                     </a>
                                 }
                             </li>
@@ -195,6 +206,10 @@
         else if (controller == "Avatars" && action == "Index" || controller == "Avatars" && action == "Create" || controller == "Avatars" && action == "Delete")
         {
             return "avatars-background";
+        }
+        else if (controller == "Aphorisms" && action == "Index" || controller == "Aphorisms" && action == "Create" || controller == "Aphorisms" && action == "Delete" || controller == "Aphorisms" && action == "Edit")
+        {
+            return "aphorisms-background";
         }
         else
         {

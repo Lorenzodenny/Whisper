@@ -3,7 +3,7 @@
 
     @if (!string.IsNullOrEmpty(Model.Foto))
     {
-        <img class="img-fluid rounded" src="@Url.Content(Model.Foto)" alt="Sponsor" />
+        <img class="img-fluid rounded shadow shadow-lg" src="@Url.Content(Model.Foto)" alt="Sponsor" />
     }
     <h3 class="mt-3">@Model.Titolo</h3>
     <p>@Model.Description</p>

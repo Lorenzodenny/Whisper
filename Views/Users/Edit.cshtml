@@ -24,15 +24,15 @@
         <div class="icon-container d-flex justify-content-center mt-4">
             @if (Model.Avatars != null && !string.IsNullOrWhiteSpace(Model.Avatars.Foto))
             {
-                <img id="avatarPreview" src="@Url.Content(Model.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 100px; height: 100px;" />
+                <img id="avatarPreview" src="@Url.Content(Model.Avatars.Foto)" alt="Avatar" class="user-avatar avatar-img" style="width: 100px; height: 100px;" />
             }
             else
             {
                 <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon"></i>
             }
-            @Model.AvatarId
+         
         </div>
-            <span class="btn btn-sm btn-register rounded rounded-5 pennello2" data-bs-toggle="modal" data-bs-target="#avatarModal">
+            <span class="btn btn-sm btn-register1 color-wine rounded rounded-5 pennello2" data-bs-toggle="modal" data-bs-target="#avatarModal">
                 <i class="bi bi-brush color-wine"></i> Cambia
             </span>
              @*Modal per la selezione dell'avatar*@ 
@@ -46,7 +46,7 @@
                         <div class="modal-body">
                             @foreach (var avatar in ViewBag.AvailableAvatars)
                             {
-                                 <img src="@Url.Content(avatar.Foto)" alt="Avatar" class="selectable-avatar" data-id="@avatar.AvatarId" onclick="selectAvatar(this)" style="cursor: pointer; width: 100px; height: 100px;" />
+                                 <img src="@Url.Content(avatar.Foto)" alt="Avatar" class="selectable-avatar avatar-img m-2" data-id="@avatar.AvatarId" onclick="selectAvatar(this)" style="cursor: pointer; width: 100px; height: 100px;" />
                             }
                         </div>
                     </div>
@@ -152,7 +152,7 @@
 
             <div class="form-group mb-3">
                 <div class="col-md-offset-2 col-md-10 d-flex mt-2">
-                    <input type="submit" value="Save" class="btn btn-default btn-login ms-2 text-white" />
+                    <input type="submit" value="Save" class="btn btn-default btn-login ms-2" />
                     @Html.ActionLink("Annulla", "Details", "Users", new { id = User.Identity.Name }, new { @class = "btn btn-back ms-3" })
                 </div>
             </div>

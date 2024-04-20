@@ -9,100 +9,105 @@
     }
     else
     {
-
-        <button id="markAllPostsLikesCommentsRead" class="btn btn-login btn-sm text-white mb-3">Segna tutti i post, like e commenti come letti ✔</button>
-        foreach (var notification in Model)
-        {
-            <div class="alert alert-secondary">
-                @if (notification.PostID.HasValue && !notification.LikeID.HasValue && !notification.CommentID.HasValue)
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <button id="markAllPostsLikesCommentsRead" class="btn btn-login btn-sm mb-3">Segna tutti i post, like e commenti come letti ✔</button>
+                @foreach (var notification in Model)
                 {
-                    <p class="d-flex align-items-center" >
-                        @if (notification.Posts.Users.Avatars?.Foto != null)
-                        {
-                            <img id="avatarPreview" src="@Url.Content(notification.Posts.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 50px; height: 50px;" />
+                    <div class="card mb-3 cont-3d">
+                        <div class="card-body">
+                            @if (notification.PostID.HasValue && !notification.LikeID.HasValue && !notification.CommentID.HasValue)
+                            {
+                                <p class="d-flex align-items-center">
+                                    @if (notification.Posts.Users.Avatars?.Foto != null)
+                                    {
+                                        <img id="avatarPreview" src="@Url.Content(notification.Posts.Users.Avatars.Foto)" alt="Avatar" class="user-avatar avatar-img" style="width: 50px; height: 50px;" />
+                                    }
+                                    else
+                                    {
+                                        <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
+                                    }
+                                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                                       class="text-decoration-none fw-bold color-wine ms-2">
+                                        @notification.Users.Username
+                                    </a> <span class="ms-1">ha pubblicato un post</span>
+                                </p>
+                                <p>
+                                    <a href="@Url.Action("Index", "Posts")#post-@notification.PostID"
+                                       class="btn btn-sm btn-login"
+                                       onclick="markAsRead(@notification.NotificationID, this.href); return false;">
+                                        Vai al post di @notification.Users.Username
+                                    </a>
+                                </p>
+                            }
+                            else if (notification.CommentID.HasValue)
+                            {
+                                <p class="d-flex align-items-center">
+                                    @if (notification.Comments.Users.Avatars?.Foto != null)
+                                    {
+                                        <img id="avatarPreview" src="@Url.Content(notification.Comments.Users.Avatars.Foto)" alt="Avatar" class="user-avatar avatar-img" style="width: 50px; height: 50px;" />
+                                    }
+                                    else
+                                    {
+                                        <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
+                                    }
+                                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                                       class="text-decoration-none fw-bold ms-2">
+                                        @notification.Users.Username
+                                    </a> <span class="ms-1">ha commentato il tuo post</span>
+                                </p>
+                                <p>
+                                    <a href="@Url.Action("Index", "Posts")#post-@notification.PostID"
+                                       class="btn btn-sm btn-login"
+                                       onclick="markAsRead(@notification.NotificationID, this.href); return false;">
+                                        Vai al mio post
+                                    </a>
+                                </p>
+                            }
+                            else if (notification.LikeID.HasValue)
+                            {
+                                <p class="d-flex align-items-center">
+                                    @if (notification.Like.Users.Avatars?.Foto != null)
+                                    {
+                                        <img id="avatarPreview" src="@Url.Content(notification.Like.Users.Avatars.Foto)" alt="Avatar" class="user-avatar avatar-img" style="width: 50px; height: 50px;" />
+                                    }
+                                    else
+                                    {
+                                        <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
+                                    }
+                                    <span class="ms-2">A</span>
+                                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                                       class="text-decoration-none fw-bold color-wine ms-1">
+                                        @notification.Users.Username
+                                    </a> <span class="ms-1">piace il tuo post</span>
+                                </p>
+                                <p>
+                                    <a href="@Url.Action("Index", "Posts")#post-@notification.PostID"
+                                       class="btn btn-sm btn-login"
+                                       onclick="markAsRead(@notification.NotificationID, this.href); return false;">
+                                        Vai al mio post
+                                    </a>
+                                </p>
+                            }
+                            <p><strong>Data:</strong> @notification.NotificationDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p>
+                                <strong>Stato:</strong>
+                                @(notification.ReadStatus.HasValue && notification.ReadStatus.Value ? "Letta ✔" : "Non Letta ❌")
+                            </p>
+                        </div>
+                        </div>
                         }
-                        else
-                        {
-                            <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
-                        }
-                        <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
-                           class="text-decoration-none fw-bold color-wine ms-2">
-                            @notification.Users.Username
-                        </a> <span class="ms-1">ha pubblicato un post</span>
-                    </p>
-                    <p>
-                        <a href="@Url.Action("Index", "Posts")#post-@notification.PostID"
-                           class="btn btn-sm btn-login text-white"
-                           onclick="markAsRead(@notification.NotificationID, this.href); return false;">
-                            Vai al post di @notification.Users.Username
-                        </a>
-                    </p>
-                }
-                else if (notification.CommentID.HasValue)
-                {
-                    <p class="d-flex align-items-center">
-                        @if (notification.Comments.Users.Avatars?.Foto != null)
-                        {
-                            <img id="avatarPreview" src="@Url.Content(notification.Comments.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 50px; height: 50px;" />
-                        }
-                        else
-                        {
-                            <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
-                        }
-                        <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
-                           class="text-decoration-none fw-bold color-wine ms-2">
-                            @notification.Users.Username
-                        </a> <span class="ms-1">ha commentato il tuo post</span>
-                    </p>
-                    <p>
-                        <a href="@Url.Action("Index", "Posts")#post-@notification.PostID"
-                           class="btn btn-sm btn-login text-white"
-                           onclick="markAsRead(@notification.NotificationID, this.href); return false;">
-                            Vai al mio post
-                        </a>
-                    </p>
-                }
-                else if (notification.LikeID.HasValue)
-                {
-                    <p class="d-flex align-items-center">
-                        @if (notification.Like.Users.Avatars?.Foto != null)
-                        {
-                            <img id="avatarPreview" src="@Url.Content(notification.Like.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 50px; height: 50px;" />
-                        }
-                        else
-                        {
-                            <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
-                        }
-                        <span class="ms-2">A</span>
-                        <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
-                           class="text-decoration-none fw-bold color-wine ms-1">
-                            @notification.Users.Username
-                        </a> <span class="ms-1">piace il tuo post</span>
-                    </p>
-                    <p>
-                        <a href="@Url.Action("Index", "Posts")#post-@notification.PostID"
-                           class="btn btn-sm btn-login text-white"
-                           onclick="markAsRead(@notification.NotificationID, this.href); return false;">
-                            Vai al mio post
-                        </a>
-                    </p>
-                }
-                <p><strong>Data:</strong> @notification.NotificationDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
-                <p>
-                    <strong>Stato:</strong>
-                    @(notification.ReadStatus.HasValue && notification.ReadStatus.Value ? "Letta ✔" : "Non Letta ❌")
-                </p>
+                </div>
             </div>
-        }
-    }
-</div>
+                        }
+                    </div>
 
-<script>
+                    <script>
     $(document).ready(function() {
         $('#markAllPostsLikesCommentsRead').click(function() {
             $.post('@Url.Action("MarkAllPostsLikesCommentsAsRead")', function(response) {
                 if (response.success) {
-                    location.reload(); 
+                    location.reload();
                 } else {
                     alert(response.message);
                 }
@@ -119,4 +124,4 @@
             }
         });
     }
-</script>
+                    </script>

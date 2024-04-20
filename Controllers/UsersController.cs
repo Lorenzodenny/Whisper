@@ -149,7 +149,7 @@ namespace Whisper.Controllers
                 db.Users.Add(users);
                 db.SaveChanges();
                 TempData["success"] = "Account creato con successo";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Posts");
             }
 
             
@@ -300,7 +300,7 @@ namespace Whisper.Controllers
                     db.SaveChanges();
 
                     TempData["success"] = "Modifiche avvenute con successo.";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Posts");
                 }
             }
             if (!ModelState.IsValid)

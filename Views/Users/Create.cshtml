@@ -23,10 +23,10 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <img id="avatarPreview" src="" alt="Avatar" style="display: none; width: 100px; height: 100px;" />
+                <img id="avatarPreview" src="" class="avatar-img" alt="Avatar" style="display: none; width: 100px; height: 100px;" />
             </div>
 
-            <span type="button" class="btn btn-sm btn-register rounded rounded-5 pennello" data-bs-toggle="modal" data-bs-target="#avatarModal">
+            <span type="button" class="btn btn-sm btn-register1 rounded rounded-5 pennello" data-bs-toggle="modal" data-bs-target="#avatarModal">
                 <i class="bi bi-brush color-wine "></i>
             </span>
         </div>
@@ -47,7 +47,7 @@
                         {
                             foreach (var avatar in ViewBag.AvailableAvatars as IEnumerable<Whisper.Models.Avatars>)
                             {
-                                <img src="@Url.Content(avatar.Foto)" alt="Avatar" class="selectable-avatar" data-id="@avatar.AvatarId" onclick="selectAvatar(this)" />
+                                <img src="@Url.Content(avatar.Foto)" alt="Avatar" class="selectable-avatar avatar-img m-2" data-id="@avatar.AvatarId" onclick="selectAvatar(this)" />
                             }
                         }
                         else

@@ -41,6 +41,78 @@ namespace Whisper.Controllers
             return Json(new { frase = aphorism.Frase }, JsonRequestBehavior.AllowGet);
         }
 
+        // GET: Aphorisms/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Aphorisms/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Aphorisms aphorism)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Aphorisms.Add(aphorism);
+                db.SaveChanges();
+                TempData["success"] = "Aforisma creato con successo";
+                return RedirectToAction("Index");
+            }
+
+            return View(aphorism);
+        }
+
+        // GET: Aphorisms/Edit/5
+        public ActionResult Edit(int id)
+        {
+            Aphorisms aphorism = db.Aphorisms.Find(id);
+            if (aphorism == null)
+            {
+                return HttpNotFound();
+            }
+            return View(aphorism);
+        }
+
+        // POST: Aphorisms/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Aphorisms aphorism)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(aphorism).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["success"] = "Aforisma modifica con successo";
+                return RedirectToAction("Index");
+            }
+            return View(aphorism);
+        }
+
+        // GET: Aphorisms/Delete/5
+        public ActionResult Delete(int id)
+        {
+            Aphorisms aphorism = db.Aphorisms.Find(id);
+            if (aphorism == null)
+            {
+                return HttpNotFound();
+            }
+            return View(aphorism);
+        }
+
+        // POST: Aphorisms/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Aphorisms aphorism = db.Aphorisms.Find(id);
+            db.Aphorisms.Remove(aphorism);
+            db.SaveChanges();
+            TempData["success"] = "Aforisma cancellato con successo";
+            return RedirectToAction("Index");
+        }
+
+
 
 
         protected override void Dispose(bool disposing)

@@ -4,22 +4,24 @@
     var loggedInUserId = User.Identity.Name;
 }
 
-@if (Model.Any())
-{
-    <h2 class="color-wine text-center">Benvenuto, @ViewBag.Username</h2>
-}
+<div class="sky pt-5 pb-3">
+    @if (Model.Any())
+    {
+        <h2 class="text-warning text-center text-shadow">Benvenuto, @ViewBag.Username</h2>
+    }
+</div>
 <div class="container mt-4">
     @if (User.IsInRole("User"))
     {
         <p>
-            @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-login text-white" })
+            @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-warning text-dark" })
         </p>
     }
 
     @if (User.IsInRole("Admin"))
     {
         <p>
-            @Html.ActionLink("Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-login text-white" })
+            @Html.ActionLink("🎬 Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-warning text-dark" })
         </p>
     }
 
@@ -28,13 +30,13 @@
         <div class="col-md-9" style="max-height: 90vh; overflow-y: auto;">
             @foreach (var item in Model)
             {
-                <div id="post-@item.Post.PostId" class="post my-3 p-3 bg-white rounded shadow-sm">
-                    <div class="d-flex justify-content-between">
+                <div id="post-@item.Post.PostId" class="post my-3 p-3 bg-white rounded cont-3d">
+                    <div class="d-flex justify-content-between ">
                         <div class="d-flex align-items-center">
                             <!-- Avatar -->
                             @if (item?.Post?.Users?.Avatars?.Foto != null)
                             {
-                                <img src="@Url.Content(item.Post.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;" />
+                                <img src="@Url.Content(item.Post.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2 avatar-img" style="width: 50px; height: 50px;" />
                             }
                             else
                             {
@@ -103,9 +105,9 @@
 
                             <form action="@Url.Action("Like", "Likes")" method="post">
                                 <input type="hidden" name="postId" value="@item.Post.PostId" />
-                                <button class="like-button btn btn-sm btn-login  text-white " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "Ti piace" : "👍 Mi Piace")</button>
+                                <button class="like-button btn btn-sm btn-login   " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "🥰 Ti piace" : "👍 Mi Piace")</button>
                             </form>
-                            <button type="button" class="btn btn-sm btn-login text-white ms-3 comment-button" data-post-id="@item.Post.PostId">🗨 Scrivi Commento</button>
+                            <button type="button" class="btn btn-sm btn-login  ms-3 comment-button" data-post-id="@item.Post.PostId">🗨 Commenta</button>
 
 
 
@@ -116,7 +118,7 @@
                                     @Html.AntiForgeryToken()
                                     @Html.HiddenFor(_ => loggedInUserId)
                                     @Html.Hidden("PostId", item.Post.PostId)
-                                    <button type="submit" class="btn btn-sm btn-login text-white ms-3">🚫 Riporta Contenuto</button>
+                                    <button type="submit" class="btn btn-sm btn-login  ms-3">🚫 Riporta</button>
                                 }
                             }
 
@@ -132,7 +134,7 @@
                             @Html.Hidden("PostId", item.Post.PostId)
                             <textarea name="Contents" class="form-control my-2" placeholder="Scrivi un commento..." maxlength="500" style="resize: none;"></textarea>
 
-                            <button type="submit" class="btn btn-sm btn-login text-white">✔ Pubblica Commento</button>
+                            <button type="submit" class="btn btn-sm btn-login ">✔ Pubblica Commento</button>
                             <span id="char-count-@item.Post.PostId">0/500</span>
                         }
                     </div>
@@ -156,7 +158,7 @@
                                                     <!-- Avatar -->
                                                     @if (comment.Users.Avatars?.Foto != null)
                                                     {
-                                                        <img src="@Url.Content(comment.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;" />
+                                                        <img src="@Url.Content(comment.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2 avatar-img" style="width: 50px; height: 50px;" />
                                                     }
                                                     else
                                                     {
@@ -170,12 +172,22 @@
                                                         <span class="text-muted" style="font-size: 0.8em;">@(comment.PostedAt.HasValue ? comment.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
                                                     </div>
                                                 </div>
-                                                @if (comment.UserId.ToString() == loggedInUserId || User.IsInRole("Admin"))
+                                                @if (comment.UserId.ToString() == loggedInUserId && User.IsInRole("User"))
                                                 {
                                                     <div class="post-actions">
                                                         <a href="@Url.Action("Edit", "Comments", new { id = comment.CommentId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
                                                         <a href="@Url.Action("Delete", "Comments", new { id = comment.CommentId })"><i class="fa fa-trash icon-pro"></i></a>
                                                     </div>
+                                                }
+                                                @if (comment.UserId.ToString() != loggedInUserId && User.IsInRole("User"))
+                                                {
+                                                    using (Html.BeginForm("Create", "Reports", FormMethod.Post))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        @Html.HiddenFor(_ => loggedInUserId)
+                                                        @Html.Hidden("CommentId", comment.CommentId)
+                                                        <button type="submit" class="btn btn-sm btn-login  ms-3">🚫 Riporta</button>
+                                                    }
                                                 }
                                             </div>
                                             <p class="mt-3">@comment.Contents</p>
@@ -183,7 +195,7 @@
                                     }
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-sm btn-back text-white" data-bs-dismiss="modal">Chiudi</button>
+                                    <button type="button" class="btn btn-sm btn-back " data-bs-dismiss="modal">Chiudi</button>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +216,7 @@
                                             <div class="py-3 d-flex align-items-center">
                                                 @if (like.Users.Avatars?.Foto != null)
                                                 {
-                                                    <img src="@Url.Content(like.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;" />
+                                                    <img src="@Url.Content(like.Users.Avatars.Foto)" alt="Avatar" class="rounded-circle me-2 avatar-img" style="width: 50px; height: 50px;" />
                                                 }
                                                 else
                                                 {
@@ -218,7 +230,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-sm btn-back text-white" data-bs-dismiss="modal">Chiudi</button>
+                                    <button type="button" class="btn btn-sm btn-back " data-bs-dismiss="modal">Chiudi</button>
                                 </div>
                             </div>
                         </div>
@@ -227,68 +239,102 @@
             }
         </div>
         <div class="col-md-3" style="max-height: 90vh; overflow-y: auto;">
-            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded">
+            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded cont-3d">
                 @*partial view per le pubblicità random*@
                 @Html.Action("RandomSponsor", "Sponsors")
             </div>
-            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded">
+            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded cont-3d">
                 @*partial view per le pubblicità random*@
                 @Html.Action("RandomSponsor", "Sponsors")
             </div>
-            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded">
+            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded cont-3d">
                 @*partial view per le pubblicità random*@
                 @Html.Action("RandomSponsor", "Sponsors")
             </div>
         </div>
     </div>
 </div>
-            <script>
-$(document).ready(function () {
-    $('.like-button').click(function (e) {
-        e.preventDefault();
-        var postId = $(this).data('post-id');
-        var button = $(this);
 
-        $.ajax({
-            url: '@Url.Action("Like", "Likes")',
-            type: 'POST',
-            data: { postId: postId },
-            success: function (response) {
-                if (response.success) {
-                    // Toggle la classe "liked" per cambiare il testo del pulsante.
-                    button.toggleClass('liked');
-                    var newText = button.hasClass('liked') ? "Ti piace" : "👍 Mi Piace";
-                    button.text(newText);
+@*<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sky = document.querySelector('.sky');
+        const numberOfStars = 100;
 
-                    // Ricarica la pagina per aggiornare il conteggio dei "like"
-                    window.location.reload();
-                } else {
-                    alert("Operazione non riuscita. Per favore riprova.");
+        for (let i = 0; i < numberOfStars; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            const starSize = Math.random() * 3 + 1; // Grandezza random tra 1px e 3px
+            const starColor = Math.random() < 0.5 ? 'rgba(255, 255, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)'; // Colore random giallo o viola
+
+            // Applichiamo stili in linea per posizione random, grandezza e colore
+            star.style.cssText = `
+            position: absolute;
+            top: ${Math.random() * 100}%;
+            left: ${Math.random() * 100}%;
+            width: ${starSize}px;
+            height: ${starSize}px;
+            background-color: ${starColor};
+            border-radius: 50%;
+            box-shadow: 0 0 ${starSize * 2}px ${starColor};
+            animation: twinkle ${Math.random() * 2 + 1}s infinite;
+        `;
+
+            sky.appendChild(star);
+        }
+    });
+
+  
+</script>*@
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.like-button').click(function (e) {
+            e.preventDefault();
+            var postId = $(this).data('post-id');
+            var button = $(this);
+
+            $.ajax({
+                url: '@Url.Action("Like", "Likes")',
+                type: 'POST',
+                data: { postId: postId },
+                success: function (response) {
+                    if (response.success) {
+                        // Toggle la classe "liked" per cambiare il testo del pulsante.
+                        button.toggleClass('liked');
+                        var newText = button.hasClass('liked') ? "Ti piace" : "👍 Mi Piace";
+                        button.text(newText);
+
+                        // Ricarica la pagina per aggiornare il conteggio dei "like"
+                        window.location.reload();
+                    } else {
+                        alert("Operazione non riuscita. Per favore riprova.");
+                    }
+                },
+                error: function () {
+                    alert("Si è verificato un errore nel processo di like. Riprova.");
                 }
-            },
-            error: function () {
-                alert("Si è verificato un errore nel processo di like. Riprova.");
-            }
+            });
+        });
+
+
+        // Aggiungi gestore eventi per il bottone "Scrivi Commento"
+        $('.comment-button').click(function () {
+            var postId = $(this).data('post-id');
+            var commentFormContainer = $('#comment-form-container-' + postId);
+
+            // Mostra o nasconde la textarea per i commenti
+            commentFormContainer.toggleClass('d-none');
+
+        });
+         $(document).on('input', 'textarea[name="Contents"]', function() {
+            var charCount = $(this).val().length;
+            var postId = $(this).closest('form').find('input[name="PostId"]').val();
+            $('#char-count-' + postId).text(charCount + '/500');
         });
     });
-
-
-    // Aggiungi gestore eventi per il bottone "Scrivi Commento"
-    $('.comment-button').click(function () {
-        var postId = $(this).data('post-id');
-        var commentFormContainer = $('#comment-form-container-' + postId);
-
-        // Mostra o nasconde la textarea per i commenti
-        commentFormContainer.toggleClass('d-none');
-
-    });
-     $(document).on('input', 'textarea[name="Contents"]', function() {
-        var charCount = $(this).val().length;
-        var postId = $(this).closest('form').find('input[name="PostId"]').val();
-        $('#char-count-' + postId).text(charCount + '/500');
-    });
-});
-            </script>
+                </script>
 
 
 

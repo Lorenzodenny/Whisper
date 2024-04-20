@@ -4,29 +4,35 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<div class="bg-warning p-2 rounded rounded-2 w-75 text-3d">
+    <span>@Html.Partial("_aphorism")</span>
+</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Aphorisms</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Frase)
-        </dt>
+<div class="login-container">
+    <div class="login-box">
+        <p class="alert alert-danger">Sei sicuro di voler eliminare questo aforisma? Questa azione è irreversibile.</p>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    <label class="fw-bold color-wine">Frase</label>
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Frase)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Frase)
+                </dd>
 
-    </dl>
+            </dl>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Elimina Aforisma" class="btn btn-sm btn-danger text-white" />
+            @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-white" })
         </div>
-    }
+            }
+        </div>
+        </div>
 </div>

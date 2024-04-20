@@ -4,34 +4,58 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
-@Html.Partial("_Notification")
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>Aphorisms</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Frase, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Frase, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Frase, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="bg-warning p-2 rounded rounded-2 w-75 text-3d">
+    <span>@Html.Partial("_aphorism")</span>
 </div>
+
+<div class="login-container">
+    <div class="login-box">
+        <h2>Aggiungi Aforisma</h2>
+
+        @Html.Partial("_Notification")
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Frase, htmlAttributes: new { @class = "control-label col-md-2 color-wine fw-bold" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Frase, new { @class = "form-control-area", @rows = "5", @placeholder = "Aggiungi un aforisma?", @id = "post-contents", @maxlength = "500" })
+                        @Html.ValidationMessageFor(model => model.Frase, "", new { @class = "text-danger" })
+                        <span id="post-char-count" class="text-secondary">0/500</span>
+                    </div>
+                </div>
+
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Crea" class="btn btn-sm btn-login text-white" />
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "ms-2 btn btn-sm btn-back text-white" })
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var postContents = document.getElementById('post-contents');
+        var postCharCountElement = document.getElementById('post-char-count');
+
+        // Funzione per aggiornare il conteggio dei caratteri
+        function updatePostCharCount() {
+            var textLength = postContents.value.length;
+            postCharCountElement.textContent = `${textLength}/500`;
+        }
+
+        // Aggiorna il conteggio dei caratteri all'avvio
+        updatePostCharCount();
+
+        // Aggiorna il conteggio dei caratteri ogni volta che l'utente digita
+        postContents.addEventListener('input', updatePostCharCount);
+    });
+</script>

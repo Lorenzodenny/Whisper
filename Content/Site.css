@@ -30,6 +30,10 @@ textarea {
     border-radius: 5px;
     width: 100%;
     max-width: 400px;
+    border: none;
+  /*  box-shadow: 0 5px #8ea1cd;
+    border-radius: 5px;*/
+    box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.3); 
 }
 
 
@@ -80,24 +84,6 @@ body, html {
     transition: background-color 0.3s;
 }
 
-/* Stile per il pulsante di login */
-.btn-login {
-    background-color: #603760;
-}
-
-.btn-login:hover {
-    background-color: #502750; 
-}
-
-/* Stile per il pulsante di registrazione */
-.btn-register {
-    background-color: #ECD4F4;
-}
-
-.btn-register:hover {
-    background-color: #DCC4E4;
-}
-
 /* Stile per le icone */
 .icon {
     color: #C3B1E1; 
@@ -112,16 +98,7 @@ body, html {
     background-color: #502750;
 }
 
-.btn-back {
-    background-color: #9E9E9E; 
-    border: 2px solid #957DAD; 
-    color: white; 
-}
 
-.btn-back:hover {
-    background-color: #B4B4B4; 
-    border-color: #A084B0; 
-}
 
 .aphorism-container {
     white-space: nowrap;
@@ -182,8 +159,8 @@ body, html {
 }
 
 .posts-background {
-    min-height: 100vh;
-    background-image: url('Img/BakcgroundUtenti.jpg');
+    min-height: 100vh; 
+    background-image: url('img/bakcgroundposts.jpg');  
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -428,9 +405,9 @@ body, html {
 
 .notifications-background {
     min-height: 100vh;
-    background-image: url('img/backgroundnotifiche2.jpg');
+    background-image: url('img/backgroundnotifica.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center; 
     background-repeat: no-repeat;
 }
 
@@ -453,8 +430,8 @@ body, html {
 }
 
 .avatars-background {
-    min-height: 100vh;
-    background-image: url('img/avatars2background.jpg');
+    min-height: 100vh; 
+    background-image: url('img/avatarabackground.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -488,4 +465,186 @@ body, html {
     position: relative;
     top: -25px; 
     right: -190px;
-} 
+}
+
+.aphorisms-background {
+    min-height: 100vh;
+    background-image: url('img/aphorismsbackground.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.btn-danger { 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0 5px #bb1212; 
+    border-radius: 5px; 
+}
+
+.btn-danger:active {
+    box-shadow: 0 2px #bb1212;
+    transform: translateY(4px);
+}
+
+.btn-warning {
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0 5px #dd9312;
+    border-radius: 5px;
+}
+
+.btn-warning:active {
+    box-shadow: 0 2px #dd9312;
+    transform: translateY(4px);
+}
+
+/* Stile per il pulsante di login */
+
+.btn-login {
+    background-color: #603760;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0 5px #502750;
+    border-radius: 5px;
+}
+
+    .btn-login:hover {
+        background-color: #603760;
+        color: #ffa200;
+    }
+
+    .btn-login:active {
+        box-shadow: 0 2px #603760;
+        transform: translateY(4px);
+    }
+
+
+    .btn-back:hover {
+        background-color: #B4B4B4;
+        border-color: #A084B0;
+    }
+
+.btn-back {
+    background-color: #9E9E9E;
+    color: white;
+    border: none; 
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0 5px #5a5250;
+    border-radius: 5px;
+}
+
+    .btn-back:active {
+        box-shadow: 0 2px #5a5250;
+        transform: translateY(4px);
+    }
+
+.text-3d {
+    color: black;
+    border: none;  
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0 5px #dd9312;
+    border-radius: 5px;
+}
+
+.cont-3d {
+    border: none;
+    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 1);
+}
+
+.avatar-img {
+    border-radius: 50%; 
+    border: 3px solid #fff; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    width: 150px;
+    height: 150px; 
+    object-fit: cover; 
+}
+
+/* Stile per il pulsante di registrazione */
+.btn-register1 {
+    background-color: #ECD4F4;
+}
+
+    .btn-register1:hover {
+        background-color: #DCC4E4;
+    }
+
+.btn-register {
+    background-color: #ECD4F4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0 5px #DCC4E4;
+    border-radius: 5px;
+}
+
+
+    .btn-register:hover {
+        background-color: #ECD4F4;
+    }
+
+    .btn-register:active {
+        box-shadow: 0 2px #DCC4E4;
+        transform: translateY(4px);
+    }
+
+
+
+.sky {
+    position: relative;
+    width: 100%;
+    height: auto; 
+    overflow: hidden; 
+}
+
+.text-shadow {
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); 
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
