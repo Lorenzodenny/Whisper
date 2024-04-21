@@ -16,9 +16,9 @@
                     <div>
                         @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                         {
-                            <span>Benvenuto,</span>
+                            <span class="text-shadow">Benvenuto,</span>
                         }
-                        <span class="color-wine fw-bold"> @Model.Users.Username</span>
+                        <span class="color-wine fw-bold text-shadow"> @Model.Users.Username</span>
                     </div>
                     @if (User.IsInRole("User"))
                     {
@@ -32,7 +32,7 @@
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="userId" value="@Model.Users.UserId" />
                                         <button type="submit" class="btn btn-sm btn-warning text-white">
-                                            <i class="bi bi-person-dash"></i> Smetti di Origliare
+                                            <i class="bi bi-person-dash text-shadow"></i> Smetti di Origliare
                                         </button>
                                     </form>
                                 }
@@ -43,7 +43,7 @@
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="userId" value="@Model.Users.UserId" />
                                         <button type="submit" class="btn btn-sm btn-login text-white">
-                                            <i class="bi bi-person-add"></i> Origlia
+                                            <i class="bi bi-person-add text-shadow"></i> Origlia
                                         </button>
                                     </form>
                                 }
@@ -67,19 +67,19 @@
                     }
 
                 <dl class="row">
-                    <dt class="col-sm-4">Username</dt>
-                    <dd class="col-sm-8">@Model.Users.Username</dd>
-                    <dt class="col-sm-4">Email</dt>
-                    <dd class="col-sm-8">@Model.Users.Email</dd>
+                    <dt class="col-sm-4 text-shadow">Username</dt>
+                    <dd class="col-sm-8 text-shadow">@Model.Users.Username</dd>
+                    <dt class="col-sm-4 text-shadow">Email</dt>
+                    <dd class="col-sm-8 text-shadow">@Model.Users.Email</dd>
                     @if (Model.Users.UserId.ToString() == Model.LoggedInUserId || User.IsInRole("Admin"))
                     {
-                        <dt class="col-sm-4">Nome</dt>
-                        <dd class="col-sm-8">@Model.Users.Nome</dd>
-                        <dt class="col-sm-4">Cognome</dt>
-                        <dd class="col-sm-8">@Model.Users.Cognome</dd>
+                        <dt class="col-sm-4 text-shadow">Nome</dt>
+                        <dd class="col-sm-8 text-shadow">@Model.Users.Nome</dd>
+                        <dt class="col-sm-4 text-shadow">Cognome</dt>
+                        <dd class="col-sm-8 text-shadow">@Model.Users.Cognome</dd>
                     }
-                    <dt class="col-sm-4">Codice Fiscale</dt>
-                    <dd class="col-sm-8">@Model.Users.CodiceFiscale</dd>
+                    <dt class="col-sm-4 text-shadow">Codice Fiscale</dt>
+                    <dd class="col-sm-8 text-shadow">@Model.Users.CodiceFiscale</dd>
                 </dl>
             </div>
 
@@ -88,53 +88,62 @@
                 @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                 {
                     <div class="mb-2 ms-3">
-                        @Html.ActionLink("Modifica", "Edit", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login" })
+                        @Html.ActionLink("Modifica", "Edit", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
                         @if (User.IsInRole("User"))
                         {
-                        @Html.ActionLink("Elimina", "Delete", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login" })
+                        @Html.ActionLink("Elimina", "Delete", new { id = Model.Users.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
                         }
                         @if (Model.Users.Role == "Admin")
                         {
-                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back" })
+                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-shadow" })
                         }
                         else if (Model.Users.Role == "User")
                         {
-                            @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back" })
+                            @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back text-shadow" })
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="mb-2 ms-3">
-                        @if (User.IsInRole("Admin") && Model.Users.UserId.ToString() != User.Identity.Name)
+            <div class="mb-2 ms-3">
+                @if (User.IsInRole("Admin") && Model.Users.UserId.ToString() != User.Identity.Name)
+                {
+                    if (Model.Users.Stato != "Bannato")
+                    {
+                        using (Html.BeginForm("BanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
                         {
-                            if (Model.Users.Stato != "Bannato")
-                            {
-                                using (Html.BeginForm("BanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.Hidden("id", Model.Users.UserId)
-                                    <button type="submit" class="btn btn-sm btn-danger text-white">Banna Utente</button>
-                                    @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
-                                }
-                            }
-                            else
-                            {
-                                using (Html.BeginForm("UnbanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.Hidden("id", Model.Users.UserId)
-                                    <button type="submit" class="btn btn-sm btn-warning text-white">Sospendi Ban</button>
-                                    @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
-                                }
-                            }
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", Model.Users.UserId)
+                            <button type="submit" class="btn btn-sm btn-danger text-white text-shadow">Banna Utente</button>
+                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("UnbanUser", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", Model.Users.UserId)
+                            <button type="submit" class="btn btn-sm btn-warning text-white text-shadow">Sospendi Ban</button>
+                            @Html.ActionLink("Home", "Index", "Reports", new { }, new { @class = "btn btn-sm btn-back text-white" })
+                        }
+                    }
 
-                        }
-                        else if (Model.Users.Role == "User")
-                        {
-                            @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back text-white" })
-                        }
-                    </div>
+                }
+                else if (Model.Users.Role == "User")
+                {
+            <span class="d-flex">
+                <!-- Pulsante per avviare la chat -->
+                @using (Html.BeginForm("Create", "Conversations", FormMethod.Post))
+                {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("user2Id", Model.Users.UserId)
+                <button type="submit" class="btn btn-sm btn-login text-shadow me-2">🗨 Inizia Chat</button>
+                }
+                @Html.ActionLink("Home", "Index", new { }, new { @class = "btn btn-sm btn-back text-white text-shadow" })
+            </span>
+                }
+            </div>
                 }
 
             </div>
@@ -147,7 +156,7 @@
                         <div class="card-body">
                             @if (Model.Users.UserId.ToString() == Model.LoggedInUserId)
                             {
-                                <h3 class="card-title">Amicizie</h3>
+                                <h3 class="card-title text-shadow">Amicizie</h3>
                                 if (Model.Friendships.Any(f => f.UserMittenteId.ToString() == Model.LoggedInUserId))
                                 {
                                     <div class="list-group" style="max-height: 400px; overflow-y: auto;">
@@ -164,7 +173,7 @@
                                                 {
                                                     <i class="fa fa-user-circle fa-2x icon me-2" style="font-size: 40px; line-height: 40px;"></i>
                                                 }
-                                                <span>@friendUsername 💜</span>
+                                                <span class="text-shadow">@friendUsername 💜</span>
                                             </a>
                                         }
                                     </div>
@@ -172,7 +181,7 @@
                                 }
                                 else
                                 {
-                                    <p class="text-muted">Non hai ancora amicizie.</p>
+                                    <p class="text-muted text-shadow">Non hai ancora amicizie.</p>
                                 }
                             }
                         </div>
@@ -206,22 +215,22 @@
                                             <i class="fa fa-user-circle icon" style="font-size:30px;"></i>
                                         </span>
                                     }
-                                    <span class="ms-2">@post.Users.Username</span>
+                                    <span class="ms-2 text-shadow">@post.Users.Username</span>
                                 </span>
 
-                                <span class="posted-at text-muted" style="font-size: 0.8em;">@(post.PostedAt.HasValue ? post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+                                <span class="posted-at text-muted text-shadow" style="font-size: 0.8em;">@(post.PostedAt.HasValue ? post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
                             </div>
                             @if (post.UserId.ToString() == Model.LoggedInUserId)
                             {
                                 <div class="post-actions">
-                                    <a href="@Url.Action("Edit", "Posts", new { id = post.PostId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
-                                    <a href="@Url.Action("Delete", "Posts", new { id = post.PostId })"><i class="fa fa-trash icon-pro"></i></a>
+                                    <a href="@Url.Action("Edit", "Posts", new { id = post.PostId })" class="me-2"><i class="fa fa-pencil-alt icon-pro text-shadow"></i></a>
+                                    <a href="@Url.Action("Delete", "Posts", new { id = post.PostId })"><i class="fa fa-trash icon-pro text-shadow"></i></a>
                                 </div>
                             }
                         </div>
                         <div class="post-content mt-2">
-                            <p>@post.Contents</p>
-                            <a href="@Url.Action("Index", "Posts")#post-@post.PostId" class="btn btn-sm btn-login">
+                            <p class="text-shadow">@post.Contents</p>
+                            <a href="@Url.Action("Index", "Posts")#post-@post.PostId" class="btn btn-sm btn-login text-shadow">
                                 📌 Portami al commento specifico
                             </a>
                         </div>

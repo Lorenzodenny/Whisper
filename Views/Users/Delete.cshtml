@@ -4,7 +4,7 @@
     ViewBag.Title = "Elimina Account";
 }
 
-<div class="container profile-container login-box">
+<div class="container profile-container login-box text-shadow">
     <h2>Elimina Account</h2>
     <p class="alert alert-danger">Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.</p>
 
@@ -24,8 +24,8 @@
         </div>
 
         <div class="form-actions">
-            <input type="submit" value="Elimina Account" class="btn btn-danger" />
-            @Html.ActionLink("Annulla", "Details", new { id = Model.UserId }, new { @class = "btn btn-default btn-back ms-2" })
+            <input type="submit" value="Elimina Account" class="btn btn-danger text-shadow" />
+            @Html.ActionLink("Annulla", "Details", new { id = Model.UserId }, new { @class = "btn btn-default btn-back ms-2 text-shadow" })
         </div>
     }
 </div>

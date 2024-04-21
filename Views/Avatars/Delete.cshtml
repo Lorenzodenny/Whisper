@@ -5,8 +5,8 @@
 }
 
 <div class="login-container">
-    <div class="login-box">
-        <p class="alert alert-danger">Sei sicuro di voler eliminare questo avatar? Questa azione è irreversibile.</p>
+    <div class="login-box text-shadow cont-3d">
+        <p class="alert alert-danger ">Sei sicuro di voler eliminare questo avatar? Questa azione è irreversibile.</p>
         <div>
             <hr />
             <dl class="dl-horizontal">
@@ -15,7 +15,7 @@
                 </dt>
 
                 <dd>
-                    <img src="@Url.Content(Model.Foto)" alt="Avatar Image" style="max-width: 200px; height: auto;" />
+                    <img class="avatar-img" src="@Url.Content(Model.Foto)" alt="Avatar Image" style="max-width: 200px; height: auto;" />
                 </dd>
             </dl>
 
@@ -24,8 +24,8 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-actions no-color">
-                    <input type="submit" value="Elimina Avatar" class="btn btn-sm btn-danger text-white" />
-                    @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-white" })
+                    <input type="submit" value="Elimina Avatar" class="btn btn-sm btn-danger text-white text-shadow" />
+                    @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-shadow" })
                 </div>
             }
         </div>

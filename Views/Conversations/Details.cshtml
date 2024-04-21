@@ -1,0 +1,42 @@
+﻿@model Whisper.Models.Conversations
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Conversations</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Users.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Users.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Users1.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Users1.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User1Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User1Id)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ConversationId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

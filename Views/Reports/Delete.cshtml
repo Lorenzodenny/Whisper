@@ -9,61 +9,53 @@
 <div class="login-container">
     <div class="login-box">
 
-        <p class="alert alert-danger">Sei sicuro di voler eliminare questo Report? Questa azione è irreversibile.</p>
+        <p class="alert alert-danger text-shadow">Sei sicuro di voler eliminare questo Report? Questa azione è irreversibile.</p>
         <div>
             <hr />
             <dl class="dl-horizontal">
                 @if (Model.CommentId.HasValue)
                 {
                     <dt>
-                        <label>Contenuto del Commento segnalato</label>
+                        <label class="text-shadow">Contenuto del Commento segnalato</label>
                     </dt>
 
-                    <dd>
+                    <dd class="text-shadow">
                         @Html.DisplayFor(model => model.Comments.Contents)
                     </dd>
                 }
 
-
-                @*<dt>
-                @Html.DisplayNameFor(model => model.Messages.Testo)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Messages.Testo)
-            </dd>*@
                 @if (Model.PostId.HasValue)
                 {
                     <dt>
-                        <label>Contenuto del Post segnalato</label>
+                        <label class="text-shadow">Contenuto del Post segnalato</label>
                     </dt>
 
-                    <dd>
+                    <dd class="text-shadow">
                         @Html.DisplayFor(model => model.Posts.Contents)
                     </dd>
                 }
 
                 <dt>
-                    <label>Report da parte dell' utente</label>
+                    <label class="text-shadow">Report da parte dell' utente</label>
                 </dt>
 
-                <dd>
+                <dd class="text-shadow">
                     @Html.DisplayFor(model => model.Users.Username)
                 </dd>
 
-                <dt>
+                <dt class="text-shadow">
                     @Html.DisplayNameFor(model => model.DescrizioneReport)
                 </dt>
 
-                <dd>
+                <dd class="text-shadow">
                     @Html.DisplayFor(model => model.DescrizioneReport)
                 </dd>
 
-                <dt>
+                <dt class="text-shadow">
                     @Html.DisplayNameFor(model => model.ReportDate)
                 </dt>
 
-                <dd>
+                <dd class="text-shadow">
                     @Html.DisplayFor(model => model.ReportDate)
                 </dd>
 
@@ -74,8 +66,8 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-actions no-color">
-                    <input type="submit" value="Elimina Report" class="btn btn-sm btn-danger text-white" />
-                    @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2" })
+                    <input type="submit" value="Elimina Report" class="btn btn-sm btn-danger text-white text-shadow" />
+                    @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-shadow" })
 
                 </div>
             }

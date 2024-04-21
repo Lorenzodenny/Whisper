@@ -124,7 +124,7 @@ body, html {
 
 .profile-background {
     min-height: 100vh;
-    background-image: url('img/sfondo.jpg');
+    background-image: url('img/usersbackground.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -300,7 +300,7 @@ body, html {
 
 .reports-background {
     min-height: 100vh;
-    background-image: url('img/backgroundreports.jpg');
+    background-image: url('img/reportsbackground2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -336,31 +336,6 @@ body, html {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
-/*Aformismi input movimento*/
-/*@keyframes scrollText {
-    0% {
-        transform: translateX(100%);
-    }
-
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-.aphorism-container {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 600px;
-}*/
-
-    /* Applica l'animazione al testo all'interno del container */
-    /*.aphorism-container span {
-        display: inline-block;
-        animation: scrollText 10s linear infinite;
-    }*/
 
 .comment-form {
     background-color: #f8f9fa;
@@ -580,7 +555,7 @@ body, html {
 
 .cont-3d {
     border: none;
-    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 1);
+    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 1); 
 }
 
 .avatar-img {
@@ -636,7 +611,7 @@ body, html {
 }
 
 .text-shadow {
-    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes twinkle {
@@ -648,3 +623,11 @@ body, html {
         opacity: 1;
     }
 }
+
+.shining {
+    color: white;
+}
+
+    .shining:hover {
+        color: #ffa200;
+    }

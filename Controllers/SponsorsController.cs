@@ -102,15 +102,21 @@ namespace Whisper.Controllers
         public ActionResult RandomSponsor()
         {
             var sponsorsList = db.Sponsors.ToList();
-            if (sponsorsList.Any())
+            var chosenSponsors = new List<Sponsors>();
+
+            while (chosenSponsors.Count < 3)
             {
                 var randomIndex = new Random().Next(sponsorsList.Count);
                 var randomSponsor = sponsorsList[randomIndex];
-                return PartialView("_RandomSponsor", randomSponsor);
+                if (!chosenSponsors.Contains(randomSponsor))
+                {
+                    chosenSponsors.Add(randomSponsor);
+                }
             }
 
-            return new EmptyResult(); // Nessuno sponsor da mostrare
+            return PartialView("_RandomSponsor", chosenSponsors);
         }
+
 
         // GET: Sponsors/Edit/5
         public ActionResult Edit(int? id)

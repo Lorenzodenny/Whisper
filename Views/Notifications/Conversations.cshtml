@@ -13,38 +13,59 @@
     }
     else
     {
-        int currentUserId = ViewBag.CurrentUserId; 
+        int currentUserId = ViewBag.CurrentUserId;
 
         foreach (var conversation in Model)
         {
-            // Determina l'ID dell'altro utente nella conversazione
             int otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
+            var notification = conversation.Notifications
+                                .Where(n => n.TriggeredByUserID == otherUserId)
+                                .OrderByDescending(n => n.NotificationDate)
+                                .FirstOrDefault();
 
             <div class="card mb-3 cont-3d">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
+                        
                         <img src="@Url.Content(ViewBag.Users[currentUserId].Avatars.Foto)" alt="Avatar User1" class="user-avatar avatar-img ms-3" style="width: 50px; height: 50px;" />
                         <a href="@Url.Action("Details", "Users", new { id = currentUserId })" class="fw-bold text-decoration-none color-wine">
                             @ViewBag.Users[currentUserId].Username
                         </a>
-                        hai una conversazione con:
+                        Hai una conversazione con: 
                         <img src="@Url.Content(ViewBag.Users[otherUserId].Avatars.Foto)" alt="Avatar User2" class="user-avatar avatar-img ms-3" style="width: 50px; height: 50px;" />
                         <a href="@Url.Action("Details", "Users", new { id = otherUserId })" class="fw-bold text-decoration-none color-wine">
                             @ViewBag.Users[otherUserId].Username
                         </a>
                     </div>
-                    <span class="d-flex">
-                        <a href="@Url.Action("Details", "Conversations", new { id = conversation.ConversationId })" class="btn btn-sm btn-login text-shadow">📌 Vai alla conversazione</a>
-                        <a href="@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })" class="btn btn-danger text-white">
+                    @if (notification != null && !notification.ReadStatus.Value)
+                    {
+                        <a href="@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })"
+                           class="btn btn-danger"
+                           onclick="markAsRead(@notification.NotificationID, '@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })'); return false;">
+                            Elimina e segna come letta
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })"
+                           class="btn btn-danger">
                             Elimina
                         </a>
-
-
-                    </span>
-                   
+                    }
                 </div>
             </div>
         }
-
     }
 </div>
+
+<script>
+    function markAsRead(notificationId, redirectTo) {
+        $.post('@Url.Action("MarkNotificationAsRead")', { notificationId: notificationId }, function(response) {
+            if (response.success) {
+                window.location.href = redirectTo;
+            } else {
+                alert(response.message);
+            }
+        });
+    }
+</script>

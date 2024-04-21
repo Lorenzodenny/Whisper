@@ -5,21 +5,25 @@
 }
 
 
-@Html.ActionLink("👽 Aggiungi Avatar", "Create", "Avatars", new { @class = "btn btn-sm text-dark btn-warning my-5" })
+@Html.ActionLink("👽 Aggiungi Avatar", "Create", "Avatars", new { @class = "btn btn-sm text-dark text-shadow fw-bold btn-warning my-5" })
 
-<div class="container" style="max-height: 90vh; overflow-y: auto;">
+<div class="container text-shadow" style="max-height: 90vh; overflow-y: auto;">
     <div class="row">
         @foreach (var avatar in Model)
         {
-            <div class="col-sm-6 col-md-4 col-lg-3 mb-5 row scrollable-row ">
-                <div class="card cont-3d" style="width: 18rem;">
-                    <img src="@Url.Content(avatar.Foto)" class="card-img-top avatar-img m-auto mt-4" alt="Avatar">
-                    <div class="card-body">
-                        <h5 class="card-text">Avatar numero @avatar.AvatarId.</h5>
-                        @Html.ActionLink("Delete", "Delete", new { id = avatar.AvatarId }, new { @class = "btn btn-danger" })
+            if (avatar.AvatarId != 20)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-5 row scrollable-row ">
+                    <div class="card cont-3d" style="width: 18rem;">
+                        <img src="@Url.Content(avatar.Foto)" class="card-img-top avatar-img m-auto mt-4" alt="Avatar">
+                        <div class="card-body">
+                            <h5 class="card-text">Avatar numero @avatar.AvatarId.</h5>
+                            @Html.ActionLink("Delete", "Delete", new { id = avatar.AvatarId }, new { @class = "btn btn-danger text-shadow" })
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+
         }
     </div>
 </div>

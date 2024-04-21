@@ -1,0 +1,43 @@
+﻿@model Whisper.Models.Conversations
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Conversation";
+}
+
+<div class="login-container">
+    <div class="login-box cont-3d">
+
+        <p class="alert alert-danger">Sei sicuro di voler eliminare la conversazione con <strong>@Model.Users1.Username</strong>?? Questa azione è irreversibile.</p>
+        <div>
+            <hr />
+            <div class="dl-horizontal">
+
+                <div class="text-center mb-4">
+                    @{
+                        var user1AvatarPath = Model.Users1 != null && Model.Users1.Avatars != null
+                            ? Url.Content(Model.Users1.Avatars.Foto)
+                            : Url.Content("default-avatar-path");
+                    }
+
+                    <img src="@user1AvatarPath" alt="Avatar di @Model.Users1?.Username" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+                    <a href="@Url.Action("Details", "Users", new { id = @Model.Users1.UserId })" class="fw-bold text-decoration-none color-wine">
+                        <p><strong>@Model.Users1.Username</strong></p>
+                    </a>
+                </div>
+
+
+                @using (Html.BeginForm("Delete", "Conversations", new { id = Model.ConversationId }, FormMethod.Post, new { @class = "text-center" }))
+                {
+                    @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                <input type="submit" value="Elimina Conversazione" class="btn btn-sm btn-danger " />
+                @Html.ActionLink("Annulla", "Conversations", "Notifications", null, new { @class = "btn btn-sm btn-back ms-2" })
+
+
+            </div>
+                }
+        </div>
+    </div>
+</div>
+    </div>

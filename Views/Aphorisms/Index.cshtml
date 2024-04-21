@@ -4,7 +4,7 @@
     ViewBag.Title = "Aphorisms Index";
 }
 
-<div class="bg-warning p-2 rounded rounded-2 w-75 text-3d">
+<div class="bg-warning p-2 rounded rounded-2 w-75 text-3d text-shadow">
     <span>@Html.Partial("_aphorism")</span>
 </div>
 
@@ -12,10 +12,10 @@
 <div class="container" style="max-height: 90vh; overflow-y: auto;">
 
     <div class="my-5">
-        @Html.ActionLink("✒ Create New Aphorism", "Create", null, new { @class = "btn btn-sm text-dark btn-warning" })
+        @Html.ActionLink("✒ Create New Aphorism", "Create", null, new { @class = "btn btn-sm text-dark btn-warning text-shadow fw-bold" })
     </div>
 
-    <div class="row">
+    <div class="row text-shadow">
         @foreach (var item in Model)
         {
             <div class="col-md-4 mb-4">
@@ -24,7 +24,7 @@
                         <p class="card-text">@Html.DisplayFor(modelItem => item.Frase)</p>
                     </div>
                     <div class="card-footer">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.AphorismId }, new { @class = "btn btn-sm btn-login text-white me-2" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.AphorismId }, new { @class = "btn btn-sm btn-login me-2" })
                         @Html.ActionLink("Delete", "Delete", new { id = item.AphorismId }, new { @class = "btn btn-sm btn-danger text-white" })
                     </div>
                 </div>

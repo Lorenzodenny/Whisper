@@ -17,14 +17,14 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-lilla">
             <div class="container">
                 <img src="~/Content/Img/WhisperLogo2.jpg" alt="Logo Whisper" class="logo" />
-                @Html.ActionLink("Whisper", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Whisper", "Index", "Home", new { area = "" }, new { @class = "navbar-brand text-shadow shining" })
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Attiva/Disattiva spostamento" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @if (User.IsInRole("User"))
                 {
-                    <span class="text-white">@Html.Partial("_aphorism")</span>
+                    <span class="text-white text-shadow">@Html.Partial("_aphorism")</span>
                 }
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-end">
 
@@ -35,28 +35,28 @@
                             if (User.IsInRole("Admin"))
                             {
                                 
-                                <li class="nav-item ml-auto ">
-                                    <a href="@Url.Action("Index", "Aphorisms", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                <li class="nav-item text-shadow ml-auto ">
+                                    <a href="@Url.Action("Index", "Aphorisms", new { area = "" })" class="nav-link btn ms-2 shining">
                                         <i class="bi bi-brilliance"></i> Aforismi
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Avatars", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Index", "Avatars", new { area = "" })" class="nav-link btn ms-2 shining">
                                         <i class="bi bi-emoji-smile-upside-down"></i> Avatar
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Sponsors", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Index", "Sponsors", new { area = "" })" class="nav-link btn ms-2 shining">
                                         <i class="bi bi-camera-reels"></i> Sponsor
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="nav-link btn ms-2 shining">
                                         <i class="bi bi-house-heart"></i> Home
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Reports", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Index", "Reports", new { area = "" })" class="nav-link btn ms-2 shining">
                                         <i class="bi bi-ban"></i> Reports
                                     </a>
                                 </li>
@@ -64,8 +64,8 @@
                             }
                             if (User.IsInRole("User"))
                             {
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Friendships", "Notifications")" class="btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Friendships", "Notifications")" class="btn ms-2 shining">
                                         <i class="bi bi-people"></i>
                                         @if (ViewBag.FriendshipNotificationsCount > 0)
                                         {
@@ -73,8 +73,8 @@
                                         }
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Messages", "Notifications")" class="btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Conversations", "Notifications")" class="btn ms-2 shining">
                                         <i class="bi bi-chat-dots"></i>
                                         @if (ViewBag.MessageNotificationsCount > 0)
                                         {
@@ -82,8 +82,8 @@
                                         }
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Notifications")" class="btn ms-2 text-white">
+                                <li class="nav-item text-shadow">
+                                    <a href="@Url.Action("Index", "Notifications")" class="btn shining">
                                         <i class="bi bi-bell"></i>
                                         @if (ViewBag.GeneralNotificationsCount > 0)
                                         {
@@ -93,29 +93,29 @@
                                 </li>
 
 
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="nav-link btn ms-2 text-white">
+                                <li class="nav-item text-shadow light">
+                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="nav-link btn ms-2 shining">
                                         <i class="bi bi-house-heart"></i> Home
                                     </a>
                                 </li>
                             }
 
-                            <li class="nav-item">
-                                <a href="@Url.Action("Logout", "Auth", new { area = "" })" class="nav-link btn ms-2 text-white">
+                            <li class="nav-item text-shadow">
+                                <a href="@Url.Action("Logout", "Auth", new { area = "" })" class="nav-link btn ms-2 shining">
                                     <i class="bi bi-box-arrow-right"></i> Logout
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            <li class="nav-item text-shadow">
                                 @if (ViewBag.ShowDefaultIcon == true)
                                 {
-                                    <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn ms-2 text-white">
+                                    <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn ms-2 shining">
                                         <i class="bi bi-person-circle"></i> @ViewBag.Username
                                     </a>
                                 }
                                 else
                                 {
-                                    <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn text-white">
+                                    <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn shining">
                                         <img src="@Url.Content(ViewBag.ProfileImage)" class="avatar-img" alt="Profile Image" style="width:25px; height:25px"> @ViewBag.Username
                                     </a>
                                 }
@@ -199,7 +199,7 @@
         {
             return "sponsor-background";
         }
-        else if (controller == "Notifications" && action == "Index" || controller == "Notifications" && action == "Friendships" || controller == "Notifications" && action == "Messages")
+        else if (controller == "Notifications" && action == "Index" || controller == "Notifications" && action == "Friendships" || controller == "Notifications" && action == "Conversations" || controller == "Conversations" && action == "Index" || controller == "Conversations" && action == "Delete")
         {
             return "notifications-background";
         }

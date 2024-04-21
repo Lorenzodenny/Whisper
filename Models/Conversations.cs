@@ -22,6 +22,9 @@ namespace Whisper.Models
 
         public int User2Id { get; set; }
 
+        public bool User1Deleted { get; set; }
+        public bool User2Deleted { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notifications> Notifications { get; set; }
 

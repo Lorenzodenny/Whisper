@@ -1,15 +1,28 @@
-﻿@model Whisper.Models.Sponsors
+﻿
+@model List<Whisper.Models.Sponsors>
+
+@{
+    int sponsorIndex = 0;
+}
+
+@foreach (var sponsor in Model)
+{
+    <div class="card shadow mt-3 text-shadow sponsor-container" id="sponsor-container-@sponsorIndex" style="width: 18rem;">
+
+        @if (!string.IsNullOrEmpty(sponsor.Foto))
+        {
+            <img class="card-img-top" src="@Url.Content(sponsor.Foto)" alt="Immagine dello sponsor">
+        }
+        <div class="card-body">
+            <h5 class="card-title">@sponsor.Titolo</h5>
+            <p class="card-text">@sponsor.Description</p>
+        </div>
+    </div>
+    sponsorIndex++;
+}
 
 
-    @if (!string.IsNullOrEmpty(Model.Foto))
-    {
-        <img class="img-fluid rounded shadow shadow-lg" src="@Url.Content(Model.Foto)" alt="Sponsor" />
-    }
-    <h3 class="mt-3">@Model.Titolo</h3>
-    <p>@Model.Description</p>
-
-
-@if (Model != null)
+@if (Model != null && Model.Count == 3)
 {
     <script>
         if (typeof window.updateRandomSponsor === 'undefined') {
@@ -17,21 +30,21 @@
                 fetch('@Url.Action("RandomSponsor", "Sponsors")')
                     .then(response => response.text())
                     .then(html => {
-                        var container = document.querySelector('.sponsor-container');
-                        if(container) {
-                            container.innerHTML = html;
-                        }
+                        var sponsorHTML = html.split('<div class="card shadow mt-3 text-shadow sponsor-container"');
+                        var containers = document.querySelectorAll('.sponsor-container');
+                        containers.forEach((container, index) => {
+                            var newContent = '<div class="card shadow mt-3 text-shadow sponsor-container"' + sponsorHTML[index + 1];
+                            container.outerHTML = newContent;
+                        });
                     })
                     .catch(error => {
                         console.error('Errore nel caricamento della pubblicità:', error);
                     });
             };
 
-            // Esegui la funzione immediatamente per caricare il primo sponsor
-            window.updateRandomSponsor();
-
-            // Imposta l'intervallo per aggiornare lo sponsor ogni 30 secondi
             setInterval(window.updateRandomSponsor, 30000);
         }
     </script>
 }
+
+

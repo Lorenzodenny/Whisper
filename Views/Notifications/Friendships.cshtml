@@ -2,55 +2,62 @@
 
 <div class="container mt-3" style="max-height: 90vh; overflow-y: auto;">
 
+
     @if (!Model.Any())
     {
-        <div class="alert alert-info">Non ci sono notifiche da mostrare.</div>
+        <div class="alert alert-info text-shadow">Non ci sono notifiche da mostrare.</div>
     }
     else
     {
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <button id="markAllRead" class="btn btn-sm text-white btn-login mb-3 text-shadow"> Segna tutte come lette ✔</button>
+                @foreach (var notification in Model)
+                {
+                    <div class="card mb-3 cont-3d">
+                        <div class="card-body">
+                            <p class="d-flex align-items-center justify-content-between">
+                                <span>
+                                    @if (notification.Friendships.Users.Avatars?.Foto != null)
+                                    {
+                                        <img id="avatarPreview" src="@Url.Content(notification.Friendships.Users.Avatars.Foto)" alt="Avatar" class="user-avatar avatar-img" style="width: 50px; height: 50px;" />
+                                    }
+                                    else
+                                    {
+                                        <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
+                                    }
+                                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                                       class="text-decoration-none fw-bold color-wine ms-2 text-shadow">
+                                        @notification.Users.Username
+                                    </a>
+                                    <span class="ms-1 text-shadow">Ha iniziato a seguirti</span>
+                                </span>
+                                <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
+                                   class="btn btn-login text-white btn-sm text-shadow"
+                                   onclick="markAsRead(@notification.NotificationID, '@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })'); return false;">
+                                    📌 Vai al profilo
+                                </a>
+                            </p>
 
-        <button id="markAllRead" class="btn btn-sm text-white btn-login mb-3"> Segna tutte come lette ✔</button>
-        foreach (var notification in Model)
-        {
-            <div class="alert alert-secondary">
-                <p class="d-flex align-items-center">
-                    @if (notification.Friendships.Users.Avatars?.Foto != null)
-                    {
-                        <img id="avatarPreview" src="@Url.Content(notification.Friendships.Users.Avatars.Foto)" alt="Avatar" class="user-avatar" style="width: 50px; height: 50px;" />
-                    }
-                    else
-                    {
-                        <i id="defaultAvatarIcon" class="fa fa-user-circle fa-5x icon" style="width: 50px; height: 50px;"></i>
-                    }
-                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
-                       class="text-decoration-none fw-bold color-wine ms-2">
-                        @notification.Users.Username
-                    </a>
-                    <span class="ms-1">Ha iniziato a seguirti</span>
-                </p>
-                <p>
-                    <a href="@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })"
-                       class="btn btn-login text-white btn-sm"
-                       onclick="markAsRead(@notification.NotificationID, '@Url.Action("Details", "Users", new { id = notification.TriggeredByUserID })'); return false;">
-                        Vai al profilo
-                    </a>
-                </p>
-                <p><strong>Data:</strong> @notification.NotificationDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
-                <p>
-                    <strong>Stato:</strong>
-                    @(notification.ReadStatus.HasValue && notification.ReadStatus.Value ? "Letta ✔" : "Non Letta ❌")
-                </p>
+                            <p class="text-shadow"><strong>Data:</strong> @notification.NotificationDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p class="text-shadow">
+                                <strong>Stato:</strong>
+                                @(notification.ReadStatus.HasValue && notification.ReadStatus.Value ? "Letta ✔" : "Non Letta ❌")
+                            </p>
+                        </div>
+                    </div>
+                }
             </div>
-        }
+        </div>
     }
 </div>
 
-<script>
+            <script>
     $(document).ready(function() {
         $('#markAllRead').click(function() {
             $.post('@Url.Action("MarkAllFriendshipAsRead")', function(response) {
                 if (response.success) {
-                    location.reload(); 
+                    location.reload();
                 } else {
                     alert(response.message);
                 }
@@ -67,4 +74,4 @@
             }
         });
     }
-</script>
+            </script>

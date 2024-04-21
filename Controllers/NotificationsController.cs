@@ -94,17 +94,23 @@ namespace Whisper.Controllers
 
         // GET : Messaggi
 
-        public ActionResult Messages()
+        public ActionResult Conversations()
         {
             CleanupReadNotifications();
-            var userId = int.Parse(User.Identity.Name);
-            var userNotifications = db.Notifications
-                                      .Include(n => n.Users1)
-                                      .Where(n => n.UserID == userId && n.ConversationID.HasValue)
-                                      .OrderByDescending(n => n.NotificationDate)
+            int userId = int.Parse(User.Identity.Name);
+            ViewBag.CurrentUserId = userId;
+
+            // Ottieni solo le conversazioni che non sono state cancellate dall'utente corrente
+            var userConversations = db.Conversations
+                                      .Include(c => c.Notifications)
+                                      .Where(c => (c.User1Id == userId && !c.User1Deleted) ||
+                                                  (c.User2Id == userId && !c.User2Deleted))
                                       .ToList();
 
-            return View(userNotifications);
+            var users = db.Users.ToDictionary(u => u.UserId, u => u);
+            ViewBag.Users = users;
+
+            return View(userConversations);
         }
 
         // Metodo per aggiornare lo stato di una notifica a "letta"

@@ -4,12 +4,12 @@
     ViewBag.Title = "Delete";
 }
 
-<div class="bg-warning p-2 rounded rounded-2 w-75 text-3d">
+<div class="bg-warning p-2 rounded rounded-2 w-75 text-3d text-shadow ">
     <span>@Html.Partial("_aphorism")</span>
 </div>
 
-<div class="login-container">
-    <div class="login-box">
+<div class="login-container text-shadow ">
+    <div class="login-box cont-3d">
         <p class="alert alert-danger">Sei sicuro di voler eliminare questo aforisma? Questa azione è irreversibile.</p>
         <div>
             <hr />
@@ -29,8 +29,8 @@
                 @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Elimina Aforisma" class="btn btn-sm btn-danger text-white" />
-            @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-white" })
+            <input type="submit" value="Elimina Aforisma" class="btn btn-sm btn-danger text-shadow" />
+            @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-shadow" })
         </div>
             }
         </div>

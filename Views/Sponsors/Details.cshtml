@@ -4,8 +4,8 @@
     ViewBag.Title = "Sponsor Details";
 }
 
-<div class="login-container">
-    <div class="login-box">
+<div class="login-container text-shadow">
+    <div class="login-box cont-3d">
         <div>
 
             <dt>
@@ -45,8 +45,8 @@
             </dl>
         </div>
         <div class="form-actions no-color">
-            @Html.ActionLink("Modifica", "Edit", null, new { @class = "btn btn-sm btn-login text-white" })
-            @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 text-white" })
+            @Html.ActionLink("Edit", "Edit", new { id = Model.SponsorId }, new { @class = "btn btn-sm btn-login" })
+            @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back ms-2 " })
         </div>
 
         </div>

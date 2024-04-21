@@ -112,7 +112,11 @@ namespace Whisper.Controllers
 
             if (ModelState.IsValid)
             {
-                
+                if (!users.AvatarId.HasValue)
+                {
+                    users.AvatarId = 20;
+                }
+
                 if (users.AvatarId.HasValue)
                 {
                     users.Avatars = db.Avatars.Find(users.AvatarId.Value);
@@ -149,7 +153,7 @@ namespace Whisper.Controllers
                 db.Users.Add(users);
                 db.SaveChanges();
                 TempData["success"] = "Account creato con successo";
-                return RedirectToAction("Index", "Posts");
+                return RedirectToAction("Login", "Auth");
             }
 
             

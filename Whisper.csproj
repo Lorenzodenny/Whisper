@@ -167,6 +167,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\AvatarsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\ConversationsController.cs" />
     <Compile Include="Controllers\FriendshipsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
@@ -232,8 +233,10 @@
     <Content Include="Content\Img\CommentBackground.jpg" />
     <Content Include="Content\Img\fata.jpg" />
     <Content Include="Content\Img\NotificationBackground.jpg" />
+    <Content Include="Content\Img\ReportsBackground2.jpg" />
     <Content Include="Content\Img\sfondo.jpg" />
     <Content Include="Content\Img\SponsorBakcground.jpg" />
+    <Content Include="Content\Img\UsersBackground.jpg" />
     <Content Include="Content\Img\WhisperLogo.jpg" />
     <Content Include="Content\Img\WhisperLogo2.jpg" />
     <Content Include="favicon.ico" />
@@ -327,6 +330,12 @@
     <Content Include="Views\Avatars\Create.cshtml" />
     <Content Include="Views\Avatars\Delete.cshtml" />
     <Content Include="Views\Avatars\Index.cshtml" />
+    <Content Include="Views\Conversations\Create.cshtml" />
+    <Content Include="Views\Conversations\Delete.cshtml" />
+    <Content Include="Views\Conversations\Details.cshtml" />
+    <Content Include="Views\Conversations\Edit.cshtml" />
+    <Content Include="Views\Conversations\Index.cshtml" />
+    <Content Include="Views\Notifications\Conversations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

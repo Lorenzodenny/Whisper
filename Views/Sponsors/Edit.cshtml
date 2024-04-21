@@ -4,8 +4,8 @@
     ViewBag.Title = "Edit";
 }
 
-<div class="login-container">
-    <div class="login-box">
+<div class="login-container text-shadow">
+    <div class="login-box cont-3d">
         <h2>Modifica pubblicità <i class="bi bi-pencil-square"></i></h2>
         @using (Html.BeginForm("Edit", "Sponsors", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
         {
@@ -24,10 +24,10 @@
 
             <div class="form-group">
                 <label class="color-wine fw-bold">Descrizione Sponsor</label>
-                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", placeholder = "Inserisci una descrizione per lo sponsor...", id = "Description", maxlength = "500", style = "resize: none;" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", placeholder = "Inserisci una descrizione per lo sponsor...", id = "Description", maxlength = "120", style = "resize: none;" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 <span id="description-validation-message" class="text-danger" style="display:none;">Il campo Descrizione è obbligatorio.</span>
-                <span id="char-count" class="text-secondary">0/500</span>
+                <span id="char-count" class="text-secondary">0/120</span>
             </div>
 
             <!-- Anteprima immagine esistente -->
@@ -50,8 +50,8 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-sm btn-login text-white" />
-                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-sm btn-back text-white" })
+                <input type="submit" value="Save" class="btn btn-sm btn-login" />
+                @Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-sm btn-back" })
             </div>
         }
     </div>
@@ -93,7 +93,7 @@
 
         function updateCharCount() {
             var textLength = description.value.length;
-            charCountElement.textContent = `${textLength}/500`;
+            charCountElement.textContent = `${textLength}/120`;
         }
 
         updateCharCount();

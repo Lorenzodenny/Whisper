@@ -14,14 +14,14 @@
     @if (User.IsInRole("User"))
     {
         <p>
-            @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-warning text-dark" })
+            @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-warning text-dark text-shadow fw-bold" })
         </p>
     }
 
     @if (User.IsInRole("Admin"))
     {
         <p>
-            @Html.ActionLink("🎬 Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-warning text-dark" })
+            @Html.ActionLink("🎬 Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-warning text-dark text-shadow fw-bold" })
         </p>
     }
 
@@ -45,10 +45,10 @@
 
                             <!-- Username and Posted Time -->
                             <div class="d-flex flex-column">
-                                <a href="@Url.Action("Details", "Users", new { id = item.Post.UserId })" class="username text-decoration-none color-wine">
+                                <a href="@Url.Action("Details", "Users", new { id = item.Post.UserId })" class="username text-shadow text-decoration-none color-wine">
                                     @Html.DisplayFor(modelItem => item.Post.Users.Username)
                                 </a>
-                                <span class="text-muted" style="font-size: 0.8em;">
+                                <span class="text-muted text-shadow" style="font-size: 0.8em;">
                                     @(item.Post.PostedAt.HasValue ? item.Post.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)
                                 </span>
                             </div>
@@ -58,12 +58,12 @@
                         @if (item.Post.UserId.ToString() == loggedInUserId)
                         {
                             <div class="ms-auto">
-                                <a href="@Url.Action("Edit", "Posts", new { id = item.Post.PostId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
-                                <a href="@Url.Action("Delete", "Posts", new { id = item.Post.PostId })"><i class="fa fa-trash icon-pro"></i></a>
+                                <a href="@Url.Action("Edit", "Posts", new { id = item.Post.PostId })" class="me-2"><i class="fa fa-pencil-alt icon-pro text-shadow"></i></a>
+                                <a href="@Url.Action("Delete", "Posts", new { id = item.Post.PostId })"><i class="fa fa-trash icon-pro text-shadow"></i></a>
                             </div>
                         }
                     </div>
-                    <div class="post-content mt-2 fw-bold border-bottom border-bottom-1 py-3">
+                    <div class="post-content mt-2 fw-bold border-bottom border-bottom-1 py-3 text-shadow">
                         @Html.DisplayFor(modelItem => item.Post.Contents)
                     </div>
 
@@ -73,13 +73,13 @@
                         <div class="d-flex justify-content-between border-bottom border-bottom-1 py-3">
                             @if (item.TotalLikes > 1)
                             {
-                                <a href="#" class="likes-count text-decoration-none text-body" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#likesModal-@item.Post.PostId">
+                                <a href="#" class="likes-count text-decoration-none text-body text-shadow" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#likesModal-@item.Post.PostId">
                                     @item.TotalLikes Likes
                                 </a>
                             }
                             else if (item.TotalLikes > 0)
                             {
-                                <a href="#" class="likes-count text-decoration-none text-body" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#likesModal-@item.Post.PostId">
+                                <a href="#" class="likes-count text-decoration-none text-body text-shadow" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#likesModal-@item.Post.PostId">
                                     @item.TotalLikes Like
                                 </a>
                             }
@@ -92,7 +92,7 @@
 
                             @if (item.Comments != null && item.Comments.Count > 0)
                             {
-                                <a href="#" class="text-decoration-none text-body" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#commentsModal-@item.Post.PostId">
+                                <a href="#" class="text-decoration-none text-body text-shadow" style="opacity: 0.8;" data-bs-toggle="modal" data-bs-target="#commentsModal-@item.Post.PostId">
                                     Visualizza i commenti (@item.Comments.Count)
                                 </a>
                             }
@@ -105,9 +105,9 @@
 
                             <form action="@Url.Action("Like", "Likes")" method="post">
                                 <input type="hidden" name="postId" value="@item.Post.PostId" />
-                                <button class="like-button btn btn-sm btn-login   " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "🥰 Ti piace" : "👍 Mi Piace")</button>
+                                <button class="like-button btn btn-sm btn-login  text-shadow " data-post-id="@item.Post.PostId">@Html.Raw(item.LikedByUser ? "🥰 Ti piace" : "👍 Mi Piace")</button>
                             </form>
-                            <button type="button" class="btn btn-sm btn-login  ms-3 comment-button" data-post-id="@item.Post.PostId">🗨 Commenta</button>
+                            <button type="button" class="btn btn-sm btn-login  ms-3 comment-button text-shadow" data-post-id="@item.Post.PostId">🗨 Commenta</button>
 
 
 
@@ -118,7 +118,7 @@
                                     @Html.AntiForgeryToken()
                                     @Html.HiddenFor(_ => loggedInUserId)
                                     @Html.Hidden("PostId", item.Post.PostId)
-                                    <button type="submit" class="btn btn-sm btn-login  ms-3">🚫 Riporta</button>
+                                    <button type="submit" class="btn btn-sm btn-login text-shadow  ms-3">🚫 Riporta</button>
                                 }
                             }
 
@@ -134,7 +134,7 @@
                             @Html.Hidden("PostId", item.Post.PostId)
                             <textarea name="Contents" class="form-control my-2" placeholder="Scrivi un commento..." maxlength="500" style="resize: none;"></textarea>
 
-                            <button type="submit" class="btn btn-sm btn-login ">✔ Pubblica Commento</button>
+                            <button type="submit" class="btn btn-sm btn-login text-shadow">✔ Pubblica Commento</button>
                             <span id="char-count-@item.Post.PostId">0/500</span>
                         }
                     </div>
@@ -165,18 +165,18 @@
                                                         <i class="fa fa-user-circle fa-2x icon me-2"></i>
                                                     }
                                                     <div>
-                                                        <a href="@Url.Action("Details", "Users", new { id = comment.UserId })" class="text-decoration-none fw-bold color-wine">
+                                                        <a href="@Url.Action("Details", "Users", new { id = comment.UserId })" class="text-decoration-none fw-bold color-wine text-shadow">
                                                             @comment.Users.Username
                                                         </a>
                                                         <br>
-                                                        <span class="text-muted" style="font-size: 0.8em;">@(comment.PostedAt.HasValue ? comment.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+                                                        <span class="text-muted text-shadow" style="font-size: 0.8em;">@(comment.PostedAt.HasValue ? comment.PostedAt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
                                                     </div>
                                                 </div>
                                                 @if (comment.UserId.ToString() == loggedInUserId && User.IsInRole("User"))
                                                 {
                                                     <div class="post-actions">
-                                                        <a href="@Url.Action("Edit", "Comments", new { id = comment.CommentId })" class="me-2"><i class="fa fa-pencil-alt icon-pro"></i></a>
-                                                        <a href="@Url.Action("Delete", "Comments", new { id = comment.CommentId })"><i class="fa fa-trash icon-pro"></i></a>
+                                                        <a href="@Url.Action("Edit", "Comments", new { id = comment.CommentId })" class="me-2"><i class="fa fa-pencil-alt icon-pro text-shadow"></i></a>
+                                                        <a href="@Url.Action("Delete", "Comments", new { id = comment.CommentId })"><i class="fa fa-trash icon-pro text-shadow"></i></a>
                                                     </div>
                                                 }
                                                 @if (comment.UserId.ToString() != loggedInUserId && User.IsInRole("User"))
@@ -186,11 +186,11 @@
                                                         @Html.AntiForgeryToken()
                                                         @Html.HiddenFor(_ => loggedInUserId)
                                                         @Html.Hidden("CommentId", comment.CommentId)
-                                                        <button type="submit" class="btn btn-sm btn-login  ms-3">🚫 Riporta</button>
+                                                        <button type="submit" class="btn btn-sm btn-login text-shadow  ms-3">🚫 Riporta</button>
                                                     }
                                                 }
                                             </div>
-                                            <p class="mt-3">@comment.Contents</p>
+                                            <p class="mt-3 text-shadow">@comment.Contents</p>
                                         </div>
                                     }
                                 </div>
@@ -223,7 +223,7 @@
                                                     <i class="fa fa-user-circle fa-2x icon me-2"></i>
                                                 }
                                                 <a href="@Url.Action("Details", "Users", new { id = like.UserId })" class="text-decoration-none">
-                                                    <p class="icon-pro fw-bold">@like.Users.Username 💜</p>
+                                                    <p class="icon-pro fw-bold text-shadow">@like.Users.Username 💜</p>
                                                 </a>
                                             </div>
                                         }
@@ -239,57 +239,41 @@
             }
         </div>
         <div class="col-md-3" style="max-height: 90vh; overflow-y: auto;">
-            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded cont-3d">
+
                 @*partial view per le pubblicità random*@
                 @Html.Action("RandomSponsor", "Sponsors")
-            </div>
-            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded cont-3d">
-                @*partial view per le pubblicità random*@
-                @Html.Action("RandomSponsor", "Sponsors")
-            </div>
-            <div class="sponsor-container text-center my-3 p-3 bg-light border rounded cont-3d">
-                @*partial view per le pubblicità random*@
-                @Html.Action("RandomSponsor", "Sponsors")
-            </div>
         </div>
-    </div>
 </div>
-
-@*<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const sky = document.querySelector('.sky');
-        const numberOfStars = 100;
-
-        for (let i = 0; i < numberOfStars; i++) {
-            let star = document.createElement('div');
-            star.className = 'star';
-            const starSize = Math.random() * 3 + 1; // Grandezza random tra 1px e 3px
-            const starColor = Math.random() < 0.5 ? 'rgba(255, 255, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)'; // Colore random giallo o viola
-
-            // Applichiamo stili in linea per posizione random, grandezza e colore
-            star.style.cssText = `
-            position: absolute;
-            top: ${Math.random() * 100}%;
-            left: ${Math.random() * 100}%;
-            width: ${starSize}px;
-            height: ${starSize}px;
-            background-color: ${starColor};
-            border-radius: 50%;
-            box-shadow: 0 0 ${starSize * 2}px ${starColor};
-            animation: twinkle ${Math.random() * 2 + 1}s infinite;
-        `;
-
-            sky.appendChild(star);
-        }
-    });
-
-  
-</script>*@
-
-
 
 <script>
     $(document).ready(function () {
+        // Script per generare le stelle
+        const sky = document.querySelector('.sky');
+        if (sky) {
+            const numberOfStars = 130;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                const starSize = Math.random() * 3 + 1; // Grandezza random tra 1px e 3px
+                const starColor = Math.random() < 0.5 ? 'rgba(255, 255, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)'; // Colore random giallo o bianco
+
+                star.style.cssText = `
+                position: absolute;
+                top: ${Math.random() * 100}%;
+                left: ${Math.random() * 100}%;
+                width: ${starSize}px;
+                height: ${starSize}px;
+                background-color: ${starColor};
+                border-radius: 50%;
+                box-shadow: 0 0 ${starSize * 2}px ${starColor};
+                animation: twinkle ${Math.random() * 2 + 1}s infinite;
+            `;
+
+                sky.appendChild(star);
+            }
+        }
+
         $('.like-button').click(function (e) {
             e.preventDefault();
             var postId = $(this).data('post-id');
