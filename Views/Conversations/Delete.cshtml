@@ -3,41 +3,41 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Delete Conversation";
+
+    int currentUserId = int.Parse(User.Identity.Name);
+    int otherUserId = Model.User1Id == currentUserId ? Model.User2Id : Model.User1Id;
+
+    var otherUser = Model.User1Id == currentUserId ? Model.Users : Model.Users1;
+    var otherUserAvatarPath = otherUser != null && otherUser.Avatars != null
+                            ? Url.Content(otherUser.Avatars.Foto)
+                            : Url.Content("default-avatar-path");
 }
 
 <div class="login-container">
     <div class="login-box cont-3d">
-
-        <p class="alert alert-danger">Sei sicuro di voler eliminare la conversazione con <strong>@Model.Users1.Username</strong>?? Questa azione è irreversibile.</p>
+        <p class="alert alert-danger">
+            Sei sicuro di voler eliminare la conversazione con <strong>@ViewBag.OtherUser.Username</strong>? Questa azione è irreversibile.
+        </p>
         <div>
             <hr />
             <div class="dl-horizontal">
-
                 <div class="text-center mb-4">
-                    @{
-                        var user1AvatarPath = Model.Users1 != null && Model.Users1.Avatars != null
-                            ? Url.Content(Model.Users1.Avatars.Foto)
-                            : Url.Content("default-avatar-path");
-                    }
-
-                    <img src="@user1AvatarPath" alt="Avatar di @Model.Users1?.Username" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
-                    <a href="@Url.Action("Details", "Users", new { id = @Model.Users1.UserId })" class="fw-bold text-decoration-none color-wine">
-                        <p><strong>@Model.Users1.Username</strong></p>
+                    <img src="@Url.Content(ViewBag.OtherUser.Avatars.Foto)" alt="Avatar di @ViewBag.OtherUser.Username" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+                    <a href="@Url.Action("Details", "Users", new { id = otherUserId })" class="fw-bold text-decoration-none color-wine">
+                        <p><strong>@ViewBag.OtherUser.Username</strong></p>
                     </a>
                 </div>
-
 
                 @using (Html.BeginForm("Delete", "Conversations", new { id = Model.ConversationId }, FormMethod.Post, new { @class = "text-center" }))
                 {
                     @Html.AntiForgeryToken()
-            <div class="form-actions no-color">
-                <input type="submit" value="Elimina Conversazione" class="btn btn-sm btn-danger " />
-                @Html.ActionLink("Annulla", "Conversations", "Notifications", null, new { @class = "btn btn-sm btn-back ms-2" })
-
-
-            </div>
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Elimina Conversazione" class="btn btn-sm btn-danger" />
+                        @Html.ActionLink("Annulla", "Index", "Conversations", null, new { @class = "btn btn-sm btn-back ms-2" })
+                    </div>
                 }
+            </div>
         </div>
     </div>
+
 </div>
-    </div>

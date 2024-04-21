@@ -93,13 +93,13 @@ namespace Whisper.Controllers
 
 
 
-        // GET: Conversations/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Conversations conversation = db.Conversations.Find(id);
             if (conversation == null)
             {
@@ -107,14 +107,21 @@ namespace Whisper.Controllers
             }
 
             // Verifica che l'utente corrente sia parte della conversazione
-            int userId = int.Parse(User.Identity.Name);
-            if (conversation.User1Id != userId && conversation.User2Id != userId)
+            int currentUserId = int.Parse(User.Identity.Name);
+            if (conversation.User1Id != currentUserId && conversation.User2Id != currentUserId)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
+            // Determina l'ID dell'altro utente
+            int otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
+
+            // Passa l'altro utente alla view
+            ViewBag.OtherUser = db.Users.Find(otherUserId);
+
             return View(conversation);
         }
+
 
 
 
