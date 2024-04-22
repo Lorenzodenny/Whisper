@@ -11,9 +11,9 @@
     <div class="report-container my-3 p-3 bg-white rounded shadow">
         <div class="d-flex justify-content-between">
             <div>
-                <span class="fw-bold color-wine text-shadow">Report fatto dall'utente:</span> <span class="text-shadow">@item.Users.Username</span> 
+                <span class="fw-bold color-wine text-shadow">Report fatto dall'utente:</span> <span class="text-shadow">@item.Users.Username</span>
                 <div class="mt-3">
-                    <span class="fw-bold text-shadow color-wine">In Data:</span> <span class="text-shadow">@Html.DisplayFor(modelItem => item.ReportDate)</span> 
+                    <span class="fw-bold text-shadow color-wine">In Data:</span> <span class="text-shadow">@Html.DisplayFor(modelItem => item.ReportDate)</span>
                 </div>
             </div>
             <div class="report-actions">
@@ -32,11 +32,22 @@
                 {
                     if (item.Comments.Users.Stato != "Bannato")
                     {
-                        @Html.ActionLink("Dettagli Autore Commento", "Details", "Users", new { id = item.Comments.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
+                        @Html.ActionLink("Dettagli Autore Commento 🔍", "Details", "Users", new { id = item.Comments.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
                     }
                     else
                     {
                         @Html.ActionLink("Utente del commento Bannato 💔", "Details", "Users", new { id = item.Posts.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
+                    }
+                }
+                else if (item.MessageId.HasValue)
+                {
+                    if (item.Messages.Conversations.Users.Stato != "Bannato")
+                    {
+                        @Html.ActionLink("Dettagli Autore Messaggio 🔍", "Details", "Users", new { id = item.Messages.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Utente del commento Bannato 💔", "Details", "Users", new { id = item.Messages.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
                     }
                 }
                 @Html.ActionLink("Elimina", "Delete", new { id = item.ReportId }, new { @class = "btn btn-danger btn-sm text-shadow" })
@@ -49,13 +60,19 @@
         @if (item.PostId.HasValue)
         {
             <div class="reported-content mt-2 d-flex">
-                <p class="fw-bold color-wine text-shadow">Post riportato:</p> <span class="ms-2 text-shadow">@Html.DisplayFor(modelItem => item.Posts.Contents)</span> 
+                <p class="fw-bold color-wine text-shadow">Post riportato:</p> <span class="ms-2 text-shadow">@Html.DisplayFor(modelItem => item.Posts.Contents)</span>
             </div>
         }
         @if (item.CommentId.HasValue)
         {
-            <div class="reported-content mt-2">
+            <div class="reported-content mt-2 d-flex">
                 <p class="fw-bold color-wine text-shadow">Commento riportato:</p> <span class="ms-2 text-shadow">@Html.DisplayFor(modelItem => item.Comments.Contents)</span>
+            </div>
+        }
+        @if (item.MessageId.HasValue)
+        {
+            <div class="reported-content mt-2 d-flex">
+                <p class="fw-bold color-wine text-shadow">Messaggio riportato:</p> <span class="ms-2 text-shadow">@Html.DisplayFor(modelItem => item.Messages.Testo)</span>
             </div>
         }
 

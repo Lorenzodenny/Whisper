@@ -20,10 +20,9 @@
                             <span class="message-time" style="font-size: 0.8em; opacity: 0.8;">@message.Orario.Value.ToString("dd/MM/yyyy HH:mm")</span>
                             @if (message.UserId == int.Parse(User.Identity.Name))
                             {
-
                                 <span>
                                     <!-- Pulsante per aprire modale di Edit -->
-                                    <a href="#" class="ms-3" data-bs-toggle="modal" data-bs-target="#editModal-@message.MessageId">
+                                    <a href="#" class="ms-5" data-bs-toggle="modal" data-bs-target="#editModal-@message.MessageId">
                                         <i class="fa fa-pencil-alt icon-pro text-shadow"></i>
                                     </a>
 
@@ -32,62 +31,104 @@
                                         <i class="fa fa-trash icon-pro text-shadow"></i>
                                     </a>
                                 </span>
-                                
-
-                                <!-- Modale di Edit -->
-                                <div class="modal fade" id="editModal-@message.MessageId" tabindex="-1" aria-labelledby="editModalLabel-@message.MessageId" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel-@message.MessageId">Modifica Messaggio</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Qui puoi modificare il tuo messaggio.
-                                                <!-- Form di editazione messaggio -->
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-                                                <button type="button" class="btn btn-primary">Salva Modifiche</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Modale di Delete -->
-                                <div class="modal fade" id="deleteModal-@message.MessageId" tabindex="-1" aria-labelledby="deleteModalLabel-@message.MessageId" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteModalLabel-@message.MessageId">Cancella Messaggio</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Sei sicuro di voler cancellare questo messaggio?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Annulla</button>
-                                                <button type="button" class="btn btn-danger">Sì, Cancella</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                            }
+                            else if (message.UserId != int.Parse(User.Identity.Name))
+                            {
+                                <!-- Pulsante per aprire modale di Report -->
+                                <a href="#" class="ms-5" data-bs-toggle="modal" data-bs-target="#reportModal-@message.MessageId">
+                                    <i class="bi bi-ban text-warning text-shadow"></i>
+                                </a>
                             }
                         </div>
                         <div class="message-text">
                             @message.Testo
                         </div>
 
-                    </div>
-                   
-                }
-            }
-            else
-            {
-                <p class="no-messages">Non ci sono ancora messaggi in questa conversazione.</p>
-            }
-        </div>
+                        <!-- Modale di Edit -->
+                        <div class="modal fade" id="editModal-@message.MessageId" tabindex="-1" aria-labelledby="editModalLabel-@message.MessageId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-dark" id="editModalLabel-@message.MessageId">Modifica Messaggio</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Form per la modifica del messaggio -->
+                                        @using (Html.BeginForm("Edit", "Messages", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("messageId", message.MessageId)
+                                            <textarea class="form-control" name="newText" style="resize: none;" rows="3">@message.Testo</textarea>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-sm btn-login">Salva Modifiche</button>
+                                                <button type="button" class="btn btn-sm btn-back" data-bs-dismiss="modal">Chiudi</button>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Modale di Report -->
+                        <div class="modal fade" id="reportModal-@message.MessageId" tabindex="-1" aria-labelledby="reportModalLabel-@message.MessageId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-dark" id="reportModalLabel-@message.MessageId">Segnala Messaggio</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Form per la segnalazione del messaggio -->
+                                        @using (Html.BeginForm("Report", "Messages", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("messageId", message.MessageId)
+                                            <div class="form-group">
+                                                <label class="text-dark" for="descrizioneReport">Descrizione del problema:</label>
+                                                <textarea class="form-control" id="descrizioneReport" name="descrizioneReport" rows="3" required style="resize: none;"></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-sm btn-login">Invia Segnalazione</button>
+                                                <button type="button" class="btn btn-sm btn-back" data-bs-dismiss="modal">Chiudi</button>
+                                            </div>
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <!-- Modale di Delete -->
+                                <div class="modal fade" id="deleteModal-@message.MessageId" tabindex="-1" aria-labelledby="deleteModalLabel-@message.MessageId" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-dark" id="deleteModalLabel-@message.MessageId">Cancella Messaggio</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-dark">
+                                                Sei sicuro di voler cancellare questo messaggio?
+                                            </div>
+                                            <div class="modal-footer">
+                                                @using (Html.BeginForm("Delete", "Messages", FormMethod.Post))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("messageId", message.MessageId)
+                                                    <button type="submit" class="btn btn-sm btn-danger">Sì, Cancella</button>
+                                                    <button type="button" class="btn btn-sm btn-back" data-bs-dismiss="modal">No, Annulla</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                                        }
+                                        else
+                                        {
+                                        <p class="no-messages">Non ci sono ancora messaggi in questa conversazione.</p>
+                                        }
+                                    </div>
         <div class="message-form">
             @using (Html.BeginForm("SendMessage", "Messages", FormMethod.Post))
             {

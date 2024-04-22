@@ -96,6 +96,26 @@ namespace Whisper.Controllers
             return RedirectToAction("Details", "Conversations", new { id = message.ConversationId });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Report(int messageId, string descrizioneReport)
+        {
+            var report = new Reports
+            {
+                MessageId = messageId,
+                ReportedByUserId = int.Parse(User.Identity.Name),
+                DescrizioneReport = descrizioneReport,
+                ReportDate = DateTime.Now
+            };
+
+            db.Reports.Add(report);
+            db.SaveChanges();
+
+            // Reindirizza alla conversazione o ritorna un risultato appropriato
+            return RedirectToAction("Details", "Conversations", new { id = db.Messages.Find(messageId)?.ConversationId });
+        }
+
+
 
     }
 }
