@@ -203,6 +203,10 @@
         {
             return "notifications-background";
         }
+        else if (controller == "Conversations" && action == "Index" || controller == "Conversations" && action == "Delete" || controller == "Conversations" && action == "Details")
+        {
+            return "notifications-background";
+        }
         else if (controller == "Avatars" && action == "Index" || controller == "Avatars" && action == "Create" || controller == "Avatars" && action == "Delete")
         {
             return "avatars-background";

@@ -12,7 +12,7 @@ namespace Whisper.Models
         public int AphorismId { get; set; }
 
         [Required]
-        [StringLength(500, ErrorMessage = "Il contenuto può essere lungo al massimo 500 caratteri.")]
+        [StringLength(70, ErrorMessage = "Il contenuto può essere lungo al massimo 70 caratteri.")]
         public string Frase { get; set; }
     }
 }

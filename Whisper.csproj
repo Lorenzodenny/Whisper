@@ -171,6 +171,7 @@
     <Compile Include="Controllers\FriendshipsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\Avatars.cs" />
     <Compile Include="Models\Comments.cs" />
     <Compile Include="Models\Conversations.cs" />
+    <Compile Include="Models\ConversationViewModel.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\Emoticons.cs" />
     <Compile Include="Models\Friendships.cs" />
@@ -236,6 +238,7 @@
     <Content Include="Content\Img\ReportsBackground2.jpg" />
     <Content Include="Content\Img\sfondo.jpg" />
     <Content Include="Content\Img\SponsorBakcground.jpg" />
+    <Content Include="Content\Img\SponsorsssBackground.jpg" />
     <Content Include="Content\Img\UsersBackground.jpg" />
     <Content Include="Content\Img\WhisperLogo.jpg" />
     <Content Include="Content\Img\WhisperLogo2.jpg" />
@@ -341,6 +344,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Uploads\" />
     <Folder Include="Views\Likes\" />
+    <Folder Include="Views\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

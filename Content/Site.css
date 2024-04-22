@@ -324,7 +324,7 @@ body, html {
 
 .sponsor-background {
     min-height: 100vh;
-    background-image: url('img/sponsorbakcground.jpg');
+    background-image: url('img/sponsorsssbackground.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -631,3 +631,83 @@ body, html {
     .shining:hover {
         color: #ffa200;
     }
+
+
+.btn-secondary {
+    background-color: #ffa200;
+}
+
+    .btn-secondary:hover {
+        background-color: #ffb73a;
+    }
+
+.chat-container {
+    max-width: none; /* Rimuovi se vuoi una larghezza massima */
+    margin: auto;
+    padding: 0; /* Assicurati che non ci siano padding interni */
+    max-width: 50%;
+   
+}
+.chat-box {
+    border: none; /* Rimuovi se preferisci avere un bordo */
+    background-color: #f9f9f9;
+}
+.messages-list {
+    overflow-y: auto; /* Mantiene le scrollbar se la lista è troppo lunga */
+    padding: 0 20px; /* Spazio dai bordi del contenitore */
+    max-height: 400px;
+}
+.message-sent,
+.message-received {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: inline-block; /* I messaggi sono ora blocchi in linea */
+    max-width: 80%; /* Massima larghezza di un messaggio */
+    word-wrap: break-word; /* Va a capo se il messaggio è troppo lungo */
+}
+.message-sent {
+    background-color: #ffa200;
+    color: white;
+    text-align: left;
+    float: right; /* Allinea i messaggi inviati a destra */
+    clear: both; /* Evita sovrapposizioni con messaggi precedenti */
+}
+.message-received {
+    background-color: #7f347f;
+    color: white;
+    text-align: left;
+    float: left; /* Allinea i messaggi ricevuti a sinistra */
+    clear: both; /* Evita sovrapposizioni con messaggi precedenti */
+}
+    .message-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+.message-text {
+    word-wrap: break-word;
+    max-width: 80%; /* Imposta una larghezza massima per i messaggi */
+    margin: 0 auto; /* Centra il messaggio orizzontalmente */
+}
+
+    .no-messages {
+        text-align: center;
+    }
+    .message-form .form-group {
+        margin-bottom: 10px;
+    }
+    .message-form .message-text {
+        width: 100%; /* Full width of the form */
+    }
+    
+    .button-central{
+        margin: 0 0 0 10%;
+        padding-bottom: 5%;
+    }
+
+    .bg-lilla{
+        background-color: #c08bc0;
+    }
+
+   

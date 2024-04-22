@@ -17,8 +17,10 @@ namespace Whisper.Controllers
         // GET: Aphorisms
         public ActionResult Index()
         {
-            return View(db.Aphorisms.ToList());
+            var aphorisms = db.Aphorisms.OrderByDescending(a => a.AphorismId).ToList();
+            return View(aphorisms);
         }
+
 
         public ActionResult GetRandomAphorism()
         {

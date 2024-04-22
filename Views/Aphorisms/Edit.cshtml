@@ -24,9 +24,9 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Frase, htmlAttributes: new { @class = "control-label col-md-2 fw-bold color-wine" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Frase, new { @class = "form-control-area", @rows = "5", @placeholder = "Aggiungi un aforisma?", @id = "post-contents", @maxlength = "500" })
+                        @Html.TextAreaFor(model => model.Frase, new { @class = "form-control-area", @rows = "5", @placeholder = "Aggiungi un aforisma?", @id = "post-contents", @maxlength = "70" })
                         @Html.ValidationMessageFor(model => model.Frase, "", new { @class = "text-danger" })
-                        <span id="post-char-count" class="text-secondary">0/500</span>
+                        <span id="post-char-count" class="text-secondary">0/70</span>
 
                     </div>
                 </div>
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Funzione per aggiornare il conteggio dei caratteri
     function updatePostCharCount() {
         var textLength = postContents.value.length;
-        postCharCountElement.textContent = `${textLength}/500`;
+        postCharCountElement.textContent = `${textLength}/70`;
     }
 
     // Aggiorna il conteggio dei caratteri all'avvio

@@ -34,15 +34,11 @@ namespace Whisper.Controllers
 
             if (existingConversation != null)
             {
-                // Resetta il flag di eliminazione se la conversazione esisteva già
-                if ((existingConversation.User1Id == user1Id && existingConversation.User1Deleted) ||
-                    (existingConversation.User2Id == user1Id && existingConversation.User2Deleted))
-                {
-                    existingConversation.User1Deleted = existingConversation.User1Id == user1Id ? false : existingConversation.User1Deleted;
-                    existingConversation.User2Deleted = existingConversation.User2Id == user1Id ? false : existingConversation.User2Deleted;
-                    db.Entry(existingConversation).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+                // Assicurati che la conversazione sia visibile per entrambi gli utenti
+                existingConversation.User1Deleted = false;
+                existingConversation.User2Deleted = false;
+                db.Entry(existingConversation).State = EntityState.Modified;
+                db.SaveChanges();
             }
             else
             {
@@ -152,6 +148,14 @@ namespace Whisper.Controllers
             // Elimina la conversazione se entrambi gli utenti hanno impostato il flag di eliminazione
             if (conversation.User1Deleted && conversation.User2Deleted)
             {
+                // Prima elimina tutti i messaggi correlati a questa conversazione
+                var messagesToDelete = db.Messages.Where(m => m.ConversationId == id).ToList();
+                foreach (var message in messagesToDelete)
+                {
+                    db.Messages.Remove(message);
+                }
+
+
                 // Prima elimina tutte le notifiche correlate a questa conversazione
                 var notificationsToDelete = db.Notifications.Where(n => n.ConversationID == id).ToList();
                 foreach (var notification in notificationsToDelete)
@@ -173,7 +177,36 @@ namespace Whisper.Controllers
 
 
 
+        // Conversazione specifica
+        public ActionResult Details(int id)
+        {
+            int currentUserId = int.Parse(User.Identity.Name); // Assicurati che questo sia effettivamente l'ID dell'utente
+            var conversation = db.Conversations
+                .Include(c => c.Messages)
+                .FirstOrDefault(c => c.ConversationId == id);
 
+            if (conversation == null)
+            {
+                return HttpNotFound("Conversazione non trovata o non hai il permesso di visualizzarla.");
+            }
+
+            // Identificare l'altro utente
+            int otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
+            var otherUser = db.Users.Find(otherUserId);
+            if (otherUser == null)
+            {
+                return HttpNotFound("L'altro utente nella conversazione non è stato trovato.");
+            }
+
+            var viewModel = new ConversationViewModel
+            {
+                Conversation = conversation,
+                Messages = conversation.Messages.ToList(),
+                OtherUser = otherUser 
+            };
+
+            return View(viewModel);
+        }
 
         protected override void Dispose(bool disposing)
         {

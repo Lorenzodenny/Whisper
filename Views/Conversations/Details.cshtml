@@ -1,42 +1,108 @@
-﻿@model Whisper.Models.Conversations
+﻿@model Whisper.Models.ConversationViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Conversazione";
 }
 
-<h2>Details</h2>
+<div class="chat-container text-shadow">
+    <div class="chat-box rounded rounded-3 cont-3d mt-4">
+        <div class="d-flex align-items-center justify-content-center pt-3 bg-lilla pb-3 text-white" style="margin-bottom: 20px;">
+            <img src="@Url.Content(Model.OtherUser.Avatars.Foto)" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px; margin-right: 15px;">
+            <h2><a class="username text-shadow text-decoration-none color-wine" href="@Url.Action("Details", "Users", new { id = Model.OtherUser.UserId })">@Model.OtherUser.Username</a></h2>
+        </div>
+        <div class="messages-list">
+            @if (Model.Messages.Any())
+            {
+                foreach (var message in Model.Messages)
+                {
+                    <div class="@(message.UserId == int.Parse(User.Identity.Name) ? "message-sent" : "message-received")">
+                        <div class="message-info d-flex justify-content-between align-items-center">
+                            <span class="message-time" style="font-size: 0.8em; opacity: 0.8;">@message.Orario.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                            @if (message.UserId == int.Parse(User.Identity.Name))
+                            {
 
-<div>
-    <h4>Conversations</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Users.Username)
-        </dt>
+                                <span>
+                                    <!-- Pulsante per aprire modale di Edit -->
+                                    <a href="#" class="ms-3" data-bs-toggle="modal" data-bs-target="#editModal-@message.MessageId">
+                                        <i class="fa fa-pencil-alt icon-pro text-shadow"></i>
+                                    </a>
 
-        <dd>
-            @Html.DisplayFor(model => model.Users.Username)
-        </dd>
+                                    <!-- Pulsante per aprire modale di Delete -->
+                                    <a href="#" class="ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal-@message.MessageId">
+                                        <i class="fa fa-trash icon-pro text-shadow"></i>
+                                    </a>
+                                </span>
+                                
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Users1.Username)
-        </dt>
+                                <!-- Modale di Edit -->
+                                <div class="modal fade" id="editModal-@message.MessageId" tabindex="-1" aria-labelledby="editModalLabel-@message.MessageId" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel-@message.MessageId">Modifica Messaggio</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Qui puoi modificare il tuo messaggio.
+                                                <!-- Form di editazione messaggio -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                                                <button type="button" class="btn btn-primary">Salva Modifiche</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Users1.Username)
-        </dd>
+                                <!-- Modale di Delete -->
+                                <div class="modal fade" id="deleteModal-@message.MessageId" tabindex="-1" aria-labelledby="deleteModalLabel-@message.MessageId" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel-@message.MessageId">Cancella Messaggio</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Sei sicuro di voler cancellare questo messaggio?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Annulla</button>
+                                                <button type="button" class="btn btn-danger">Sì, Cancella</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.User1Id)
-        </dt>
+                            }
+                        </div>
+                        <div class="message-text">
+                            @message.Testo
+                        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.User1Id)
-        </dd>
+                    </div>
+                   
+                }
+            }
+            else
+            {
+                <p class="no-messages">Non ci sono ancora messaggi in questa conversazione.</p>
+            }
+        </div>
+        <div class="message-form">
+            @using (Html.BeginForm("SendMessage", "Messages", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("conversationId", Model.Conversation.ConversationId)
+                <div class="form-group">
+                    <textarea name="messageText" class="form-control message-text mt-5" rows="3" placeholder="Scrivi un messaggio..." style="resize: none;"></textarea>
+                </div>
+                <div class="button-central">
+                    <button type="submit" class="btn btn-login btn-sm"><i class="bi bi-send"></i> Invia</button>
+                </div>
 
-    </dl>
+            }
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ConversationId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+}
+
