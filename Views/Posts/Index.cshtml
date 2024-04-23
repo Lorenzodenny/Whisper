@@ -54,6 +54,20 @@
                             </div>
                         </div>
 
+                        <!-- pulsante "Inizia Chat" -->
+
+                        @if (item.Post.UserId.ToString() != loggedInUserId)
+                        {
+                        
+                        using (Html.BeginForm("Create", "Conversations", FormMethod.Post))
+                        {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("user2Id", item.Post.UserId) 
+                        <button type="submit" class="btn btn-sm btn-login text-shadow me-2">🗨 Inizia Chat</button>
+                        }
+                        }
+
+
                         <!-- Post Actions for the Author -->
                         @if (item.Post.UserId.ToString() == loggedInUserId)
                         {

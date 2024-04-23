@@ -100,17 +100,39 @@ namespace Whisper.Controllers
             int userId = int.Parse(User.Identity.Name);
             ViewBag.CurrentUserId = userId;
 
+            // Ottieni il conteggio dei messaggi non letti per l'utente corrente
+            ViewBag.UnreadMessagesCount = db.Messages
+                                            .Count(m => m.Conversations.User1Id == userId && m.ReadStatus == false && !m.Conversations.User1Deleted ||
+                                                        m.Conversations.User2Id == userId && m.ReadStatus == false && !m.Conversations.User2Deleted);
+
             // Ottieni solo le conversazioni che non sono state cancellate dall'utente corrente
             var userConversations = db.Conversations
-                                      .Include(c => c.Notifications)
-                                      .Where(c => (c.User1Id == userId && !c.User1Deleted) ||
-                                                  (c.User2Id == userId && !c.User2Deleted))
-                                      .ToList();
+                                       .Include(c => c.Notifications)
+                                       .Where(c => (c.User1Id == userId && !c.User1Deleted) ||
+                                                   (c.User2Id == userId && !c.User2Deleted))
+                                       .ToList();
 
             var users = db.Users.ToDictionary(u => u.UserId, u => u);
             ViewBag.Users = users;
 
+            // Crea un dizionario per tenere traccia dei conteggi dei messaggi non letti per ciascuna conversazione
+            var unreadMessageCounts = userConversations.ToDictionary(
+                c => c.ConversationId,
+                c => GetUnreadMessagesCountForConversation(userId, c.ConversationId));
+
+            // Passa questo dizionario alla vista
+            ViewBag.UnreadMessageCounts = unreadMessageCounts;
+
             return View(userConversations);
+        }
+
+        // count dei messaggi non letti 
+
+        private int GetUnreadMessagesCountForConversation(int userId, int conversationId)
+        {
+            return db.Messages.Count(m => m.ConversationId == conversationId &&
+                                          m.UserId != userId &&
+                                          !m.ReadStatus);
         }
 
         // Metodo per aggiornare lo stato di una notifica a "letta"
@@ -126,6 +148,33 @@ namespace Whisper.Controllers
             }
             return Json(new { success = false, message = "Notifica non trovata o utente non autorizzato." });
         }
+
+        [HttpPost]
+        public ActionResult MarkMessageAsRead(int notificationId)
+        {
+            var notification = db.Notifications.Find(notificationId);
+            if (notification != null && notification.UserID.ToString() == User.Identity.Name)
+            {
+                // Trova tutti i messaggi non letti di questa conversazione per l'utente attuale
+                var messagesToUpdate = db.Messages
+                                         .Where(m => m.ConversationId == notification.ConversationID &&
+                                                     m.UserId != notification.UserID &&
+                                                     !m.ReadStatus).ToList();
+
+                // Segna tutti i messaggi trovati come letti
+                foreach (var message in messagesToUpdate)
+                {
+                    message.ReadStatus = true;
+                }
+
+                // Aggiorna lo stato della notifica
+                notification.ReadStatus = true;
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false, message = "Notifica non trovata o utente non autorizzato." });
+        }
+
 
         // Pulizia delle notifiche lette più vecchie di 24 ore
         private void CleanupReadNotifications()

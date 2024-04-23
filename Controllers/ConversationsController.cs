@@ -48,35 +48,10 @@ namespace Whisper.Controllers
                     User1Id = user1Id,
                     User2Id = user2Id,
                     User1Deleted = false,
-                    User2Deleted = false
+                    User2Deleted = true
                 };
                 db.Conversations.Add(existingConversation);
                 db.SaveChanges();
-            }
-
-            // Cerca una notifica esistente e la resetta, oppure crea una nuova
-            var notification = db.Notifications.FirstOrDefault(n =>
-                n.ConversationID == existingConversation.ConversationId && n.UserID == user2Id);
-
-            if (notification != null)
-            {
-                // Resetta la notifica esistente a "non letta"
-                notification.ReadStatus = false;
-                notification.NotificationDate = DateTime.Now; // Aggiorna la data della notifica
-            }
-            else
-            {
-                // Crea una nuova notifica
-                notification = new Notifications
-                {
-                    UserID = user2Id,
-                    TriggeredByUserID = user1Id,
-                    ConversationID = existingConversation.ConversationId,
-                    NotificationType = "Message",
-                    ReadStatus = false,
-                    NotificationDate = DateTime.Now
-                };
-                db.Notifications.Add(notification);
             }
 
             db.SaveChanges();

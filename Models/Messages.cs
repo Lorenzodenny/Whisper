@@ -26,6 +26,8 @@ namespace Whisper.Models
 
         public DateTime? Orario { get; set; }
 
+        public bool ReadStatus { get; set; }
+
         public virtual Conversations Conversations { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

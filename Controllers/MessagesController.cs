@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -18,32 +19,76 @@ namespace Whisper.Controllers
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SendMessage(int conversationId, string messageText)
         {
-            // Assicurati che l'ID della conversazione e il testo del messaggio siano validi
             if (ModelState.IsValid)
             {
-                // Crea e salva il nuovo messaggio nel database
+                var currentUserId = int.Parse(User.Identity.Name);
                 var message = new Messages
                 {
                     ConversationId = conversationId,
-                    UserId = int.Parse(User.Identity.Name),
+                    UserId = currentUserId,
                     Testo = messageText,
-                    Orario = DateTime.Now
+                    Orario = DateTime.Now,
+                    ReadStatus = false // Imposta il messaggio come non letto
                 };
-
                 db.Messages.Add(message);
                 db.SaveChanges();
 
-                // Reindirizza alla vista dei dettagli per mostrare il nuovo messaggio
+                var conversation = db.Conversations.Find(conversationId);
+                if (conversation != null)
+                {
+                    var otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
+
+                    if (conversation.User1Id == currentUserId && conversation.User2Deleted)
+                    {
+                        conversation.User2Deleted = false;
+                    }
+                    else if (conversation.User2Id == currentUserId && conversation.User1Deleted)
+                    {
+                        conversation.User1Deleted = false;
+                    }
+
+                    db.Entry(conversation).State = EntityState.Modified;
+
+                    // Gestisci la notifica
+                    var notification = db.Notifications.FirstOrDefault(n =>
+                        n.ConversationID == conversationId && n.UserID == otherUserId);
+
+                    if (notification == null)
+                    {
+                        // Crea una nuova notifica se non esiste
+                        notification = new Notifications
+                        {
+                            UserID = otherUserId,
+                            TriggeredByUserID = currentUserId,
+                            ConversationID = conversationId,
+                            NotificationType = "Message",
+                            ReadStatus = false,
+                            NotificationDate = DateTime.Now
+                        };
+                        db.Notifications.Add(notification);
+                    }
+                    else if (notification.ReadStatus.HasValue && notification.ReadStatus.Value)
+                    {
+                        // Aggiorna la notifica esistente se è stata già letta
+                        notification.ReadStatus = false;
+                        notification.NotificationDate = DateTime.Now;
+                        db.Entry(notification).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
                 return RedirectToAction("Details", "Conversations", new { id = conversationId });
             }
 
-            // Se ci sono problemi con il modello, ritorna alla vista dei dettagli
             return RedirectToAction("Details", "Conversations", new { id = conversationId });
         }
+
 
 
         [HttpPost]
@@ -71,30 +116,38 @@ namespace Whisper.Controllers
             return RedirectToAction("Details", "Conversations", new { id = message.ConversationId });
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int messageId)
         {
-            // Trova il messaggio nel database
+            int currentUserId = int.Parse(User.Identity.Name);
             var message = db.Messages.Find(messageId);
             if (message == null)
             {
                 return HttpNotFound();
             }
-
-            // Verifica se l'utente corrente ha il permesso di cancellare il messaggio
-            if (message.UserId != int.Parse(User.Identity.Name))
+            if (message.UserId != currentUserId)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
-            // Rimuovi il messaggio dal database
             db.Messages.Remove(message);
             db.SaveChanges();
 
-            // Reindirizza alla conversazione o ritorna un risultato appropriato
+            var remainingMessages = db.Messages.Any(m => m.ConversationId == message.ConversationId);
+            if (!remainingMessages) // Se non ci sono altri messaggi nella conversazione
+            {
+                var notifications = db.Notifications.Where(n => n.ConversationID == message.ConversationId && n.UserID != currentUserId);
+                db.Notifications.RemoveRange(notifications);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Details", "Conversations", new { id = message.ConversationId });
         }
+
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -47,8 +47,16 @@
                         </a>
                     </div>
 
+
                     @if (notification != null && !notification.ReadStatus.Value)
                     {
+
+                        int unreadCountForThisConversation = ViewBag.UnreadMessageCounts[conversation.ConversationId];
+
+                        if (unreadCountForThisConversation > 0)
+                        {
+                            <span class="notification-count">Messaggi ricevuti: @unreadCountForThisConversation</span>
+                        }
                         <span>
                             <a href="@Url.Action("Details", "Conversations", new { id = conversation.ConversationId })"
                                class="btn btn-login btn-sm"
@@ -59,10 +67,10 @@
                             <a href="@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })"
                                class="btn btn-danger"
                                onclick="markAsRead(@notification.NotificationID, '@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })'); return false;">
-                                Elimina e segna come letta
+                                Elimina
                             </a>
                         </span>
-                        
+
                     }
                     else
                     {
@@ -77,7 +85,7 @@
                                 Elimina
                             </a>
                         </span>
-                        
+
                     }
                 </div>
             </div>
@@ -127,7 +135,7 @@
 
     // Funzione globale per marcare le notifiche come lette e gestire il reindirizzamento
     window.markAsRead = function(notificationId, redirectTo) {
-        $.post('@Url.Action("MarkNotificationAsRead")', { notificationId: notificationId }, function(response) {
+        $.post('@Url.Action("MarkMessageAsRead")', { notificationId: notificationId }, function(response) {
             if (response.success) {
                 window.location.href = redirectTo;
             } else {

@@ -25,6 +25,7 @@ namespace Whisper.Filters
 
                     filterContext.Controller.ViewBag.GeneralNotificationsCount = db.Notifications
                         .Count(n => (n.LikeID.HasValue || n.CommentID.HasValue || n.PostID.HasValue) && n.ReadStatus == false && n.UserID == userId);
+
                 }
             }
             base.OnActionExecuted(filterContext);

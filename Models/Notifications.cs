@@ -25,6 +25,7 @@ namespace Whisper.Models
 
         public int? LikeID { get; set; }
 
+        public int? MessageID { get; set; }
 
         [StringLength(255)]
         public string NotificationType { get; set; }
@@ -46,5 +47,7 @@ namespace Whisper.Models
         public virtual Users Users1 { get; set; }
 
         public virtual Likes Like { get; set; }
+
+        public virtual Messages Message { get; set; }
     }
 }

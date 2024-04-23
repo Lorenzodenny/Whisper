@@ -710,4 +710,16 @@ body, html {
         background-color: #c08bc0;
     }
 
-   
+.notification-counts {
+    display: inline-block;
+    min-width: 20px;
+    padding: 3px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #dc3545;
+    border-radius: 10px;
+}
