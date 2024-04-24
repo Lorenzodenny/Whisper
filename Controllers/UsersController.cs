@@ -363,7 +363,9 @@ namespace Whisper.Controllers
                 return RedirectToAction("Delete", new { id = id });
             }
 
-            db.Users.Remove(user);
+            user.IsDeleted = true;
+            db.Entry(user).State = EntityState.Modified;
+            TempData["success"] = "Profilo eliminato correttamente. Arrivederci 💔";
             db.SaveChanges();
 
             // Se l'utente che viene eliminato è quello attualmente loggato, effettuare il logout

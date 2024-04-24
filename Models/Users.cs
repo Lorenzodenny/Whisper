@@ -67,6 +67,8 @@ namespace Whisper.Models
 
         public int? AvatarId { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comments> Comments { get; set; }
 

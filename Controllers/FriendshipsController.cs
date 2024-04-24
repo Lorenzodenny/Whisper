@@ -19,6 +19,15 @@ namespace Whisper.Controllers
         public ActionResult Follow(int userId)
         {
             var followerId = int.Parse(User.Identity.Name);
+
+            // Controllo utente Inattivo
+            var userToFollow = db.Users.FirstOrDefault(u => u.UserId == userId);
+            if (userToFollow != null && userToFollow.IsDeleted)
+            {
+                TempData["userUnable"] = "L'utente che stai cercando di seguire è temporaneamente inattivo.";
+                return RedirectToAction("Details", "Users", new { id = userId });
+            }
+
             var existingFriendship = db.Friendships.Any(f => f.UserMittenteId == followerId && f.UserRiceventeId == userId);
 
             if (!existingFriendship)

@@ -13,6 +13,13 @@
     </div>
 }
 
+@if (TempData["userUnable"] != null)
+{
+    <div class="alert alert-dark alert-dismissible fade show" role="alert">
+        <strong class="text-danger">Utente Inattivo!</strong>👽 @TempData["userUnable"].ToString()
+    </div>
+}
+
 <script>
     window.setTimeout(function () {
         $(".alert-dismissible").fadeTo(500, 0).slideUp(500, function () {

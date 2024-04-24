@@ -27,6 +27,17 @@ namespace Whisper.Controllers
             if (ModelState.IsValid)
             {
                 var currentUserId = int.Parse(User.Identity.Name);
+                var conversation = db.Conversations.Find(conversationId);
+
+                // Controlla se l'altra parte della conversazione ha eseguito il soft delete
+                var otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
+                var otherUser = db.Users.Find(otherUserId);
+                if (otherUser.IsDeleted)
+                {
+                    TempData["userUnable"] = "Non è possibile inviare messaggi perché l'utente è temporaneamente inattivo.";
+                    return RedirectToAction("Details", "Conversations", new { id = conversationId });
+                }
+
                 var message = new Messages
                 {
                     ConversationId = conversationId,
@@ -38,10 +49,10 @@ namespace Whisper.Controllers
                 db.Messages.Add(message);
                 db.SaveChanges();
 
-                var conversation = db.Conversations.Find(conversationId);
+               
                 if (conversation != null)
                 {
-                    var otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
+                    otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
 
                     if (conversation.User1Id == currentUserId && conversation.User2Deleted)
                     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,6 +53,12 @@ namespace Whisper.Controllers
 
                 return RedirectToAction("Login");
             }
+            else if (loggedUser.IsDeleted)
+            {
+                TempData["restore"] = true;
+                TempData["userId"] = loggedUser.UserId;
+                return RedirectToAction("Login");
+            }
 
             FormsAuthentication.SetAuthCookie(loggedUser.UserId.ToString(), true);
 
@@ -67,6 +74,25 @@ namespace Whisper.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RestoreAccount(int userId)
+        {
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                TempData["error"] = "Utente non trovato.";
+                return RedirectToAction("Login");
+            }
+
+            user.IsDeleted = false;
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
+
+            TempData["success"] = "Account riattivato con successo.";
+            FormsAuthentication.SetAuthCookie(userId.ToString(), true);
+            return RedirectToAction("Index", "Posts"); 
+        }
 
 
         public ActionResult Logout()

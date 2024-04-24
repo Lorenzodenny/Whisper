@@ -32,6 +32,38 @@
             Non sei ancora registrato? <a href="@Url.Action("Create", "Users")">Registrati qui</a>
         </div>
     </div>
+    @if (TempData["restore"] != null && (bool)TempData["restore"])
+    {
+        <div id="restoreModal" class="modal text-shadow cont-3d" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Account Eliminato</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Account precedentemente eliminato. Vuoi riattivarlo?</p>
+                    </div>
+                    <div class="modal-footer">
+                        @using (Html.BeginForm("RestoreAccount", "Auth", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("userId", TempData["userId"])
+                            <button type="submit" class="btn btn-login btn-sm">Riattiva Account</button>
+                        }
+                          <button type="button" class="btn btn-sm btn-back" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                // Mostra la modale al caricamento della pagina
+                $('#restoreModal').modal('show');
+            });
+        </script>
+    }
 </div>
 
 
