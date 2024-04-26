@@ -27,12 +27,13 @@ e accedere controllando email e password.
 A) Scrivere e gestire i propri post (inserire, modificare o cancellare).
 B) Segnalare nel caso di altri utenti post e commenti.
 C) Commentare e mettere "like" ai post.
+D) Iniziare una nuova chat con un altro utente.
 
-3) Visualizzare i profili altrui per vedere tutti i post pubblicati da questi utenti con la possibilità di seguirli ( " origliare " stile Follow ) o di iniziare una chat privata.
+4) Visualizzare i profili altrui per vedere tutti i post pubblicati da questi utenti con la possibilità di seguirli ( " origliare " stile Follow ) o di iniziare una chat privata.
    
-4) Entrare nel proprio profilo per visualizzare le amicizie e i propri post, e avere la possibilità di modificare o disattivare il proprio profilo.
+5) Entrare nel proprio profilo per visualizzare le amicizie e i propri post, e avere la possibilità di modificare o disattivare il proprio profilo.
    
-5) Notifiche: Le notifiche sono organizzate in tre categorie:
+6) Notifiche: Le notifiche sono organizzate in tre categorie:
 A) Notifiche di post, commenti e "like" sotto l'icona della campanella.
 B) Notifiche di amicizie ricevute sotto l'icona dei due omini.
 C) Notifiche di chat e messaggi sotto l'icona del fumetto.
