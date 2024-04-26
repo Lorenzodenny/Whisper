@@ -40,3 +40,5 @@ C) Notifiche di chat e messaggi sotto l'icona del fumetto.
  - Tecnologie Utilizzate:
 Entity Framework: Utilizzato per il mapping e la gestione della base dati relazionale.
 MVC Pattern: Model per la logica dei dati, View per l'interfaccia utente e Controller per il controllo dell'applicazione.
+
+- Database dell'applicazione presente nella repository https://github.com/Lorenzodenny/Database-Whisper
