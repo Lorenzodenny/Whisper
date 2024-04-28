@@ -24,7 +24,7 @@
                 </button>
                 @if (User.IsInRole("User"))
                 {
-                    <span class="text-white text-shadow">@Html.Partial("_aphorism")</span>
+                    <span class="text-white text-shadow visual">@Html.Partial("_aphorism")</span>
                 }
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-end">
 
@@ -36,28 +36,28 @@
                             {
                                 
                                 <li class="nav-item text-shadow ml-auto ">
-                                    <a href="@Url.Action("Index", "Aphorisms", new { area = "" })" class="nav-link btn ms-2 shining">
-                                        <i class="bi bi-brilliance"></i> Aforismi
+                                    <a href="@Url.Action("Index", "Aphorisms", new { area = "" })" class="btn ms-2 shining">
+                                        <i class="bi bi-brilliance"></i> <span class="icon-none">Aforismi</span>
                                     </a>
                                 </li>
                                 <li class="nav-item text-shadow">
-                                    <a href="@Url.Action("Index", "Avatars", new { area = "" })" class="nav-link btn ms-2 shining">
-                                        <i class="bi bi-emoji-smile-upside-down"></i> Avatar
+                                    <a href="@Url.Action("Index", "Avatars", new { area = "" })" class="btn ms-2 shining">
+                                        <i class="bi bi-emoji-smile-upside-down"></i> <span class="icon-none">Avatar</span>
                                     </a>
                                 </li>
                                 <li class="nav-item text-shadow">
-                                    <a href="@Url.Action("Index", "Sponsors", new { area = "" })" class="nav-link btn ms-2 shining">
-                                        <i class="bi bi-camera-reels"></i> Sponsor
+                                    <a href="@Url.Action("Index", "Sponsors", new { area = "" })" class="btn ms-2 shining">
+                                        <i class="bi bi-camera-reels"></i> <span class="icon-none">Sponsor</span>
                                     </a>
                                 </li>
                                 <li class="nav-item text-shadow">
-                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="nav-link btn ms-2 shining">
-                                        <i class="bi bi-house-heart"></i> Home
+                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="btn ms-2 shining">
+                                        <i class="bi bi-house-heart"></i> <span class="icon-none">Home</span>
                                     </a>
                                 </li>
                                 <li class="nav-item text-shadow">
-                                    <a href="@Url.Action("Index", "Reports", new { area = "" })" class="nav-link btn ms-2 shining">
-                                        <i class="bi bi-ban"></i> Reports
+                                    <a href="@Url.Action("Index", "Reports", new { area = "" })" class="btn ms-2 shining">
+                                        <i class="bi bi-ban"></i> <span class="icon-none">Reports</span>
                                     </a>
                                 </li>
 
@@ -83,7 +83,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item text-shadow">
-                                    <a href="@Url.Action("Index", "Notifications")" class="btn shining">
+                                    <a href="@Url.Action("Index", "Notifications")" class="btn ms-2 shining">
                                         <i class="bi bi-bell"></i>
                                         @if (ViewBag.GeneralNotificationsCount > 0)
                                         {
@@ -94,15 +94,15 @@
 
 
                                 <li class="nav-item text-shadow light">
-                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="nav-link btn ms-2 shining">
-                                        <i class="bi bi-house-heart"></i> Home
+                                    <a href="@Url.Action("Index", "Posts", new { area = "" })" class="btn ms-2 shining">
+                                        <i class="bi bi-house-heart"></i> <span class="icon-none">Home</span>
                                     </a>
                                 </li>
                             }
 
                             <li class="nav-item text-shadow">
-                                <a href="@Url.Action("Logout", "Auth", new { area = "" })" class="nav-link btn ms-2 shining">
-                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                <a href="@Url.Action("Logout", "Auth", new { area = "" })" class="btn ms-2 shining">
+                                    <i class="bi bi-box-arrow-right"></i> <span class="icon-none">Logout</span>
                                 </a>
                             </li>
 
@@ -110,14 +110,14 @@
                                 @if (ViewBag.ShowDefaultIcon == true)
                                 {
                                     <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn ms-2 shining">
-                                        <i class="bi bi-person-circle"></i> @ViewBag.Username
+                                        <i class="bi bi-person-circle"></i> <span class="icon-none">@ViewBag.Username</span> 
                                     </a>
                                 }
                                 else
                                 {
-                                    <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn shining">
-                                        <img src="@Url.Content(ViewBag.ProfileImage)" class="avatar-img" alt="Profile Image" style="width:25px; height:25px"> @ViewBag.Username
-                                    </a>
+                            <a href="@Url.Action("Details", "Users", new { id = User.Identity.Name })" class="btn shining">
+                                <img src="@Url.Content(ViewBag.ProfileImage)" class="avatar-img" alt="Profile Image" style="width:25px; height:25px"> <span class="icon-none">@ViewBag.Username</span>
+                            </a>
                                 }
                             </li>
 

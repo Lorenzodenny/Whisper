@@ -36,8 +36,8 @@
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
 
-                        <img src="@Url.Content(ViewBag.Users[currentUserId].Avatars.Foto)" alt="Avatar User1" class="user-avatar avatar-img ms-3" style="width: 50px; height: 50px;" />
-                        <a href="@Url.Action("Details", "Users", new { id = currentUserId })" class="fw-bold text-decoration-none color-wine">
+                        <img src="@Url.Content(ViewBag.Users[currentUserId].Avatars.Foto)" alt="Avatar User1" class="user-avatar avatar-img ms-3 d-none d-md-inline" style="width: 50px; height: 50px;" />
+                        <a href="@Url.Action("Details", "Users", new { id = currentUserId })" class="fw-bold text-decoration-none color-wine d-none d-md-inline">
                             @ViewBag.Users[currentUserId].Username
                         </a>
                         Hai una conversazione con:
@@ -61,13 +61,13 @@
                             <a href="@Url.Action("Details", "Conversations", new { id = conversation.ConversationId })"
                                class="btn btn-login btn-sm"
                                onclick="markAsRead(@notification.NotificationID, '@Url.Action("Details", "Conversations", new { id = conversation.ConversationId })'); return false;">
-                                <i class="bi bi-send"></i> Apri Conversazione
+                                <i class="bi bi-send"></i> <span class="d-none d-lg-inline">Apri Conversazione</span>
                             </a>
 
                             <a href="@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })"
                                class="btn btn-danger"
                                onclick="markAsRead(@notification.NotificationID, '@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })'); return false;">
-                                Elimina
+                                <i class="bi bi-trash"></i> <span class="d-none d-lg-inline">Elimina</span>
                             </a>
                         </span>
 
@@ -77,12 +77,12 @@
                         <span>
                             <a href="@Url.Action("Details", "Conversations", new { id = conversation.ConversationId })"
                                class="btn btn-login btn-sm">
-                                <i class="bi bi-send"></i> Apri Conversazione
+                                <i class="bi bi-send"></i> <span class="d-none d-lg-inline">Apri Conversazione</span>
                             </a>
 
                             <a href="@Url.Action("Delete", "Conversations", new { id = conversation.ConversationId })"
                                class="btn btn-danger">
-                                Elimina
+                                <i class="bi bi-trash"></i> <span class="d-none d-lg-inline">Elimina</span>
                             </a>
                         </span>
 

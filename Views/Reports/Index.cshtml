@@ -47,7 +47,7 @@
                     }
                     else
                     {
-                        @Html.ActionLink("Utente del commento Bannato 💔", "Details", "Users", new { id = item.Messages.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
+                        @Html.ActionLink("Utente del messaggio Bannato 💔", "Details", "Users", new { id = item.Messages.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
                     }
                 }
                 @Html.ActionLink("Elimina", "Delete", new { id = item.ReportId }, new { @class = "btn btn-danger btn-sm text-shadow" })

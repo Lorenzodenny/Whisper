@@ -7,10 +7,10 @@
     @Html.ActionLink("✒ Inserisci nuova pubblicità", "Create", null, new { @class = "btn btn-sm btn-warning fw-bold text-dark mt-5 mb-3 text-shadow" })
 </p>
 
-<div class="row text-shadow" style="max-height: 90vh; overflow-y: auto;">
+<div class="row text-shadow row-custom">
     @foreach (var item in Model)
     {
-        <div class="col-md-4 d-flex align-items-stretch">
+        <div class=" col-lg-4 d-flex align-items-stretch">
             <div class="card mb-4 shadow-sm w-100 d-flex flex-column">
                 <div style="height: 200px; overflow: hidden;">
                     <img class="card-img-top img-fluid" src="@Url.Content(item.Foto)" alt="Immagine dello sponsor" style="object-fit: cover; height: 100%; width: 100%;">
@@ -21,9 +21,9 @@
                 </div>
                 <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.SponsorId }, new { @class = "btn btn-sm btn-login" })
-                        @Html.ActionLink("Details", "Details", new { id = item.SponsorId }, new { @class = "btn btn-sm btn-back" })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.SponsorId }, new { @class = "btn btn-sm btn-danger" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.SponsorId }, new { @class = "btn btn-sm btn-login text-shadow text-button" })
+                        @Html.ActionLink("Details", "Details", new { id = item.SponsorId }, new { @class = "btn btn-sm btn-back text-shadow text-button" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.SponsorId }, new { @class = "btn btn-sm btn-danger text-shadow" })
                     </div>
                     <small class="text-muted">Admin: @item.Users.Username</small>
                 </div>

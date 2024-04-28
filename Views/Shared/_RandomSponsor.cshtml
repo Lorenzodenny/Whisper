@@ -7,11 +7,11 @@
 
 @foreach (var sponsor in Model)
 {
-    <div class="card shadow mt-3 text-shadow sponsor-container" id="sponsor-container-@sponsorIndex" style="width: 18rem;">
+    <div class="card shadow mt-3 text-shadow sponsor-container w-100" id="sponsor-container-@sponsorIndex" style="width: 18rem;">
 
         @if (!string.IsNullOrEmpty(sponsor.Foto))
         {
-            <img class="card-img-top" src="@Url.Content(sponsor.Foto)" alt="Immagine dello sponsor">
+            <img class="card-img-top img-fluid" src="@Url.Content(sponsor.Foto)" alt="Immagine dello sponsor">
         }
         <div class="card-body">
             <h5 class="card-title">@sponsor.Titolo</h5>
@@ -30,10 +30,10 @@
                 fetch('@Url.Action("RandomSponsor", "Sponsors")')
                     .then(response => response.text())
                     .then(html => {
-                        var sponsorHTML = html.split('<div class="card shadow mt-3 text-shadow sponsor-container"');
+                        var sponsorHTML = html.split('<div class="card shadow mt-3 text-shadow sponsor-container w-100"');
                         var containers = document.querySelectorAll('.sponsor-container');
                         containers.forEach((container, index) => {
-                            var newContent = '<div class="card shadow mt-3 text-shadow sponsor-container"' + sponsorHTML[index + 1];
+                            var newContent = '<div class="card shadow mt-3 text-shadow sponsor-container w-100"' + sponsorHTML[index + 1];
                             container.outerHTML = newContent;
                         });
                     })

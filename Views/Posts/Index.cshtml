@@ -7,9 +7,10 @@
 <div class="sky pt-5 pb-3">
     @if (Model.Any())
     {
-        <h2 class="text-warning text-center text-shadow">Benvenuto, @ViewBag.Username</h2>
+        <h2 class="text-warning text-center text-shadow2">Benvenuto, @ViewBag.Username</h2>
     }
 </div>
+
 <div class="container mt-4">
     @if (User.IsInRole("User"))
     {
@@ -27,7 +28,7 @@
 
 
     <div class="row">
-        <div class="col-md-9" style="max-height: 90vh; overflow-y: auto;">
+        <div class="col-md-9 mb-sm-3 mb-md-3" style="max-height: 90vh; overflow-y: auto;">
             @foreach (var item in Model)
             {
                 <div id="post-@item.Post.PostId" class="post my-3 p-3 bg-white rounded cont-3d">
@@ -55,17 +56,21 @@
                         </div>
 
                         <!-- pulsante "Inizia Chat" -->
+                        @if (User.IsInRole("User"))
+                        {
+                            if (item.Post.UserId.ToString() != loggedInUserId)
+                            {
 
-                        @if (item.Post.UserId.ToString() != loggedInUserId)
-                        {
-                        
-                        using (Html.BeginForm("Create", "Conversations", FormMethod.Post))
-                        {
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("user2Id", item.Post.UserId) 
-                        <button type="submit" class="btn btn-sm btn-login text-shadow me-2">🗨 Inizia Chat</button>
+                                using (Html.BeginForm("Create", "Conversations", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("user2Id", item.Post.UserId)
+                                    <button type="submit" class="btn btn-sm btn-login text-shadow me-2">🗨 Inizia Chat</button>
+                                }
+                            }
+
                         }
-                        }
+
 
 
                         <!-- Post Actions for the Author -->
@@ -132,7 +137,7 @@
                                     @Html.AntiForgeryToken()
                                     @Html.HiddenFor(_ => loggedInUserId)
                                     @Html.Hidden("PostId", item.Post.PostId)
-                                    <button type="submit" class="btn btn-sm btn-login text-shadow  ms-3">🚫 Riporta</button>
+                                    <button type="submit" class="btn btn-sm btn-login text-shadow  ms-3">🚫 Segnala</button>
                                 }
                             }
 
@@ -200,7 +205,7 @@
                                                         @Html.AntiForgeryToken()
                                                         @Html.HiddenFor(_ => loggedInUserId)
                                                         @Html.Hidden("CommentId", comment.CommentId)
-                                                        <button type="submit" class="btn btn-sm btn-login text-shadow  ms-3">🚫 Riporta</button>
+                                                        <button type="submit" class="btn btn-sm btn-login text-shadow  ms-3">🚫 Segnala</button>
                                                     }
                                                 }
                                             </div>
@@ -252,13 +257,13 @@
                 </div>
             }
         </div>
-        <div class="col-md-3" style="max-height: 90vh; overflow-y: auto;">
+        <div class="col-md-3 mx-auto" style="max-height: 90vh; overflow-y: auto;">
 
-                @*partial view per le pubblicità random*@
-                @Html.Action("RandomSponsor", "Sponsors")
+            @*partial view per le pubblicità random*@
+            @Html.Action("RandomSponsor", "Sponsors")
         </div>
+    </div>
 </div>
-
 <script>
     $(document).ready(function () {
         // Script per generare le stelle
@@ -332,7 +337,7 @@
             $('#char-count-' + postId).text(charCount + '/500');
         });
     });
-                </script>
+</script>
 
 
 
