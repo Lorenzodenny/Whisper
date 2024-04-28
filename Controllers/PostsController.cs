@@ -15,6 +15,7 @@ namespace Whisper.Controllers
         private DBContext db = new DBContext();
 
         // GET: Posts
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Index()
         {
             var userId = int.Parse(User.Identity.Name);
@@ -54,6 +55,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize(Roles = "User")]
         public ActionResult Create()
         {
             return View();
@@ -111,6 +113,7 @@ namespace Whisper.Controllers
 
 
         // GET: Posts/Edit/5
+        [Authorize(Roles = "User")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -154,6 +157,7 @@ namespace Whisper.Controllers
 
 
         // GET: Posts/Delete/5
+        [Authorize(Roles = "User")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -173,7 +177,21 @@ namespace Whisper.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            // Trova tutte le notifiche collegate al post che stai eliminando
+            // Trova e rimuovi tutti i like collegati al post che stai eliminando
+            var likes = db.Likes.Where(l => l.PostId == id).ToList();
+            foreach (var like in likes)
+            {
+                db.Likes.Remove(like);
+            }
+
+            // Trova e rimuovi tutti i commenti collegati al post che stai eliminando
+            var comments = db.Comments.Where(c => c.PostId == id).ToList();
+            foreach (var comment in comments)
+            {
+                db.Comments.Remove(comment);
+            }
+
+            // Trova e rimuovi tutte le notifiche collegate al post
             var notifications = db.Notifications.Where(n => n.PostID == id).ToList();
             foreach (var notification in notifications)
             {
@@ -182,10 +200,15 @@ namespace Whisper.Controllers
 
             // Ora puoi eliminare il post
             Posts post = db.Posts.Find(id);
-            db.Posts.Remove(post);
-            db.SaveChanges();
+            if (post != null)
+            {
+                db.Posts.Remove(post);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
+
 
 
         protected override void Dispose(bool disposing)

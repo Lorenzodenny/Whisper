@@ -15,13 +15,14 @@ namespace Whisper.Controllers
         private DBContext db = new DBContext();
 
         // GET: Aphorisms
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var aphorisms = db.Aphorisms.OrderByDescending(a => a.AphorismId).ToList();
             return View(aphorisms);
         }
 
-
+        [Authorize]
         public ActionResult GetRandomAphorism()
         {
             int count = db.Aphorisms.Count();
@@ -44,6 +45,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Aphorisms/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -66,6 +68,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Aphorisms/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             Aphorisms aphorism = db.Aphorisms.Find(id);
@@ -92,6 +95,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Aphorisms/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             Aphorisms aphorism = db.Aphorisms.Find(id);

@@ -16,6 +16,7 @@ namespace Whisper.Controllers
         private DBContext db = new DBContext();
 
         // GET: Sponsors
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var sponsors = db.Sponsors
@@ -26,6 +27,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Sponsors/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,6 +43,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Sponsors/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -119,6 +122,7 @@ namespace Whisper.Controllers
 
 
         // GET: Sponsors/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -179,6 +183,7 @@ namespace Whisper.Controllers
 
 
         // GET: Sponsors/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

@@ -12,6 +12,8 @@ namespace Whisper.Controllers
     {
         private DBContext db = new DBContext();
         // GET: post / comment / like
+
+        [Authorize(Roles = "User")]
         public ActionResult Index()
         {
             CleanupReadNotifications();
@@ -53,7 +55,7 @@ namespace Whisper.Controllers
 
 
         // GET : Amicizie
-
+        [Authorize(Roles = "User")]
         public ActionResult Friendships()
         {
             CleanupReadNotifications();
@@ -93,7 +95,7 @@ namespace Whisper.Controllers
 
 
         // GET : Messaggi
-
+        [Authorize(Roles = "User")]
         public ActionResult Conversations()
         {
             CleanupReadNotifications();

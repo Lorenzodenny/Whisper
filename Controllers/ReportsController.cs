@@ -29,6 +29,7 @@ namespace Whisper.Controllers
 
 
         // GET: Reports/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -43,8 +44,9 @@ namespace Whisper.Controllers
             return View(reports);
         }
 
-      
+
         // GET: Reports/Create
+        [Authorize(Roles = "User")]
         public ActionResult Create(int? postId, int? commentId)
         {
             if (!User.Identity.IsAuthenticated)
@@ -95,6 +97,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Reports/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

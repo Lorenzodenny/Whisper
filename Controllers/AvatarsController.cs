@@ -16,12 +16,14 @@ namespace Whisper.Controllers
         private DBContext db = new DBContext();
 
         // GET: Avatars
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             return View(db.Avatars.ToList());
         }
 
         // GET: Avatars/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Avatars/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

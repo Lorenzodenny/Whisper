@@ -22,6 +22,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Comments/Details/5
+        [Authorize(Roles = "User")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,9 +37,10 @@ namespace Whisper.Controllers
             return View(comments);
         }
 
-      
+
 
         // GET: Comments/Create
+        [Authorize(Roles = "User")]
         public ActionResult Create()
         {
             return View();
@@ -50,32 +52,30 @@ namespace Whisper.Controllers
         public ActionResult Create([Bind(Include = "CommentId,Contents")] Comments comment, int postId)
         {
             if (ModelState.IsValid)
-            {
-                // Prima di aggiungere il commento, verifica se il proprietario del post è attivo
+            {           
                 var postOwner = db.Posts.Where(p => p.PostId == postId).Select(p => p.Users).FirstOrDefault();
                 if (postOwner != null && postOwner.IsDeleted)
                 {
                     TempData["userUnable"] = "Non è possibile commentare perché il profilo del proprietario del post è temporaneamente inattivo.";
-                    return RedirectToAction("Index", "Posts"); // Assicurati di reindirizzare alla vista corretta
+                    return RedirectToAction("Index", "Posts"); 
                 }
 
                 comment.PostedAt = DateTime.Now;
-                var userId = int.Parse(User.Identity.Name); // UserID del commentatore
+                var userId = int.Parse(User.Identity.Name); 
                 comment.UserId = userId;
                 comment.PostId = postId;
 
                 db.Comments.Add(comment);
-                db.SaveChanges(); // Dopo questa chiamata, comment.CommentId dovrebbe contenere l'ID generato
+                db.SaveChanges(); 
 
-                // Notifica solo se il proprietario del post non è il commentatore
                 if (postOwner.UserId != userId)
                 {
                     Notifications notification = new Notifications()
                     {
-                        UserID = postOwner.UserId, // Destinatario della notifica
-                        TriggeredByUserID = userId, // Chi ha causato la notifica
+                        UserID = postOwner.UserId, 
+                        TriggeredByUserID = userId, 
                         PostID = postId,
-                        CommentID = comment.CommentId, // Qui assegni l'ID del commento alla notifica
+                        CommentID = comment.CommentId, 
                         NotificationType = "Comment",
                         ReadStatus = false,
                         NotificationDate = DateTime.Now
@@ -95,50 +95,8 @@ namespace Whisper.Controllers
 
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "CommentId,Contents")] Comments comment, int postId)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        comment.PostedAt = DateTime.Now;
-        //        var userId = int.Parse(User.Identity.Name); // UserID del commentatore
-        //        comment.UserId = userId;
-        //        comment.PostId = postId;
-
-        //        db.Comments.Add(comment);
-        //        db.SaveChanges(); // Dopo questa chiamata, comment.CommentId dovrebbe contenere l'ID generato
-
-        //        // Crea la notifica per il proprietario del post
-        //        var postOwner = db.Posts.Where(p => p.PostId == postId).Select(p => p.UserId).FirstOrDefault();
-        //        if (postOwner != 0 && postOwner != userId) // Assicurati che il commentatore non sia il proprietario del post
-        //        {
-        //            Notifications notification = new Notifications()
-        //            {
-        //                UserID = postOwner, // Destinatario della notifica
-        //                TriggeredByUserID = userId, // Chi ha causato la notifica
-        //                PostID = postId,
-        //                CommentID = comment.CommentId, // Qui assegni l'ID del commento alla notifica
-        //                NotificationType = "Comment",
-        //                ReadStatus = false,
-        //                NotificationDate = DateTime.Now
-        //            };
-
-        //            db.Notifications.Add(notification);
-        //            db.SaveChanges();
-        //        }
-
-        //        TempData["success"] = "Commento pubblicato con successo";
-        //        return RedirectToAction("Index", "Posts");
-        //    }
-
-        //    TempData["errore"] = "Problemi con la pubblicazione del commento";
-        //    return View(comment);
-        //}
-
-
-
         // GET: Comments/Edit/5
+        [Authorize(Roles = "User")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -182,6 +140,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Comments/Delete/5
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

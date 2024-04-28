@@ -24,7 +24,7 @@ namespace Whisper.Controllers
         }
 
         // GET: Users/Details/5
-
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -76,7 +76,7 @@ namespace Whisper.Controllers
 
 
         // GET: Users/Create
-        // GET: Users/Create
+        
         public ActionResult Create()
         {
             ViewBag.AvailableAvatars = db.Avatars.ToList();

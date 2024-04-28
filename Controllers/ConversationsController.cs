@@ -34,7 +34,6 @@ namespace Whisper.Controllers
 
             if (existingConversation != null)
             {
-                // Assicurati che la conversazione sia visibile per entrambi gli utenti
                 existingConversation.User1Deleted = false;
                 existingConversation.User2Deleted = false;
                 db.Entry(existingConversation).State = EntityState.Modified;
@@ -42,7 +41,6 @@ namespace Whisper.Controllers
             }
             else
             {
-                // Crea una nuova conversazione
                 existingConversation = new Conversations
                 {
                     User1Id = user1Id,
@@ -63,7 +61,8 @@ namespace Whisper.Controllers
 
 
 
-
+        // GET
+        [Authorize(Roles = "User")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -77,17 +76,14 @@ namespace Whisper.Controllers
                 return HttpNotFound();
             }
 
-            // Verifica che l'utente corrente sia parte della conversazione
             int currentUserId = int.Parse(User.Identity.Name);
             if (conversation.User1Id != currentUserId && conversation.User2Id != currentUserId)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
-            // Determina l'ID dell'altro utente
             int otherUserId = conversation.User1Id == currentUserId ? conversation.User2Id : conversation.User1Id;
 
-            // Passa l'altro utente alla view
             ViewBag.OtherUser = db.Users.Find(otherUserId);
 
             return View(conversation);
@@ -97,7 +93,7 @@ namespace Whisper.Controllers
 
 
         // POST: Conversations/Delete/5
-        // POST: Conversations/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -153,6 +149,7 @@ namespace Whisper.Controllers
 
 
         // Conversazione specifica
+        [Authorize(Roles = "User")]
         public ActionResult Details(int id)
         {
             int currentUserId = int.Parse(User.Identity.Name); // Assicurati che questo sia effettivamente l'ID dell'utente
