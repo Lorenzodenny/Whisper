@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AphorismsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\AvatarsController.cs" />
+    <Compile Include="Controllers\ChatBotController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\ConversationsController.cs" />
     <Compile Include="Controllers\FriendshipsController.cs" />
@@ -343,6 +344,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Uploads\" />
+    <Folder Include="Views\ChatBot\" />
     <Folder Include="Views\Likes\" />
     <Folder Include="Views\Messages\" />
   </ItemGroup>

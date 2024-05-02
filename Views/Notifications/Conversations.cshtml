@@ -7,10 +7,43 @@
 
 <div class="container mt-3 text-shadow" style="max-height: 90vh; overflow-y: auto;">
 
+    <!-- Inserisci questo codice dove preferisci nel tuo layout HTML esistente -->
+    <button class="btn btn-sm btn-warning mb-3" id="openChatBot">💜 Parla con Eliza 💜</button>
+
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="searchInput" placeholder="Cerca per username..." aria-label="Cerca per username">
         <button class="btn btn-sm btn-secondary" type="button" id="searchButton">Cerca</button>
     </div>
+
+
+
+
+
+    <!-- Finestra modale per la chat del bot -->
+    <div class="modal" id="chatBotModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Dimmi come ti senti ❤</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+                <div class="modal-body">
+                    <div id="chatArea">
+                        <!-- Qui vengono visualizzati i messaggi del bot e dell'utente -->
+                    </div>
+                    <textarea id="userInput" class="form-control" placeholder="Scrivi qui..." style="resize:none"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-login" id="sendMessage">Invia</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <div id="noResultsMessage" class="alert alert-info" style="display: none;">
         Nessuna chat con l'utente cercato.
     </div>
@@ -124,6 +157,20 @@
                 $('#noResultsMessage').hide();
                 $('#noConversationsMessage').hide();
             }
+        });
+
+        // Gestione chatbot
+        $('#openChatBot').click(function () {
+            $('#chatBotModal').modal('show');
+        });
+
+        $('#sendMessage').click(function () {
+            var message = $('#userInput').val();
+            $.get('/ChatBot/GetBotResponse', { message: message }, function (data) {
+                $('#chatArea').append('<div><span class="color-wine fw-bold">Tu:</span> ' + message + '</div>');
+                $('#chatArea').append('<div class="mb-3"><span  class="color-wine fw-bold">Eliza:</span> ' + data.Response + '</div>');
+                $('#userInput').val(''); 
+            });
         });
 
         // Se non ci sono conversazioni all'inizio, mostra il messaggio corrispondente
