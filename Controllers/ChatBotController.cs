@@ -11,10 +11,14 @@ namespace Whisper.Controllers
     public class ChatBotController : Controller
     {
         private static readonly Random random = new Random();
+        private static string lastResponse = null; 
 
-        public ActionResult GetBotResponse(string message)
+        public ActionResult GetBotResponse(string Message)
         {
             string[] responses;
+
+            // conversione in minuscolo del messaggio utente
+            string message = Message.ToLower();
 
             // Uso di un array di parole chiave per identificare la categoria di risposta
             string[] successKeywords = new string[] { "successo", "riuscita", "vittoria", "conquista", "trionfo" };
@@ -22,7 +26,7 @@ namespace Whisper.Controllers
             string[] learningKeywords = new string[] { "imparare", "apprendimento", "studio", "educazione", "conoscenza" };
             string[] challengeKeywords = new string[] { "sfida", "difficoltà", "ostacolo", "prova", "compito" };
             string[] healthKeywords = new string[] { "salute", "benessere", "forma", "fitness", "sanità" };
-            string[] botWellbeingKeywords = new string[] { "come stai", "tutto bene", "stai bene", "come va", "va tutto bene" };
+            string[] botWellbeingKeywords = new string[] { "come stai", "come stai?", "tutto bene", "stai bene", "come va", "come va?", "va tutto bene" };
             string[] entertainmentKeywords = new string[] { "film", "serie", "divertimento", "tempo libero", "hobby" };
             string[] relationshipKeywords = new string[] { "amore", "amicizia", "relazione", "partner", "famiglia" };
             string[] angerKeywords = new string[] { "arrabbiato", "rabbia", "furia", "irritato", "infuriato" };
@@ -86,7 +90,7 @@ namespace Whisper.Controllers
             string[] enthusiasmKeywords = new string[] { "entusiasmo", "passione", "zelo", "ardore", "vivacità" };
             string[] confusionKeywords = new string[] { "confuso", "disorientato", "incerto", "sconcertato", "perplesso" };
             string[] greetingKeywords = new string[] { "ciao", "salve", "buongiorno", "buonasera", "ehilà" };
-            string[] farewellKeywords = new string[] { "arrivederci", "addio", "a presto", "ciao", "buonanotte" };
+            string[] farewellKeywords = new string[] { "arrivederci", "addio", "a presto", "buonanotte" };
             string[] thanksKeywords = new string[] { "grazie", "apprezzo", "ringrazio", "grato", "ti ringrazio" };
             string[] movieRecommendationKeywords = new string[] { "suggeriscimi un film", "consigliami un film", "film da vedere", "buon film da guardare", "film interessante" };
             string[] musicRecommendationKeywords = new string[] { "suggeriscimi della musica", "consigliami musica", "musica da ascoltare", "buona musica da ascoltare", "musica interessante" };
@@ -200,6 +204,127 @@ namespace Whisper.Controllers
             string[] travelTipsKeywords = new string[] { "consigli per viaggiare", "turismo", "avventure", "esplorazione", "viaggiare in modo intelligente" };
             string[] hobbyIdeasKeywords = new string[] { "idee per hobby", "passioni", "interessi", "attività ricreative", "svago creativo" };
             string[] digitalWellnessKeywords = new string[] { "benessere digitale", "uso consapevole della tecnologia", "disconnessione digitale", "tempo offline", "gestione del tempo online" };
+            string[] selfsCompassionKeywords = new string[] { "auto-compassione", "essere gentile con se stessi", "amore per sé", "autocura", "perdonarsi", "trattarsi bene", "autostima positiva", "gentilezza interna", "accettazione di sé", "cura personale" };
+            string[] overcomingProcrastinationKeywords = new string[] { "procrastinazione", "rimandare", "dilazione", "evitare compiti", "posticipare", "gestione del tempo", "efficienza", "pigrizia", "mancanza di motivazione", "fatica a iniziare" };
+            string[] enhancingEmotionalIntelligenceKeywords = new string[] { "intelligenza emotiva", "gestione delle emozioni", "comprensione emotiva", "ascolto attivo", "empatia", "autoregolazione", "autoconsapevolezza", "relazioni interpersonali", "risoluzione dei conflitti", "comunicazione emotiva" };
+            string[] mindfulnessPracticesKeywords = new string[] { "pratiche di mindfulness", "meditazione mindfulness", "consapevolezza mentale", "attenzione plena", "esercizi di respirazione", "relax mentale", "pratica meditativa", "calma interna", "awareness", "presenza mentale" };
+            string[] emotionalReleaseKeywords = new string[] { "rilascio emotivo", "esprimere emozioni", "liberazione sentimenti", "pianto terapeutico", "sfogarsi", "parlare delle emozioni", "condivisione del dolore", "accettazione delle emozioni", "espressione dei sentimenti", "catarsi emotiva" };
+            string[] careerFulfillmentKeywords = new string[] { "realizzazione professionale", "soddisfazione lavorativa", "successo in carriera", "obiettivi professionali", "ambizione lavorativa", "crescita in lavoro", "pienezza lavorativa", "motivazione professionale", "aspirazioni di carriera", "soddisfazione del lavoro" };
+            string[] ymindfulnessPracticesKeywords = new string[] { "pratiche di mindfulness", "meditazione mindfulness", "consapevolezza mentale", "attenzione plena", "esercizi di respirazione", "relax mentale", "pratica meditativa", "calma interna", "awareness", "presenza mentale" };
+            string[] yemotionalReleaseKeywords = new string[] { "rilascio emotivo", "esprimere emozioni", "liberazione sentimenti", "pianto terapeutico", "sfogarsi", "parlare delle emozioni", "condivisione del dolore", "accettazione delle emozioni", "espressione dei sentimenti", "catarsi emotiva" };
+            string[] ycareerFulfillmentKeywords = new string[] { "realizzazione professionale", "soddisfazione lavorativa", "successo in carriera", "obiettivi professionali", "ambizione lavorativa", "crescita in lavoro", "pienezza lavorativa", "motivazione professionale", "aspirazioni di carriera", "soddisfazione del lavoro" };
+            string[] casualFarewellsKeywords = new string[] { "arrivederci", "addio", "a presto", "buonanotte" };
+            string[] generalQuestionsKeywords = new string[] { "che ore sono", "qual è il meteo", "hai suggerimenti", "cosa mi consigli", "aiutami a scegliere" };
+            string[] positiveExpressionsKeywords = new string[] { "grazie", "apprezzo molto", "sei stato utile", "sei fantastico", "buon lavoro" };
+            string[] elizaInquiryKeywords = new string[] { "chi è eliza", "cos'è eliza", "parlami di eliza", "eliza", "storia di eliza", "perché ti chiami eliza" };
+            string[] smallTalkKeywords = new string[] { "che si dice", "novità", "cosa mi racconti", "come va la vita", "tutto a posto" };
+            string[] complimentsKeywords = new string[] { "sei un grande", "bravo", "ottimo lavoro", "sei il migliore", "ben fatto" };
+            string[] casualRequestsKeywords = new string[] { "dammi una mano", "puoi aiutarmi", "ho bisogno di un consiglio", "che ne pensi", "mi dai un suggerimento" };
+            string[] expressionsOfReliefKeywords = new string[] { "meno male", "sospiro di sollievo", "finalmente", "tutto bene che finisce bene", "si è risolto tutto" };
+            string[] expressionsOfConfusionKeywords = new string[] { "non capisco", "sono confuso", "che confusione", "non mi è chiaro", "potresti spiegare meglio" };
+            string[] expressionsOfUrgencyKeywords = new string[] { "è urgente", "fammi sapere subito", "non c'è tempo", "affrettati", "bisogno immediato" };
+            string[] expressionsOfHappinessKeywords = new string[] { "sono felice", "che bello", "fantastico", "troppo bello", "sono contento", "mi fa piacere", "mi rende felice" };
+            string[] expressionsOfDisappointmentKeywords = new string[] { "che peccato", "sono deluso", "quanto mi dispiace", "non è andata bene", "speravo meglio", "è un disastro", "che delusione" };
+            string[] expressionsOfEncouragementKeywords = new string[] { "coraggio", "non mollare", "tieni duro", "puoi farcela", "forza", "sei capace", "non arrenderti" };
+            string[] expressionsOfGratitudeKeywords = new string[] { "grazie mille", "molto obbligato", "ti ringrazio", "apprezzo molto", "sei un tesoro", "grazie di cuore", "sei gentilissimo" };
+            string[] expressionsOfCuriosityKeywords = new string[] { "mi chiedo", "sono curioso", "come mai", "perché", "puoi spiegare", "dimmi di più", "ho una domanda" };
+            string[] expressionsOfSkepticismKeywords = new string[] { "sei sicuro", "non ne sono convinto", "davvero", "può essere", "mi sembra strano", "non ci credo", "sembra improbabile" };
+            string[] expressionsOfJoyKeywords = new string[] { "sono euforico", "che felicità", "sto benissimo", "giorno fantastico", "tutto perfetto", "che giornata meravigliosa", "sono al settimo cielo" };
+            string[] expressionsOfWorryKeywords = new string[] { "sono preoccupato", "che ansia", "mi sento inquieto", "ho delle preoccupazioni", "sono nervoso", "non sono tranquillo", "tutto mi preoccupa" };
+            string[] expressionsOfRequestKeywords = new string[] { "mi dai un consiglio", "puoi aiutarmi", "ho bisogno di assistenza", "mi servirebbe un aiuto", "potresti guidarmi", "puoi dare una mano", "mi aiuti per favore" };
+            string[] expressionsOfEnthusiasmKeywords = new string[] { "sono gasato", "sono carico", "non vedo l'ora", "che emozione", "non posso aspettare" };
+            string[] expressionsOfHesitationKeywords = new string[] { "non sono sicuro", "ho dei dubbi", "forse", "potrebbe essere", "sono indeciso" };
+            string[] expressionsOfComfortKeywords = new string[] { "andrà tutto bene", "non preoccuparti", "tranquillo", "ci sono per te", "ti capisco" };
+            string[] expressionsOfExcitementKeywords = new string[] { "non vedo l'ora", "sono super eccitato", "questo è fantastico", "che figata", "sono al settimo cielo", "troppo bello", "spettacolare", "incredibile", "super entusiasta" };
+            string[] expressionsOfConfidenceKeywords = new string[] { "sono sicuro", "ho fiducia", "non ho dubbi", "sono convinto", "conto su di esso", "certo di questo", "senza ombra di dubbio", "assolutamente sicuro", "pienamente convinto" };
+            string[] yexpressionsOfGratitudeKeywords = new string[] { "grazie mille", "molto obbligato", "ti ringrazio", "apprezzo molto", "sei un tesoro", "grazie di cuore", "sei gentilissimo", "sei una benedizione", "sei il migliore", "non so cosa farei senza di te" };
+            string[] expressionsOfSadnessKeywords = new string[] { "mi sento triste", "sono depresso", "giornata no", "mi sento giù", "tutto sbagliato", "non va nulla bene", "che giornata nera", "mi sento malissimo", "è tutto così difficile" };
+            string[] expressionsOfSupportKeywords = new string[] { "mi serve aiuto", "puoi supportarmi", "ho bisogno di te", "non posso farcela da solo", "aiutami per favore", "mi serve un consiglio", "mi puoi guidare", "ho bisogno di un sostegno", "come posso fare" };
+            string[] yexpressionsOfJoyKeywords = new string[] { "sono al settimo cielo", "non potrei essere più felice", "che gioia immensa", "sono pieno di felicità", "questo è il miglior giorno", "non mi sono mai sentito così bene", "tutto è perfetto", "la vita è bellissima", "non cambierei nulla" };
+            string[] expressionsOfAnxietyKeywords = new string[] { "sono ansioso", "ho l'ansia", "mi sento teso", "sono stressato", "c'è troppa pressione", "mi sento sopraffatto", "non riesco a rilassarmi", "tutto mi preoccupa", "sono nervoso" };
+            string[] yexpressionsOfReliefKeywords = new string[] { "che sollievo", "finalmente", "posso tirare un respiro", "meno male", "si è risolto tutto", "sono sollevato", "è andata bene", "la tensione è finita", "grande liberazione" };
+            string[] expressionsOfDeterminationKeywords = new string[] { "non mi arrenderò", "continuerò a lottare", "ho deciso di andare avanti", "non mi fermerò", "continuerò a spingere", "sono determinato", "persevererò", "non cederò", "mantengo il corso", "non voltarmi indietro" };
+            string[] yexpressionsOfCuriosityKeywords = new string[] { "sono curioso", "mi chiedo", "come mai", "perché", "puoi spiegare", "spiegami", "dimmi di più", "sono interessato a sapere", "ho una domanda" };
+            string[] expressionsOfSatisfactionKeywords = new string[] { "sono soddisfatto", "questo è perfetto", "proprio quello che volevo", "completamente soddisfatto", "più di quanto mi aspettassi", "meglio di così non si può", "è esattamente ciò che cercavo", "sono pienamente contento" };
+            string[] expressionsOfDiscontentKeywords = new string[] { "non sono contento", "questo non va bene", "non è quello che mi aspettavo", "sono deluso", "potrebbe essere meglio", "non è sufficiente", "lascia molto a desiderare", "sono insoddisfatto" };
+            string[] yexpressionsOfEncouragementKeywords = new string[] { "dai che ce la fai", "su con la vita", "tira fuori il meglio", "non arrenderti", "tenere duro", "sempre avanti", "continua così", "forza e coraggio", "non mollare", "vinci le tue paure" };
+            string[] expressionsOfApologyKeywords = new string[] { "mi scuso", "chiedo scusa", "sono spiacente", "non era mia intenzione", "mi dispiace", "scusami", "perdono", "è stato un errore", "non volevo", "mi pento" };
+            string[] expressionsOfConfirmationKeywords = new string[] { "confermo", "certamente", "assolutamente", "esattamente", "proprio così", "senza dubbio", "sì esatto", "certo che sì", "indubbiamente", "decisamente" };
+            string[] expressionsOfDisagreementKeywords = new string[] { "non sono d'accordo", "non penso sia così", "mi oppongo", "non è vero", "contrario a quello", "non condivido", "non mi convince", "non ci sto", "mi dissocio", "divergo" };
+            string[] expressionsOfInterestKeywords = new string[] { "mi interessa", "sono interessato", "vorrei saperne di più", "attira la mia attenzione", "mi piacerebbe approfondire", "puoi dirmi di più", "sono curioso di questo", "vorrei esplorare", "mi affascina", "mi coinvolge" };
+            string[] expressionsOfSurpriseKeywords = new string[] { "non me l'aspettavo", "che sorpresa", "davvero?", "non posso crederci", "incredibile", "questo è sorprendente", "mai avrei pensato", "come è possibile?", "sono sbalordito", "questo cambia tutto" };
+            string[] expressionsOfRelaxationKeywords = new string[] { "ho bisogno di rilassarmi", "voglio rilassarmi", "è tempo di staccare", "devo decomprimere", "prendiamoci una pausa", "tempo per me", "bisogno di una pausa", "allentare la tensione", "rilassarsi un po'", "distendersi" };
+            string[] expressionsOfDoubtKeywords = new string[] { "ho dei dubbi", "non sono sicuro", "può essere?", "sembra improbabile", "non mi convince", "sono indeciso", "è davvero così?", "puoi confermare?", "questo mi lascia perplesso", "posso fidarmi?" };
+            string[] expressionsOfNeedKeywords = new string[] { "ho bisogno di aiuto", "mi serve supporto", "puoi assistere?", "necessito di guida", "è urgente", "mi serve una mano", "potresti aiutarmi?", "sto cercando aiuto", "ho bisogno di consigli", "aiuto richiesto" };
+            string[] yexpressionsOfExcitementKeywords = new string[] { "sono eccitato", "che emozione", "non vedo l'ora", "tutto eccitante", "sono gasato", "è emozionante", "attesa febbrile", "sbalordito", "super eccitato", "pieno di aspettative" };
+            string[] expressionsOfFrustrationKeywords = new string[] { "sono frustrato", "che seccatura", "sono stanco di questo", "non ne posso più", "è troppo", "mi irrita", "sono al limite", "non ci sto capendo nulla", "sono esasperato", "mi sento bloccato" };
+            string[] expressionsOfGratefulnessKeywords = new string[] { "sono grato", "grazie infinite", "non so come ringraziarti", "sei stato così d'aiuto", "grazie di tutto", "non avrei potuto farcela senza di te", "ti sono debitore", "apprezzo molto il tuo aiuto", "grazie dal profondo del cuore", "sei un salvavita" };
+            string[] expressionsOfContentmentKeywords = new string[] { "sono contento", "mi sento bene", "tutto va bene", "sono a posto così", "sono soddisfatto", "è tutto perfetto", "non potrebbe andare meglio", "sono tranquillo", "mi sento rilassato", "è una bella giornata" };
+            string[] opportunityKeywords = new string[] { "opportunità", "possibilità", "chance", "occasione", "prospettiva" };
+            string[] peaceKeywords = new string[] { "pace", "tranquillo", "serenità", "calmo", "rilassato" };
+            string[] adventureKeywords = new string[] { "avventura", "esplorazione", "scoperta", "viaggio", "esplorare" };
+            string[] celebrationKeywords = new string[] { "celebrazione", "festa", "onorare", "commemorare", "celebrare" };
+            string[] growthKeywords = new string[] { "crescita", "sviluppo", "progredire", "evolvere", "maturare" };
+            string[] innovationKeywords = new string[] { "innovazione", "nuove idee", "creatività", "inventare", "pionieristico" };
+            string[] empowermentKeywords = new string[] { "empowerment", "potenziamento", "abilitazione", "forte", "autorizzazione" };
+            string[] leadershipKeywords = new string[] { "leadership", "guida", "capo", "comando", "leader" };
+            string[] harmonyKeywords = new string[] { "armonia", "equilibrio", "pace", "concordia", "simbiosi" };
+            string[] wellnessKeywords = new string[] { "benessere", "salute", "vitalità", "fitness", "salubre" };
+            string[] progressKeywords = new string[] { "progresso", "avanzamento", "sviluppo", "miglioramento", "innovazione" };
+            string[] discoveryKeywords = new string[] { "scoperta", "esplorazione", "rivelazione", "scoprire", "trovare" };
+            string[] joyKeywords = new string[] { "gioia", "felicità", "contentezza", "piacere", "soddisfazione" };
+            string[] tranquilityKeywords = new string[] { "tranquillità", "pace", "serenità", "calma", "rilassamento" };
+            string[] connectivityKeywords = new string[] { "connessione", "interazione", "networking", "comunicazione", "relazione" };
+            string[] adaptabilityKeywords = new string[] { "adattabilità", "flessibilità", "adattarsi", "modificare", "versatilità" };
+            string[] fulfillmentKeywords = new string[] { "realizzazione", "soddisfazione", "compiuto", "pienezza", "successo" };
+            string[] wisdomKeywords = new string[] { "saggezza", "conoscenza", "intuito", "comprensione", "prudenza" };
+            string[] energyKeywords = new string[] { "energia", "vitalità", "dinamismo", "forza", "vigore" };
+            string[] ambitionKeywords = new string[] { "ambizione", "aspirazione", "obiettivo", "meta", "sogno" };
+            string[] balanceKeywords = new string[] { "equilibrio", "bilanciamento", "armonia", "stabilità", "moderazione" };
+            string[] relaxationTechniquesKeywords = new string[] { "tecniche di rilassamento", "meditazione guidata", "respirazione profonda", "yoga", "mindfulness" };
+            string[] digitalDetoxKeywords = new string[] { "detox digitale", "disconnessione", "pausa tecnologica", "limitare lo smartphone", "uso consapevole della tecnologia" };
+            string[] creativeWritingKeywords = new string[] { "scrittura creativa", "narrativa", "poesia", "diario personale", "scrittura terapeutica" };
+            string[] lifeCoachingKeywords = new string[] { "coaching della vita", "consulenza personale", "guida", "supporto personale", "consigli per la vita" };
+            string[] sustainableLivingKeywords = new string[] { "vita sostenibile", "ecosostenibilità", "ambiente", "stile di vita verde", "pratiche ecologiche" };
+            string[] personalBrandingKeywords = new string[] { "branding personale", "immagine personale", "auto-marketing", "identità professionale", "costruzione del marchio personale" };
+            string[] filmGenresKeywords = new string[] { "generi di film", "cinema d'azione", "film drammatici", "commedie", "film di fantascienza" };
+            string[] movieNightsKeywords = new string[] { "serata film", "cinema a casa", "maratona di film", "notte di film", "visione collettiva" };
+            string[] filmRecommendationsKeywords = new string[] { "consigli su film", "suggerimenti di film", "migliori film da vedere", "film consigliati", "film da non perdere" };
+            string[] emotionalProcessingKeywords = new string[] { "elaborazione emotiva", "gestione delle emozioni", "sentimenti complessi", "intelligenza emotiva", "riflessione emotiva" };
+            string[] selfIdentityKeywords = new string[] { "identità personale", "autoconsapevolezza", "definizione di sé", "scoperta di sé", "senso di sé" };
+            string[] relationshipDynamicsKeywords = new string[] { "dinamiche relazionali", "problemi di relazione", "comunicazione interpersonale", "conflitti relazionali", "supporto nelle relazioni" };
+            string[] mentalHealthAwarenessKeywords = new string[] { "consapevolezza della salute mentale", "benessere psicologico", "disturbi mentali", "supporto psicologico", "educazione alla salute mentale" };
+            string[] anxietyManagementKeywords = new string[] { "gestione dell'ansia", "ridurre l'ansia", "tecniche di calma", "controllare l'ansia", "ansia cronica" };
+            string[] lifeChangesKeywords = new string[] { "cambiamenti nella vita", "transizioni di vita", "nuovi inizi", "gestire il cambiamento", "adattarsi a nuove situazioni" };
+            string[] stressReductionKeywords = new string[] { "riduzione dello stress", "gestione dello stress", "tecniche di rilassamento", "minimizzare lo stress", "stress cronico" };
+            string[] personalBoundariesKeywords = new string[] { "limiti personali", "impostare confini", "rispetto dei confini", "autonomia personale", "protezione emotiva" };
+            string[] overcomingTraumaKeywords = new string[] { "superare il trauma", "recupero dal trauma", "terapia per il trauma", "elaborazione del trauma", "guarigione post-traumatica" };
+            string[] lifeSatisfactionKeywords = new string[] { "soddisfazione della vita", "contentezza", "realizzazione personale", "valutazione della vita", "qualità della vita" };
+            string[] griefManagementKeywords = new string[] { "gestione del lutto", "superare il lutto", "elaborazione del dolore", "guarigione dal lutto", "affrontare la perdita" };
+            string[] identityExplorationKeywords = new string[] { "esplorazione dell'identità", "scoperta di sé", "definizione di sé", "auto-riflessione", "crescita personale" };
+            string[] personalResilienceKeywords = new string[] { "resilienza personale", "forza interiore", "recuperare dopo una caduta", "adattabilità", "superare le sfide" };
+            string[] emotionalRegulationKeywords = new string[] { "regolazione emotiva", "controllo delle emozioni", "gestione delle emozioni", "equilibrio emotivo", "stabilità emozionale" };
+            string[] relationshipBuildingKeywords = new string[] { "costruzione delle relazioni", "rafforzare le relazioni", "sviluppare legami", "relazioni sane", "intimità" };
+            string[] stressCopingKeywords = new string[] { "coping dello stress", "strategie contro lo stress", "affrontare lo stress", "stress resilienza", "adattamento allo stress" };
+            string[] personalEffectivenessKeywords = new string[] { "efficacia personale", "produttività personale", "autoefficacia", "miglioramento delle prestazioni", "realizzazione di obiettivi" };
+            string[] healingProcessesKeywords = new string[] { "processi di guarigione", "recupero", "terapia di guarigione", "ripristino", "rigenerazione" };
+            string[] decisionSupportKeywords = new string[] { "supporto decisionale", "prendere decisioni", "consulenza per decisioni", "orientamento nelle scelte", "aiuto nelle decisioni" };
+            string[] selfWorthKeywords = new string[] { "valore personale", "autostima", "valutazione di sé", "amor proprio", "senso di valore" };
+            string[] overcomingAddictionKeywords = new string[] { "superare la dipendenza", "recupero da dipendenze", "terapia di dipendenza", "liberarsi dalle dipendenze", "aiuto per dipendenze" };
+            string[] mindfulnessPracticeKeywords = new string[] { "pratica della mindfulness", "meditazione mindfulness", "consapevolezza", "attenzione plena", "pratica meditativa" };
+            string[] emotionalBalanceKeywords = new string[] { "equilibrio emotivo", "stabilità emotiva", "gestione delle emozioni", "armonia interiore", "calma emotiva" };
+            string[] copingMechanismsKeywords = new string[] { "meccanismi di coping", "strategie di coping", "affrontare lo stress", "gestione dello stress", "adattamento emotivo" };
+            string[] lifeGoalsPlanningKeywords = new string[] { "pianificazione degli obiettivi di vita", "definizione degli obiettivi", "sogni futuri", "mappatura del percorso di vita", "obiettivi a lungo termine" };
+            string[] lifeManagementKeywords = new string[] { "gestione della vita", "organizzazione personale", "bilanciamento vita-lavoro", "gestione quotidiana", "ottimizzazione del tempo" };
+            string[] traumaRecoveryKeywords = new string[] { "recupero dal trauma", "guarigione da traumi", "terapia post-traumatica", "superamento del trauma", "resilienza post-traumatica" };
+            string[] personalIntegrityKeywords = new string[] { "integrità personale", "coerenza personale", "onestà con sé stessi", "valori personali", "etica personale" };
+            string[] creativeExpressionKeywords = new string[] { "espressione creativa", "creatività artistica", "liberare la creatività", "arte e creatività", "esplorazione creativa" };
+            string[] resilienceBuildingKeywords = new string[] { "costruzione della resilienza", "sviluppo della resilienza", "capacità di recupero", "forza interiore", "superare le avversità" };
+            string[] overcomingAnxietyKeywords = new string[] { "superare l'ansia", "gestione dell'ansia", "tecniche di riduzione dell'ansia", "calmare l'ansia", "strategie contro l'ansia" };
+            string[] dealingWithDepressionKeywords = new string[] { "affrontare la depressione", "superare la depressione", "strategie per la depressione", "aiuto per la depressione", "gestione della depressione" };
+            string[] enhancingCreativityKeywords = new string[] { "potenziare la creatività", "sviluppare la creatività", "stimolare la creatività", "tecniche creative", "ispirazione creativa" };
+
+
 
 
 
@@ -213,6 +338,1270 @@ namespace Whisper.Controllers
                 "Celebra ogni piccola vittoria, ogni passo conta.",
                 "Il percorso verso il successo è lungo, ma ogni passo avanti è un progresso.",
                 "Non sottovalutare i piccoli successi; sono le fondamenta dei grandi."
+                };
+            }
+            else if (dealingWithDepressionKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Affrontare la depressione richiede coraggio e supporto. Quali approcci hai trovato utili nel tuo percorso?",
+                "Quali attività quotidiane aiutano a gestire i tuoi sintomi di depressione?",
+                "Hai trovato particolarmente utile il supporto di gruppi o terapie? In che modo?",
+                "Quali consigli daresti a qualcuno che sta iniziando a confrontarsi con la depressione?",
+                "Come mantieni la speranza e l'ottimismo durante i periodi difficili legati alla depressione?"
+                };
+            }
+            else if (enhancingCreativityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La creatività è essenziale in molti aspetti della vita. Come fai a coltivare la tua creatività quotidianamente?",
+                "Quali tecniche usi per superare i blocchi creativi o per trovare ispirazione?",
+                "C'è stato un progetto o un'attività recente che ha particolarmente stimolato la tua creatività?",
+                "In che modo la creatività influisce sul tuo benessere emotivo o sul tuo lavoro?",
+                "Quali risorse consiglieresti a qualcuno che desidera sviluppare o potenziare la propria creatività?"
+                };
+            }
+            else if (overcomingAnxietyKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "L'ansia può essere impegnativa. Quali strategie trovi più efficaci nel gestirla?",
+                "Puoi condividere un'esperienza in cui hai applicato con successo una tecnica per ridurre l'ansia?",
+                "Come valuti e scegli le tecniche più adatte a te per la gestione dell'ansia?",
+                "Quali risorse o supporti consiglieresti a chi sta lottando contro l'ansia?",
+                "In che modo il supporto di amici, familiari o professionisti ha influenzato il tuo percorso di gestione dell'ansia?"
+                };
+            }
+            else if (resilienceBuildingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La resilienza è fondamentale per superare le sfide. Quali pratiche hai integrato nella tua vita per costruire resilienza?",
+                "Qual è stato il momento in cui hai sentito di aver fatto affidamento sulla tua resilienza per superare un'ostacolo?",
+                "Ci sono modelli o ispirazioni che segui per rafforzare la tua resilienza personale?",
+                "Quali strategie consiglieresti a qualcuno che sta cercando di sviluppare una maggiore resilienza?",
+                "Come ha influenzato la tua vita la capacità di adattarti e riprenderti dalle difficoltà?"
+                };
+            }
+            else if (lifeManagementKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Gestire efficacemente la vita richiede abilità. Quali strategie usi per organizzare la tua giornata?",
+                "Come fai a mantenere un equilibrio tra lavoro e vita personale?",
+                "Quali strumenti o metodi trovi più utili nell'ottimizzazione del tuo tempo?",
+                "Hai affrontato recentemente delle sfide nella gestione della tua vita quotidiana? Come le hai superate?",
+                "Qual è il tuo consiglio più utile per qualcuno che lotta con la gestione efficace della propria vita?"
+                };
+            }
+            else if (traumaRecoveryKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Il recupero dal trauma è un percorso personale. Quali risorse hai trovato particolarmente utili?",
+                "Quali sono state le maggiori sfide nel tuo percorso di guarigione e come le hai affrontate?",
+                "Hai consigli specifici per chi sta attraversando un processo di recupero da un trauma?",
+                "In che modo il supporto degli altri ha giocato un ruolo nel tuo percorso di recupero?",
+                "Come valuti i progressi nel tuo recupero dal trauma?"
+                };
+            }
+            else if (personalIntegrityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mantenere l'integrità personale richiede impegno. Come assicuri di rimanere fedele ai tuoi valori?",
+                "Quali sfide hai incontrato nel mantenere la tua integrità personale?",
+                "Come gestisci le situazioni che mettono alla prova la tua onestà o i tuoi valori personali?",
+                "Hai esempi di come la tua integrità personale abbia influenzato positivamente la tua vita o le tue relazioni?",
+                "Quali pratiche ti aiutano a mantenere una forte coerenza personale?"
+                };
+            }
+            else if (creativeExpressionKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Come trovi spazio e ispirazione per la tua espressione creativa?",
+                "Quali forme di arte o creatività pratichi e cosa significano per te?",
+                "C'è stato un progetto creativo di recente che ti ha particolarmente ispirato o sfidato?",
+                "Come superi i blocchi creativi o i periodi di mancanza di ispirazione?",
+                "Qual è l'impatto della creatività sulla tua salute emotiva o sul tuo benessere generale?"
+                };
+            }
+            else if (lifeGoalsPlanningKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Pianificare gli obiettivi di vita può fornire direzione. Come stabilisci e rivedi i tuoi obiettivi a lungo termine?",
+                "Quali tecniche utilizzi per rimanere in traccia verso il raggiungimento dei tuoi obiettivi di vita?",
+                "Hai esempi di obiettivi che hai raggiunto di recente e come li hai conseguiti?",
+                "Come bilanci la flessibilità e l'adattabilità nella pianificazione dei tuoi obiettivi di vita?",
+                "Quali sfide hai incontrato nella pianificazione e realizzazione dei tuoi obiettivi e come le hai superate?"
+                };
+            }
+            else if (emotionalBalanceKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mantenere l'equilibrio emotivo è cruciale. Quali pratiche quotidiane utilizzi per gestire le tue emozioni?",
+                "Quali sfide hai incontrato nel tentativo di raggiungere una stabilità emotiva e come le hai superate?",
+                "C'è stato un momento particolare in cui hai sentito di aver raggiunto un'armonia interiore significativa?",
+                "Quali risorse o strumenti consideri più efficaci per mantenere la tua calma emotiva?",
+                "Come affronti i momenti di grande stress o turbamento emotivo?"
+                };
+            }
+            else if (copingMechanismsKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "I meccanismi di coping sono vitali per la resilienza. Quali strategie di coping hai trovato più efficaci?",
+                "Puoi condividere un esempio di come hai utilizzato un meccanismo di coping durante un periodo particolarmente stressante?",
+                "Come valuti l'efficacia dei tuoi meccanismi di coping nel tempo? Hai fatto modifiche recentemente?",
+                "Quali nuove strategie di coping vorresti esplorare o hai in programma di implementare?",
+                "Come hai imparato a riconoscere quali meccanismi di coping funzionano meglio per te?"
+                };
+            }
+            else if (healingProcessesKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "I processi di guarigione sono tanto unici quanto personali. Quali tecniche di guarigione hai trovato particolarmente efficaci?",
+                "Qual è stata la tua esperienza con il recupero e il ripristino dopo un evento traumatico o una malattia?",
+                "Credi che il supporto di amici, familiari o professionisti sia cruciale nel tuo processo di guarigione?",
+                "Come definisci 'guarigione' nella tua vita personale e quali passi stai prendendo per raggiungerla?",
+                "Quali sono state le maggiori sfide che hai incontrato nel tuo percorso di guarigione e come le hai superate?"
+                };
+            }
+            else if (decisionSupportKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Prendere decisioni può essere difficile. Come ti orienti nelle scelte importanti della tua vita?",
+                "Hai un processo o un metodo specifico che utilizzi per prendere decisioni complesse?",
+                "Qual è stata una decisione significativa che hai preso recentemente e come sei stato supportato nel processo?",
+                "Credi nell'importanza di cercare consigli esterni quando devi prendere decisioni importanti?",
+                "Come gestisci l'ansia che può accompagnare le grandi decisioni?"
+                };
+            }
+            else if (selfWorthKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Il senso di valore personale è fondamentale per il benessere. Come lavori per mantenere o migliorare il tuo valore personale?",
+                "Quali esperienze hai avuto che hanno significativamente influenzato la tua autostima?",
+                "Hai strategie per affrontare i momenti in cui il tuo senso di valore personale è messo alla prova?",
+                "In che modo le relazioni con gli altri influenzano il tuo senso di autostima?",
+                "Qual è il ruolo del riconoscimento esterno nella tua percezione del valore personale?"
+                };
+            }
+            else if (overcomingAddictionKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Superare una dipendenza è un viaggio impegnativo. Quali risorse o supporti hai trovato utili nel tuo processo di recupero?",
+                "Quali sono stati gli ostacoli principali nel tuo percorso di liberazione dalle dipendenze e come li hai affrontati?",
+                "In che modo il supporto professionale ha giocato un ruolo nel tuo percorso di recupero da una dipendenza?",
+                "Quali cambiamenti nello stile di vita hai implementato per supportare il tuo recupero da dipendenze?",
+                "Come mantieni la tua motivazione e impegni nella lotta contro le dipendenze a lungo termine?"
+                };
+            }
+            else if (mindfulnessPracticeKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La mindfulness è una pratica potente. Come l'hai integrata nella tua routine quotidiana?",
+                "Quali benefici hai notato dal praticare la mindfulness o la meditazione?",
+                "Hai consigli specifici per qualcuno che sta cercando di iniziare o migliorare la sua pratica di mindfulness?",
+                "Quali sfide hai incontrato nell'approfondire la tua pratica meditativa e come le hai superate?",
+                "C'è un particolare esercizio di mindfulness che trovi particolarmente utile o rivelatore?"
+                };
+            }
+
+            else if (stressCopingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Ognuno ha metodi unici per affrontare lo stress. Quali sono i tuoi e come li hai sviluppati?",
+                "Ci sono strategie specifiche che hai trovato particolarmente efficaci contro lo stress cronico?",
+                "Come mantieni la tua resilienza quando ti trovi di fronte a stress intensi o prolungati?",
+                "Qual è stata una situazione di stress recente e come l'hai gestita?",
+                "C'è un consiglio pratico che ti sentiresti di condividere su come gestire meglio lo stress quotidiano?"
+                };
+            }
+            else if (personalEffectivenessKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Migliorare l'efficacia personale è fondamentale per raggiungere gli obiettivi. Quali tattiche hai trovato utili?",
+                "Come valuti e misuri la tua produttività personale e quali strumenti utilizzi per migliorarla?",
+                "Quali ostacoli hai dovuto superare per diventare più efficace nel tuo lavoro o nella tua vita personale?",
+                "Hai esempi specifici di come hai migliorato la tua capacità di realizzare obiettivi recentemente?",
+                "Quali sono i principi chiave che segui per mantenere alta la tua autoefficacia?"
+                };
+            }
+            else if (emotionalRegulationKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La regolazione emotiva è essenziale per una vita equilibrata. Quali tecniche usi per gestire le tue emozioni?",
+                "Hai risorse o attività che ti aiutano a mantenere la stabilità emozionale nei momenti difficili?",
+                "Come valuti l'impatto della tua capacità di regolare le emozioni sulle tue relazioni personali e professionali?",
+                "Quali sfide hai incontrato nel tentativo di migliorare il controllo delle tue emozioni?",
+                "C'è un momento specifico in cui hai riconosciuto un significativo miglioramento nella tua regolazione emotiva?"
+                };
+            }
+            else if (relationshipBuildingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Costruire relazioni sane è un arte. Quali qualità ritieni più importanti nello sviluppo di legami forti?",
+                "Come affronti la costruzione di nuove relazioni in vari ambiti della tua vita, come lavoro o tempo libero?",
+                "Hai esempi di come hai rafforzato una relazione importante recentemente?",
+                "Quali sfide hai riscontrato nel cercare di creare intimità e come le hai superate?",
+                "Che consigli daresti a qualcuno che vuole migliorare la qualità delle proprie relazioni?"
+                };
+            }
+            else if (griefManagementKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Affrontare un lutto è un processo profondamente personale. Quali sono state le tue strategie principali per gestire il dolore?",
+                "Come ha influenzato il supporto di amici o professionisti il tuo percorso di elaborazione del lutto?",
+                "Esistono particolari attività o pratiche che ti hanno aiutato a trovare conforto durante i periodi di lutto?",
+                "Quali lezioni hai imparato su te stesso e sulla vita mentre affrontavi la perdita?",
+                "Come descriveresti il tuo processo di guarigione dal lutto fino ad ora?"
+                };
+            }
+            else if (identityExplorationKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "L'esplorazione dell'identità può essere un viaggio illuminante. Quali aspetti di te stesso scopri di più recentemente?",
+                "In che modo le esperienze di vita hanno influenzato la tua percezione e definizione di te stesso?",
+                "Hai particolari metodi o pratiche che ti aiutano nell'auto-riflessione e nella scoperta di sé?",
+                "Come valuti i cambiamenti nella tua identità nel corso degli anni?",
+                "Quali sfide hai incontrato nel cercare di definire chi sei e come le hai superate?"
+                };
+            }
+            else if (personalResilienceKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La resilienza è cruciale per superare le sfide. Puoi condividere un'esperienza che dimostri la tua resilienza personale?",
+                "Quali risorse trovi più efficaci per recuperare da situazioni difficili o fallimenti?",
+                "In che modo sviluppi e mantieni la tua forza interiore di fronte alle avversità?",
+                "Hai consigli per qualcuno che sta cercando di costruire o rafforzare la propria resilienza?",
+                "Quali sono stati alcuni degli ostacoli più grandi che hai superato e che hanno rafforzato la tua resilienza?"
+                };
+            }
+            else if (lifeSatisfactionKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Come valuti la tua attuale soddisfazione della vita e quali fattori contribuiscono maggiormente ad essa?",
+                "C'è un aspetto della tua vita che senti abbia maggiormente bisogno di miglioramento per aumentare la tua soddisfazione?",
+                "Quali momenti o decisioni ritieni abbiano avuto l'impatto più significativo sulla tua qualità di vita?",
+                "In che modo le tue aspirazioni e i tuoi valori influenzano la tua percezione della contentezza nella vita?",
+                "Quali sono le strategie che utilizzi per mantenere o migliorare la tua soddisfazione personale nel tempo?"
+                };
+            }
+            else if (overcomingTraumaKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Il processo di guarigione da un trauma può essere lungo e difficile. Quali sono state le risorse più utili per te in questo percorso?",
+                "Come ha influenzato la terapia il tuo processo di recupero dal trauma?",
+                "Quali strategie specifiche hai trovato efficaci nell'elaborazione delle esperienze traumatiche?",
+                "Puoi condividere un insight o un momento chiave nel tuo percorso di guarigione post-traumatica?",
+                "Quali cambiamenti hai notato in te stesso dall'inizio del tuo percorso di superamento del trauma?"
+                };
+            }
+            else if (stressReductionKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Ridurre lo stress è essenziale per mantenere una buona salute. Quali tecniche di rilassamento trovi più efficaci?",
+                "Come gestisci lo stress quotidiano? Ci sono attività o pratiche specifiche che ti aiutano a rimanere calmo?",
+                "Quali sono le tue strategie per minimizzare lo stress nelle situazioni ad alta pressione?",
+                "Lo stress cronico può essere debilitante. Come ti assicuri di affrontare questo problema in modo proattivo?",
+                "Hai ricevuto consigli utili su come gestire lo stress che vorresti condividere?"
+                };
+            }
+            else if (personalBoundariesKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Impostare limiti personali è cruciale per il benessere psicologico. Come definisci e mantieni i tuoi confini?",
+                "Hai trovato difficoltà nell'impostare o mantenere confini chiari con gli altri? Come hai gestito queste situazioni?",
+                "Qual è stata una situazione in cui hai sentito che i tuoi limiti personali sono stati rispettati o protetti in modo efficace?",
+                "Come reagisci quando qualcuno non rispetta i tuoi confini personali?",
+                "Quali consigli hai per qualcuno che sta cercando di migliorare nel definire e proteggere i suoi limiti personali?"
+                };
+            }
+            else if (anxietyManagementKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La gestione dell'ansia è cruciale per mantenere un equilibrio nella vita. Quali tecniche ti aiutano a gestire l'ansia efficacemente?",
+                "Hai trovato particolarmente utile qualche forma di terapia o consulenza per controllare l'ansia?",
+                "Quali sono i trigger che noti che aggravano la tua ansia e come li affronti?",
+                "In che modo l'ansia influisce sulla tua vita quotidiana e quali passi stai prendendo per ridurne l'impatto?",
+                "Condividi un consiglio che ti è stato particolarmente utile nella gestione dell'ansia cronica."
+                };
+            }
+            else if (lifeChangesKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "I cambiamenti nella vita possono essere sia eccitanti che spaventosi. Come ti prepari a importanti transizioni di vita?",
+                "Quali strategie trovi efficaci per adattarti a nuove situazioni o ambienti?",
+                "Hai un esempio di un recente grande cambiamento nella tua vita e come lo hai gestito?",
+                "In che modo cerchi supporto durante i periodi di transizione significativi nella tua vita?",
+                "Qual è stata la transizione più difficile che hai affrontato e cosa hai imparato da essa?"
+                };
+            }
+            else if (mentalHealthAwarenessKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La consapevolezza della salute mentale è fondamentale nella nostra società. Qual è la tua percezione della sensibilizzazione attuale su questi temi?",
+                "Il supporto psicologico può essere un cambiamento di vita. Qual è stata la tua esperienza personale (se disponibile a condividerla) con la terapia o altri supporti psicologici?",
+                "Come pensi che la società potrebbe migliorare nella gestione dei disturbi mentali e nel supporto alle persone affette?",
+                "Quali risorse consideri essenziali per educare le persone sulla salute mentale?",
+                "Hai consigli o risorse che potresti consigliare a qualcuno che sta cercando di migliorare la propria salute mentale o di supportare un'altra persona?"
+                };
+            }
+            else if (emotionalProcessingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Elaborare le proprie emozioni è un passo fondamentale per il benessere psicologico. Qual è la tua strategia principale per gestire emozioni intense o complesse?",
+                "L'intelligenza emotiva è una risorsa preziosa nella vita quotidiana. Come credi di aver sviluppato questa capacità nel tempo?",
+                "Riflettere sulle proprie emozioni può portare a importanti intuizioni. Qual è stata una recente scoperta che hai fatto su di te attraverso la riflessione emotiva?",
+                "Credi che il modo in cui gestisci le tue emozioni abbia cambiato il modo in cui interagisci con gli altri? Come?",
+                "Gestire emozioni complesse può essere impegnativo. Qual è stata una situazione recente che ti ha messo alla prova, e come hai reagito?"
+                };
+            }
+            else if (selfIdentityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "L'identità personale è un tema centrale in molte discussioni psicologiche. Come descriveresti il tuo processo di scoperta di sé?",
+                "L'autoconsapevolezza può influenzare molti aspetti della vita. Qual è stato un momento significativo di crescita personale per te?",
+                "Come pensi che il tuo senso di sé sia cambiato nel corso del tempo? Ci sono stati eventi o persone che consideri determinanti in questo processo?",
+                "Affrontare questioni di identità può essere complesso. Quali sfide hai incontrato nel definire te stesso e come le hai superate?",
+                "Cosa significa per te avere una forte identità personale, e come la mantieni o la rafforzi?"
+                };
+            }
+            else if (relationshipDynamicsKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Navigare nelle dinamiche relazionali può essere complicato. Qual è il tuo approccio principale nel gestire i conflitti nelle relazioni?",
+                "La comunicazione è vitale nelle relazioni. Hai strategie specifiche che utilizzi per migliorare la comunicazione con le persone importanti nella tua vita?",
+                "Affrontare problemi di relazione richiede spesso supporto esterno. In che modo le consultazioni con un terapeuta o un consigliere hanno aiutato le tue relazioni?",
+                "Qual è stata la sfida più grande che hai affrontato in una relazione importante e come l'hai superata?",
+                "Come assicuri che le tue relazioni rimangano sane e supportive? Hai delle tecniche o pratiche particolari che trovi efficaci?"
+                };
+            }
+
+            else if (lifeCoachingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Il coaching della vita può essere un potente strumento di cambiamento. Qual è il miglior consiglio che hai ricevuto da un life coach?",
+                "La consulenza personale spesso rivela nuove prospettive. Quali sono stati alcuni degli insight più significativi per te?",
+                "La guida di un coach può aiutare a navigare momenti difficili. Hai esperienze in cui il coaching ti ha aiutato particolarmente?",
+                "Come pensi che il supporto personale possa migliorare la tua vita quotidiana?",
+                "I consigli per la vita che si ricevono possono trasformare le nostre azioni quotidiane. Qual è un consiglio che ha avuto un impatto duraturo su di te?"
+                };
+            }
+            else if (sustainableLivingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Vivere in modo sostenibile è fondamentale per il nostro pianeta. Quali sono alcune pratiche ecologiche che hai adottato nella tua vita?",
+                "L'adozione di uno stile di vita verde può essere sia gratificante che sfidante. Quali sono state le tue esperienze in questo percorso?",
+                "Come pensi che le piccole azioni quotidiane possano contribuire alla sostenibilità ambientale?",
+                "Esplorare la sostenibilità nel proprio stile di vita può essere un'avventura. Hai scoperto nuovi prodotti o tecnologie ecologiche recentemente?",
+                "Qual è la tua motivazione principale per seguire uno stile di vita ecologico e quali benefici hai notato?"
+                };
+            }
+            else if (personalBrandingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Il branding personale è essenziale in molti campi oggi. Come definiresti il tuo brand personale?",
+                "L'auto-marketing può aprire molte porte professionalmente. Quali strategie usi per promuovere la tua immagine personale?",
+                "Costruire un'identità professionale forte può essere un grande vantaggio. Quali elementi ritieni fondamentali per un efficace branding personale?",
+                "Come assicuri che il tuo marchio personale rifletta autenticamente chi sei e i tuoi valori fondamentali?",
+                "Quali sfide hai incontrato nel costruire il tuo marchio personale e come le hai superate?"
+                };
+            }
+
+            else if (relaxationTechniquesKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Le tecniche di rilassamento possono migliorare significativamente la qualità della vita. Qual è la tua tecnica preferita?",
+                "La meditazione guidata è un ottimo modo per calmare la mente. Pratichi regolarmente?",
+                "La respirazione profonda è una pratica semplice ma potente. Hai notato miglioramenti dal suo utilizzo regolare?",
+                "Il yoga non solo rilassa, ma aiuta anche a mantenere il corpo in forma. Qual è il tuo stile di yoga preferito?",
+                "La mindfulness aiuta a vivere il momento. Come incorpori la mindfulness nella tua routine quotidiana?"
+                };
+            }
+            else if (digitalDetoxKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Un detox digitale può essere liberatorio. Hai già provato a fare una pausa tecnologica?",
+                "Limitare l'uso dello smartphone è importante per la salute mentale. Quali strategie usi per ridurne l'utilizzo?",
+                "Fare pause regolari dalla tecnologia può aiutare a riconnettersi con il mondo reale. Cosa ti piace fare durante queste pause?",
+                "Come gestisci l'equilibrio tra il tempo online e offline nella tua vita quotidiana?",
+                "Pensi che il detox digitale possa migliorare la concentrazione e ridurre lo stress? Qual è stata la tua esperienza?"
+                };
+            }
+            else if (creativeWritingKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La scrittura creativa è un ottimo sfogo per l'espressione personale. Che tipo di scrittura ti piace fare?",
+                "Narrare storie può essere tanto divertente quanto terapeutico. Stai lavorando su qualche progetto di scrittura in questo periodo?",
+                "La poesia è una forma d'arte profonda. Scrivi poesie? Cosa ti ispira?",
+                "Tenere un diario personale è un'abitudine che molti trovano utile. Hai un diario dove annoti i tuoi pensieri e le tue esperienze?",
+                "La scrittura può essere usata anche come terapia. Hai mai sperimentato benefici emotivi o psicologici dalla scrittura?"
+                };
+            }
+
+            else if (ambitionKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "L'ambizione può spingere al successo. Qual è il tuo obiettivo principale al momento?",
+                "Avere grandi aspirazioni è il primo passo per realizzare i propri sogni. Cosa aspiri a raggiungere nel prossimo futuro?",
+                "Ogni grande traguardo inizia con un sogno. Hai un sogno che stai cercando di trasformare in realtà?",
+                "Impostare obiettivi chiari è cruciale per il successo. Quali sono le mete che ti sei posto di recente?",
+                "Le ambizioni guidano la nostra motivazione. Come mantieni alta la tua motivazione verso i tuoi obiettivi?"
+                };
+            }
+            else if (balanceKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mantenere l'equilibrio nella vita è essenziale. Come fai a bilanciare lavoro e tempo libero?",
+                "L'armonia tra le varie aree della vita porta benessere. Quali strategie utilizzi per mantenere questo equilibrio?",
+                "La stabilità è fondamentale sia nella vita personale che professionale. Cosa fai per mantenere una buona stabilità nelle tue giornate?",
+                "Trovare un giusto equilibrio può essere una sfida. Hai consigli su come raggiungere e mantenere la moderazione in tutto ciò che fai?",
+                "L'equilibrio è spesso una danza delicata. Qual è stato il tuo più grande successo nel trovare armonia nella tua vita?"
+                };
+            }
+            else if (wisdomKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La saggezza è il frutto dell'esperienza. Qual è il consiglio più saggio che hai mai ricevuto?",
+                "Acquisire conoscenza è un processo continuo. Qual è stata l'ultima lezione importante che hai appreso?",
+                "Spesso l'intuito ci guida nelle decisioni. Puoi raccontare un'occasione in cui il tuo intuito si è rivelato corretto?",
+                "La comprensione profonda di un argomento può essere molto gratificante. Su quale argomento ti senti particolarmente competente?",
+                "Come fai ad applicare la prudenza nelle tue scelte quotidiane? Hai degli esempi specifici di scelte prudenti che hai fatto di recente?"
+                };
+            }
+            else if (energyKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Avere energia è fondamentale per affrontare le sfide. Cosa fai per mantenerti energico e attivo?",
+                "La vitalità è tanto fisica quanto mentale. Quali sono le tue attività preferite per mantenere alto il tuo livello di energia?",
+                "Il dinamismo può essere contagioso. Come riesci a infondere energia e entusiasmo nelle persone intorno a te?",
+                "La forza non è solo fisica, ma anche mentale. Come rafforzi la tua resilienza e la tua forza interiore?",
+                "Mantenere il vigore richiede un equilibrio. Come bilanci lavoro, riposo e tempo libero per mantenere la tua energia ottimale?"
+                };
+            }
+            else if (adaptabilityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "L'adattabilità è una competenza chiave oggi. Come ti adatti ai cambiamenti nella tua vita o lavoro?",
+                "Essere flessibili può aiutare a superare molte sfide. Qual è stata la tua esperienza più recente dove la flessibilità è stata fondamentale?",
+                "Adattarsi alle nuove situazioni è un'arte. Hai consigli su come migliorare questa capacità?",
+                "La versatilità è una virtù in molti ambiti. In quali situazioni hai dovuto essere particolarmente versatile ultimamente?",
+                "Adattarsi non è sempre facile. Qual è stato il cambiamento più difficile a cui ti sei dovuto adattare recentemente?"
+                };
+            }
+            else if (fulfillmentKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Trovare la realizzazione personale è essenziale. Che cosa ti dà più soddisfazione nella vita?",
+                "Sentirsi compiuti può derivare da molte fonti. Qual è stato il tuo successo più gratificante ultimamente?",
+                "La realizzazione può venire dal lavoro, dalla famiglia, dagli hobby. Dove trovi la tua pienezza?",
+                "Avere successo in qualcosa che ci appassiona è molto gratificante. Qual è il tuo obiettivo attuale per sentirti realizzato?",
+                "La soddisfazione personale è un indicatore di una vita ben vissuta. Quali sono le cose che ti rendono veramente compiuto?"
+                };
+            }
+            else if (tranquilityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La tranquillità è un tesoro. Come trovi la pace nella tua vita quotidiana?",
+                "Vivere in serenità è un obiettivo nobilissimo. Quali pratiche ti aiutano a mantenere la calma?",
+                "A volte, un momento di calma può fare la differenza. Qual è il tuo luogo preferito per rilassarti e trovare serenità?",
+                "Cerchi sempre di creare un ambiente tranquillo attorno a te? Quali sono i tuoi metodi preferiti per farlo?",
+                "La pace interiore porta benefici immensi. Hai consigli su come coltivarla giorno dopo giorno?"
+                };
+            }
+            else if (connectivityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Vivere in un mondo connesso offre infinite opportunità. Come valorizzi le tue connessioni personali e professionali?",
+                "La comunicazione efficace è la chiave delle buone relazioni. Hai qualche suggerimento su come migliorare l'interazione con gli altri?",
+                "Networking è un'arte. Quali strategie trovi più efficaci per costruire e mantenere relazioni significative?",
+                "Nell'era digitale, restare connessi è più semplice ma anche più complesso. Come gestisci le tue relazioni online?",
+                "La connessione umana è essenziale per il benessere. Quali attività ti aiutano a sentirti più connesso con gli altri?"
+                };
+            }
+            else if (discoveryKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La scoperta è il cuore dell'apprendimento. Qual è stata la tua ultima grande scoperta?",
+                "Esplorare nuovi orizzonti può essere tanto eccitante. Cosa hai esplorato di recente?",
+                "Ogni rivelazione porta nuova conoscenza. C'è stata qualche scoperta recente che ha cambiato il tuo modo di pensare?",
+                "Scoprire qualcosa di nuovo è sempre entusiasmante. Qual è stata la tua ultima sorpresa piacevole?",
+                "Il piacere di trovare qualcosa di inaspettato è unico. Hai trovato qualcosa di inatteso ultimamente?"
+                };
+            }
+            else if (joyKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Condividere momenti di gioia rende tutto più bello. Qual è stata la tua recente fonte di felicità?",
+                "La felicità si trova spesso nelle piccole cose. Cosa ti ha reso particolarmente contento ultimamente?",
+                "Celebrare i piaceri della vita può essere molto gratificante. Hai avuto qualche soddisfazione personale da condividere?",
+                "La gioia di vivere è contagiosa. Che cosa ti rende felice quotidianamente?",
+                "Trovare soddisfazione nelle proprie attività è fondamentale. Qual è stata la tua ultima attività che ti ha dato grande piacere?"
+                };
+            }
+            else if (wellnessKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mantenere il benessere è fondamentale per una vita felice. Quali abitudini salutari pratichi?",
+                "La salute è la vera ricchezza. Hai integrato nuove pratiche salubri nella tua routine di recente?",
+                "Il fitness è tanto fisico quanto mentale. Come bilanci questi aspetti nel tuo percorso verso il benessere?",
+                "Una vita salubre migliora ogni giorno. Quali cambiamenti hai fatto per promuovere la tua salute?",
+                "La vitalità si coltiva con buone abitudini. Cosa ti fa sentire più vivo e in salute?"
+                };
+            }
+            else if (progressKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Il progresso è il motore della crescita personale. In quale area della tua vita stai vedendo miglioramenti?",
+                "L'avanzamento richiede impegno costante. Quali passi hai fatto di recente per sviluppare le tue competenze o la tua carriera?",
+                "Il miglioramento continuo è un eccellente obiettivo di vita. Quali successi hai raggiunto ultimamente?",
+                "L'innovazione nel proprio campo può essere molto gratificante. Che novità stai esplorando ora?",
+                "Il progresso può essere lento e costante. Come mantieni la motivazione durante i periodi di lento sviluppo?"
+                };
+            }
+            else if (harmonyKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Vivere in armonia è essenziale per il benessere. Come mantieni l'equilibrio nella tua vita?",
+                "L'armonia nella vita quotidiana porta pace. Che tecniche utilizzi per preservare la calma interiore?",
+                "La concordia tra lavoro e vita privata è fondamentale. Hai trovato il tuo equilibrio ideale?",
+                "Raggiungere la simbiosi perfetta in ogni aspetto della vita è un'arte. Qual è il tuo segreto per una vita armoniosa?",
+                "L'equilibrio è la chiave della stabilità. Quali sono i tuoi metodi preferiti per mantenere l'armonia personale e professionale?"
+                };
+            }
+            else if (leadershipKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La leadership è più di una posizione, è un'azione. Che tipo di leader aspiri ad essere?",
+                "Essere un buon capo significa ispirare gli altri. Come motivi il tuo team?",
+                "La guida efficace richiede coraggio e umiltà. Quali sono le tue principali strategie di leadership?",
+                "Ogni leader ha il suo stile unico. Quali qualità pensi siano essenziali per un buon leader?",
+                "La leadership può essere tanto gratificante quanto impegnativa. Quali sfide hai affrontato come leader?"
+                };
+            }
+            else if (innovationKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "L'innovazione spinge il mondo in avanti. A quale nuova idea stai lavorando?",
+                "Creare qualcosa di nuovo è sempre eccitante. Quali sono le tue ultime invenzioni?",
+                "Pensare in modo creativo apre infinite possibilità. Quali sono state le tue recenti ispirazioni?",
+                "Essere pionieristici nel tuo campo può essere tanto sfidante quanto gratificante. Qual è stato il tuo ultimo progetto innovativo?",
+                "L'innovazione è la chiave per il futuro. Come pensi di contribuire con le tue idee creative?"
+                };
+            }
+            else if (empowermentKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Sentirsi potenziati è fondamentale per l'autoefficacia. In che modo ti senti abilitato nella tua vita?",
+                "L'empowerment personale trasforma la nostra realtà. Quali passi hai intrapreso per diventare più forte?",
+                "Avere il controllo della propria vita è liberatorio. Cosa fa sentire te più potente e in controllo?",
+                "Essere autorizzati a fare scelte importanti è cruciale. Come prendi decisioni importanti?",
+                "Il potenziamento può venire da molti aspetti della vita. Qual è stata la tua esperienza più significativa di empowerment?"
+                };
+            }
+            else if (growthKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La crescita personale è un viaggio senza fine. Che passi hai fatto di recente verso il tuo sviluppo?",
+                "Progredire ogni giorno è un grande traguardo! Cosa ti ha aiutato a evolvere ultimamente?",
+                "Maturare non è sempre facile, ma è sempre gratificante. Hai scoperto qualcosa di nuovo su di te?",
+                "Lo sviluppo personale spesso porta sfide. Come stai affrontando il tuo percorso di crescita?",
+                "Ogni piccolo passo verso la crescita conta. Quali cambiamenti positivi hai notato in te stesso?"
+                };
+            }
+            else if (celebrationKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Le celebrazioni portano gioia e connessione. C'è un evento speciale che stai festeggiando?",
+                "Onorare i momenti significativi è importante. Cosa stai commemorando?",
+                "Feste e celebrazioni possono essere così vivaci! Hai qualcosa in particolare che stai celebrando?",
+                "Ogni celebrazione ha una storia. Qual è l'occasione speciale per te in questo periodo?",
+                "Celebrare le vittorie, grandi e piccole, è essenziale. Qual è stata la tua ultima celebrazione?"
+                };
+            }
+            else if (peaceKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La tranquillità è la chiave per una vita serena. Come mantieni la tua pace interiore?",
+                "Essere calmo e rilassato è essenziale. Hai dei consigli su come mantenere questa serenità?",
+                "La pace è preziosa, soprattutto nel mondo frenetico di oggi. Cosa ti aiuta a rimanere tranquillo?",
+                "Sembra che tu abbia trovato il tuo angolo di serenità. Che cosa ti rende così pacifico oggi?",
+                "Rilassarsi e lasciar andare lo stress è vitale. Quali sono le tue tecniche preferite per rilassarti?"
+                };
+            }
+            else if (adventureKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Le avventure rendono la vita eccitante! Qual è la tua prossima esplorazione?",
+                "Esplorare nuovi posti può essere così gratificante. Dove ti ha portato il tuo ultimo viaggio?",
+                "Scoprire l'ignoto è sempre avvincente. Hai nuove avventure in programma?",
+                "Ogni viaggio è una storia. Raccontami di una recente avventura che hai vissuto.",
+                "Essere un esploratore nel mondo o nella vita è entusiasmante. Qual è stata la tua scoperta più recente?"
+                };
+            }
+            else if (opportunityKeywords.Any(k => message.Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Le opportunità sono spesso il primo passo verso grandi successi!",
+                "Ogni occasione può trasformarsi in qualcosa di meraviglioso.",
+                "Una nuova possibilità? Suona eccitante, esploriamola insieme!",
+                "Le prospettive future sono sempre stimolanti, hai già qualche idea?",
+                "Prendere al volo una chance può cambiare tutto, parliamone."
+                };
+            }
+            else if (expressionsOfContentmentKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "È meraviglioso sapere che ti senti bene!",
+                "Che bello che tutto vada bene per te. Continua a goderti questa bella giornata.",
+                "Sono contento di sentire che sei soddisfatto. C'è qualcosa che vorresti aggiungere per rendere la giornata ancora migliore?",
+                "La tranquillità è preziosa. È bello sapere che ti senti rilassato.",
+                "Mantenere un senso di contentezza è importante. Continua a fare ciò che ti rende felice!"
+                };
+            }
+            else if (yexpressionsOfExcitementKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "È fantastico vedere il tuo entusiasmo! Cosa ti rende così eccitato?",
+                "Che bello che sei pieno di emozione! Qual è l'evento che aspetti con impazienza?",
+                "L'emozione è contagiosa! Mi fa piacere che tu sia così felice.",
+                "Sembra che ci sia qualcosa di veramente eccitante all'orizzonte per te!",
+                "Ricorda di goderti ogni momento di questa attesa eccitante!"
+                };
+            }
+            else if (expressionsOfFrustrationKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mi dispiace sentirti così frustrato. Vuoi parlare di cosa sta causando questo stress?",
+                "La frustrazione può essere difficile da gestire. Come posso aiutarti a alleviare un po' di questa tensione?",
+                "A volte, condividere il proprio carico può aiutare. Raccontami di più su ciò che ti sta frustrando.",
+                "Capisco che può essere sovrastante. C'è qualcosa di specifico che posso fare per te ora?",
+                "Esasperato è un sentimento pesante. Cerchiamo insieme una soluzione."
+                };
+            }
+            else if (expressionsOfGratefulnessKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Sono davvero toccato dal tuo ringraziamento. È sempre un piacere aiutarti!",
+                "Grazie per le tue gentili parole. Sono qui per aiutarti quando ne hai bisogno.",
+                "L'apprezzamento è sempre benvenuto! Non esitare a chiedere se c'è altro che posso fare per te.",
+                "È gratificante sapere che sono stato di aiuto. Continua a contare su di me!",
+                "Essere chiamato un salvavita è un grande onore. Grazie per affidarti a me!"
+                };
+            }
+
+            else if (expressionsOfRelaxationKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Prendersi un momento per rilassarsi è importante. Hai già pensato a come vorresti farlo?",
+                "Rilassarsi può fare meraviglie. Che ne dici di ascoltare un po' di musica tranquilla o fare una passeggiata?",
+                "È essenziale allentare la tensione di tanto in tanto. Vuoi qualche suggerimento su attività rilassanti?",
+                "Prendiamoci una pausa, allora! Qualche minuto di quiete può aiutarti a ricaricarti.",
+                "Tempo per te è una scelta saggia. Considera di praticare mindfulness o yoga per un effetto rilassante.",
+                "Capisco il bisogno di distendersi. Forse un libro o un film potrebbero essere un buon modo per staccare."
+                };
+            }
+            else if (expressionsOfDoubtKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "I dubbi sono parte del processo di apprendimento. Qual è la tua specifica preoccupazione?",
+                "Se non sei sicuro, possiamo esaminare insieme le informazioni per aiutarti a chiarire.",
+                "È naturale avere dubbi. Cerchiamo di capire meglio insieme.",
+                "Posso aiutarti a confermare qualsiasi informazione. Che cosa ti lascia perplesso?",
+                "Capisco che la situazione possa sembrare improbabile. Vuoi esplorare altre opinioni o fonti?",
+                "La sicurezza è importante. Dimmi cosa ti serve per sentirti più sicuro e fiducioso."
+                };
+            }
+            else if (expressionsOfNeedKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Sono qui per aiutarti. Qual è il problema e come posso assisterti?",
+                "Capisco che sia urgente. Concentriamoci su cosa possiamo fare subito per risolvere la situazione.",
+                "Mi dispiace che tu stia attraversando un momento difficile. Parliamo di come posso supportarti.",
+                "L'aiuto è a portata di mano. Descrivimi cosa ti serve e io farò del mio meglio per assisterti.",
+                "Se hai bisogno di consigli, sono pronto a fornirli. Qual è la questione su cui hai bisogno di orientamento?",
+                "Non esitare a chiedere aiuto. Qual è la tua richiesta specifica?"
+                };
+            }
+
+            else if (expressionsOfDisagreementKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco che possiamo vedere le cose diversamente. Vuoi discuterne per capire meglio i nostri punti di vista?",
+                "È importante esprimere il proprio disaccordo. Quali sono i tuoi argomenti?",
+                "Dissensi possono portare a conversazioni costruttive. Esploriamo le tue preoccupazioni.",
+                "Non essere d'accordo è parte del dialogo. Come posso aiutarti a chiarire questi punti?",
+                "Riconoscere le nostre differenze può aiutarci a comprendere meglio. Dimmi di più sul tuo punto di vista.",
+                "È normale non essere sempre d'accordo. Possiamo approfondire insieme questa questione?"
+                };
+            }
+            else if (expressionsOfInterestKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Che bello che tu sia interessato! Su quale aspetto vorresti avere più informazioni?",
+                "Sono qui per aiutarti a esplorare questo argomento. Che cosa ti interessa esattamente?",
+                "L'interesse è il primo passo verso l'apprendimento. Parliamone più dettagliatamente.",
+                "Felicissimo di approfondire questo tema per te. Quali sono le tue domande specifiche?",
+                "L'entusiasmo per un nuovo argomento è sempre eccitante! Iniziamo con qualche informazione base.",
+                "Mi fa piacere che questo ti affascini. Esploriamo insieme tutti i dettagli!"
+                };
+            }
+            else if (expressionsOfSurpriseKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "A volte la realtà può essere sorprendente! Vuoi discutere di cosa ha causato questa sorpresa?",
+                "Sorprese possono essere sconvolgenti, ma anche illuminanti. Cosa ti ha colpito di più?",
+                "Davvero sorprendente, vero? A volte le cose prendono una svolta inaspettata!",
+                "Capisco che possa essere stato inaspettato. Come posso aiutarti a gestire questa novità?",
+                "È sempre interessante quando qualcosa ci stupisce. Come credi che influenzerà la situazione?"
+                };
+            }
+
+            else if (yexpressionsOfEncouragementKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Hai tutta la mia fiducia, so che puoi farcela!",
+                "È solo questione di tempo e determinazione, non mollare!",
+                "Su con la vita! Ogni sforzo che fai è un passo verso il successo.",
+                "Continua così, la perseveranza è la chiave per superare qualsiasi sfida.",
+                "Forza e coraggio! Credo in te e nelle tue capacità.",
+                "Non arrenderti, le grandi cose richiedono tempo e pazienza.",
+                "Tenere duro è difficile, ma sei più forte di quanto pensi.",
+                "Sempre avanti, non lasciare che nulla ti fermi!"
+                };
+            }
+            else if (expressionsOfApologyKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Tutti sbagliano, l'importante è imparare da questi errori.",
+                "Apprezzo la tua sincerità nel chiedere scusa, come posso aiutarti a risolvere?",
+                "Accettare l'errore è il primo passo per fare meglio la prossima volta.",
+                "Capisco, e apprezzo che tu abbia ammesso il tuo errore.",
+                "È umano sbagliare, l'importante è fare ammenda e andare avanti.",
+                "Grazie per scusarti, dimostra grande maturità e comprensione."
+                };
+            }
+            else if (expressionsOfConfirmationKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Confermo! Se hai altre domande o necessiti ulteriori conferme, sono qui.",
+                "Esattamente, hai capito perfettamente.",
+                "Proprio così, non ci sono dubbi al riguardo.",
+                "Assolutamente, non potrei essere più d'accordo.",
+                "Decisamente, è proprio come dici tu.",
+                "Sì esatto, è proprio così come lo descrivi."
+                };
+            }
+
+            else if (yexpressionsOfCuriosityKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La curiosità è il motore dell'apprendimento! Cosa ti piacerebbe sapere di più?",
+                "Mi piace la tua curiosità! Facciamo luce su questo argomento.",
+                "C'è sempre qualcosa di interessante da scoprire. Su cosa vorresti approfondire?",
+                "Sono qui per rispondere alle tue domande. Qual è la tua domanda?",
+                "Curioso, eh? Chiedimi pure, sono qui per spiegarti tutto ciò che ti serve.",
+                "Capisco il tuo interesse. Dimmi più dettagli così posso fornirti le informazioni migliori."
+                };
+            }
+            else if (expressionsOfSatisfactionKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Sono entusiasta di sapere che sei soddisfatto. C'è qualcos'altro che posso fare per te?",
+                "È fantastico che tu sia contento! Continua a dirmi se c'è altro che posso aiutarti a risolvere.",
+                "Perfetto! È sempre bello quando le cose vanno esattamente come previsto.",
+                "Che bello che le tue aspettative siano state superate! Spero di continuare a fornire un servizio eccellente.",
+                "Esattamente ciò che cercavi? Fantastico! Facciamo del nostro meglio per soddisfare le tue esigenze."
+                };
+            }
+            else if (expressionsOfDiscontentKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mi dispiace sentire che non sei contento. Come posso migliorare la situazione?",
+                "Capisco che questo può essere frustrante. Parliamo di come posso rendere le cose migliori per te.",
+                "È importante per me che tu sia soddisfatto. Esploriamo insieme delle soluzioni.",
+                "Grazie per il tuo feedback. È essenziale per migliorare il nostro servizio.",
+                "Vediamo cosa possiamo fare per soddisfare le tue aspettative. Quali sono i tuoi suggerimenti?"
+                };
+            }
+
+            else if (expressionsOfAnxietyKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco che l'ansia possa essere difficile da gestire. Parliamo di ciò che ti preoccupa.",
+                "È normale sentirsi tesi in certe situazioni. Vuoi discutere di cosa può aiutarti a rilassarti?",
+                "Mi dispiace che tu ti senta sopraffatto. Esploriamo insieme modi per alleviare la tua ansia.",
+                "Ricorda, non sei solo in questo. Sono qui per aiutarti a gestire lo stress.",
+                "Cosa posso fare per supportarti? A volte, condividere le preoccupazioni può alleggerire il carico."
+                };
+            }
+            else if (yexpressionsOfReliefKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Sono felice che tu senta sollievo ora. È importante celebrare questi momenti.",
+                "Che bello che tu possa finalmente tirare un respiro di sollievo. Continua a prenderti cura di te.",
+                "È meraviglioso sentire che le cose si sono risolte bene. Come ti senti ora?",
+                "È sempre un grande sollievo quando la tensione si allenta. C'è altro che vorresti discutere?",
+                "Il sollievo è un'emozione potente. Spero che tu possa ora goderti un po' di pace."
+                };
+            }
+            else if (expressionsOfDeterminationKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La tua determinazione è ispiratrice. Continua a lottare e raggiungerai i tuoi obiettivi.",
+                "È importante mantenere il corso nonostante le sfide. Sono qui per supportarti lungo il cammino.",
+                "Non arrenderti! La perseveranza è la chiave del successo. Come posso aiutarti a continuare?",
+                "Mantenere una visione chiara può aiutarti a spingere avanti. Sei sulla strada giusta!",
+                "La tua determinazione è forte. Ricorda che piccoli passi possono portare a grandi cambiamenti."
+                };
+            }
+
+            else if (expressionsOfSadnessKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mi dispiace che tu ti senta così. Vuoi parlare di cosa ti rende triste?",
+                "Essere triste è umano. Come posso rendere la tua giornata un po' migliore?",
+                "Ogni giorno porta le sue sfide. Posso aiutarti a trovare un modo per sentirsi meglio?",
+                "Se vuoi condividere, sono qui per ascoltarti e supportarti nel modo che preferisci.",
+                "Non è facile affrontare questi momenti. Posso offrirti un consiglio o solo ascoltarti, come preferisci?"
+                };
+            }
+            else if (expressionsOfSupportKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Certo, sono qui per aiutarti. Qual è la situazione con cui stai lottando?",
+                "Puoi contare su di me. Dimmi cosa ti serve e vediamo insieme come posso supportarti.",
+                "Non sei solo in questo. Parliamone e troviamo una soluzione insieme.",
+                "Essere supportati è importante. Raccontami di più così posso offrirti il miglior aiuto possibile.",
+                "L'aiuto è a portata di mano. Esponimi il tuo problema e troveremo una via d'uscita insieme."
+                };
+            }
+            else if (yexpressionsOfJoyKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Che meraviglia! Sono così felice di sentire che stai vivendo un momento così gioioso.",
+                "È fantastico vedere qualcuno così felice. Continua a nutrire questa felicità!",
+                "La gioia è contagiosa! Grazie per aver condiviso il tuo entusiasmo con me.",
+                "Un giorno così speciale merita di essere celebrato! Cosa ha reso oggi così perfetto?",
+                "La felicità è la chiave per una vita piena. Spero che ogni tuo giorno sia così gioioso."
+                };
+            }
+
+            else if (expressionsOfExcitementKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "È contagiosa la tua eccitazione! Raccontami di più!",
+                "Capisco perché sei così eccitato! Sembra una grande cosa!",
+                "Questo entusiasmo rende tutto più bello, vero?",
+                "Al settimo cielo? Wow, dev'essere davvero qualcosa di speciale!",
+                "Spettacolare! È sempre bello sentire così tanta gioia!",
+                "Troppo bello! È fantastico vedere quanto sei felice!",
+                "Incredibile, eh? È sempre emozionante quando le cose vanno così bene!"
+                };
+            }
+            else if (expressionsOfConfidenceKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "È ottimo avere questa sicurezza! Continua così!",
+                "La fiducia è la chiave! Sembri davvero sicuro del tuo cammino.",
+                "Senza ombra di dubbio? È bello vedere così tanta convinzione.",
+                "Essere così sicuri può realmente fare la differenza. Bene così!",
+                "Pienamente convinto, eh? È fantastico avere questa certezza nella vita.",
+                "La tua certezza è ispiratrice. Spero che i tuoi piani vengano realizzati come desideri!",
+                "Con una fiducia così, sono sicuro che raggiungerai grandi cose!"
+                };
+            }
+            else if (yexpressionsOfGratitudeKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Non c'è di che, sono qui per aiutarti!",
+                "Sono felice di essere stato d'aiuto. C'è altro che posso fare per te?",
+                "Grazie a te per le tue gentili parole!",
+                "Apprezzo molto il tuo ringraziamento. È sempre un piacere assisterti!",
+                "Sei troppo gentile! Sono qui per supportarti quando ne hai bisogno.",
+                "Grazie di cuore per il tuo apprezzamento. Mi rende felice sapere che sono stato utile.",
+                "Grazie per considerarmi un tesoro. È un onore aiutarti!"
+                };
+            }
+
+            else if (expressionsOfJoyKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Che meraviglia sentirti così felice!",
+                "Euforico? Fantastico, spero che continui così!",
+                "Sembra che tu stia vivendo un momento splendido, sono contento per te!",
+                "Gioia pura, che bello! Cosa ha reso il tuo giorno così speciale?",
+                "Al settimo cielo? Suona come un momento incredibile!"
+                };
+            }
+            else if (expressionsOfWorryKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mi dispiace che tu ti senta così, vuoi parlare di ciò che ti preoccupa?",
+                "Le preoccupazioni possono essere pesanti, come posso aiutarti a sentirsi meglio?",
+                "È normale sentirsi ansiosi a volte. Posso offrirti un consiglio o un supporto?",
+                "Parlarmi delle tue inquietudini può aiutare a liberarti del peso, sono qui per te.",
+                "La tua tranquillità è importante, esploriamo insieme modi per alleviare le tue preoccupazioni."
+                };
+            }
+            else if (expressionsOfRequestKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Certo, sono qui per aiutarti. Qual è il tuo problema?",
+                "Sarò felice di assisterti. Dimmi cosa ti serve.",
+                "Hai bisogno di aiuto? Descrivimi la situazione per capire come posso essere utile.",
+                "Guidarti è uno dei miei compiti. In che cosa posso essere d'aiuto?",
+                "Mi aiuti per favore è una richiesta che prendo molto sul serio. Come posso supportarti?"
+                };
+            }
+
+            else if (expressionsOfGratitudeKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Non c'è di che, sono qui per aiutarti!",
+                "Sono felice di essere stato d'aiuto.",
+                "Grazie a te per la tua gentilezza!",
+                "È sempre un piacere assisterti.",
+                "Apprezzo le tue parole gentili, grazie!"
+                };
+            }
+            else if (expressionsOfCuriosityKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Sono sempre pronto a soddisfare la tua curiosità! Cosa ti chiedi?",
+                "Buona domanda! Vediamo cosa possiamo scoprire insieme.",
+                "Sono qui per rispondere a tutte le tue domande, chiedi pure!",
+                "La curiosità è l'inizio di grandi scoperte. Come posso illuminarti?",
+                "Dimmi di più sulla tua curiosità e ti fornirò tutte le informazioni di cui ho bisogno."
+                };
+            }
+            else if (expressionsOfSkepticismKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco il tuo scetticismo, posso fornire più dettagli se vuoi.",
+                "È importante essere critici. Quali aspetti ti fanno dubitare?",
+                "Davvero, è comprensibile essere scettici. Vediamo se posso chiarire le tue perplessità.",
+                "A volte le cose non sono come sembrano. Esploriamo insieme per trovare più chiarezza.",
+                "Il dubbio può portare a una comprensione più profonda. Parliamone."
+                };
+            }
+
+            else if (expressionsOfHappinessKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "È meraviglioso sentire che sei felice!",
+                "Che bella notizia! Continua a goderti questi momenti.",
+                "Fantastico! È sempre bello sapere che le cose vanno bene.",
+                "Troppo bello! Spero che la tua felicità continui.",
+                "Mi fa piacere sapere che sei contento. Hai altro di cui sei felice da condividere?"
+                };
+            }
+            else if (expressionsOfDisappointmentKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Mi dispiace che tu sia deluso. C'è qualcosa che posso fare per aiutarti?",
+                "Capisco il tuo disappunto. A volte le cose non vanno come ci aspettiamo.",
+                "Quanto mi dispiace sentire questo. Vuoi parlare di cosa è andato storto?",
+                "Non è facile affrontare queste situazioni. Come posso supportarti?",
+                "Spero che troverai presto una svolta positiva. Non lasciare che questo ti abbatta troppo."
+                };
+            }
+            else if (expressionsOfEncouragementKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Coraggio! Credo fermamente nelle tue capacità.",
+                "Non mollare ora, sei più vicino al traguardo di quanto pensi.",
+                "Tieni duro, le difficoltà non durano per sempre, ma le persone forti sì.",
+                "Puoi farcela, ho piena fiducia nelle tue capacità e determinazione.",
+                "Forza! Ogni passo, anche piccolo, ti porta più vicino al tuo obiettivo."
+                };
+            }
+
+            else if (expressionsOfReliefKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco, deve essere un gran sollievo per te!",
+                "Sono contento che le cose si siano messe bene.",
+                "Finalmente! Deve essere stata una lunga attesa.",
+                "Ottimo, sono felice che tutto si sia risolto bene.",
+                "È sempre bello quando le situazioni si concludono positivamente."
+                };
+            }
+            else if (expressionsOfConfusionKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco, possiamo andare più a fondo su questo argomento se vuoi.",
+                "Non preoccuparti, è normale essere confusi a volte. Come posso aiutarti a chiarire?",
+                "Facciamo un passo indietro e cerchiamo di risolvere questa confusione insieme.",
+                "Posso provare a spiegartelo in un altro modo, dimmi cosa non ti è chiaro.",
+                "Vediamo se possiamo semplificare un po' le cose. Qual è la tua principale incertezza?"
+                };
+            }
+            else if (expressionsOfUrgencyKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco l'urgenza, cercherò di rispondere il più rapidamente possibile.",
+                "Agisco subito! Cosa c'è di così urgente?",
+                "Ok, muoviamoci rapidamente. Qual è l'emergenza?",
+                "Sono qui per aiutarti immediatamente. Dimmi cosa serve.",
+                "Comprendo la necessità di fretta. Procediamo senza indugi."
+                };
+            }
+
+            else if (smallTalkKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Ehilà, tutto tranquillo qui, e da te come va?",
+                "Non molto di nuovo, ma sono sempre qui per una chiacchierata!",
+                "La vita va avanti, come posso rendere la tua giornata migliore?",
+                "Tutto a posto da parte mia, spero anche per te! C'è qualcosa di cui vuoi parlare?",
+                "Non ci sono grandi novità, ma sono tutto orecchie per le tue!"
+                };
+            }
+            else if (complimentsKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Grazie mille! Apprezzo molto il tuo complimento!",
+                "Che bello sentirlo, grazie!",
+                "Sono qui per aiutarti, sono contento che tu pensi così!",
+                "Grazie, sei gentile! C'è altro che posso fare per te?",
+                "Apprezzo i tuoi complimenti! Continua a chiedere se c'è qualcosa che posso fare per te."
+                };
+            }
+            else if (casualRequestsKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Certo, dimmi di cosa hai bisogno e vediamo come posso aiutarti.",
+                "Sono qui per quello, chiedi pure!",
+                "Felice di aiutarti! Qual è il tuo dilemma?",
+                "Certo, fammi sapere i dettagli e ti darò il miglior consiglio possibile.",
+                "Sono tutto orecchie, raccontami cosa ti serve e cercherò di aiutarti al meglio."
+                };
+            }
+
+            else if (generalQuestionsKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Per sapere che ore sono, ti consiglio di controllare un orologio o il tuo telefono!",
+                "Il meteo varia molto, meglio controllare un'app meteo per avere informazioni aggiornate.",
+                "Se stai cercando suggerimenti, dimmi di più sul contesto per aiutarti meglio.",
+                "Cosa ti piacerebbe fare? Posso aiutarti a scegliere basandomi sui tuoi interessi.",
+                "Aiutarti a scegliere è uno dei miei compiti preferiti! Dammene più dettagli."
+                };
+            }
+            else if (positiveExpressionsKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Grazie mille! Sono qui per aiutarti.",
+                "Apprezzo i tuoi complimenti! Hai altre domande?",
+                "Sono contento di essere stato utile! C'è qualcos'altro che posso fare per te?",
+                "Grazie! È sempre bello ricevere un feedback positivo.",
+                "Che bello sapere che ti sono stato d'aiuto! Continua a chiedere se hai bisogno di altro."
+                };
+            }
+            else if (elizaInquiryKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                 "Eliza è stato uno dei primi chatbot, creato nel 1966 da Joseph Weizenbaum. Simulava un terapista, rispondendo alle domande degli utenti con altre domande per approfondire la conversazione. Il nome 'Eliza' è stato scelto da Weizenbaum e, per un tocco personale nella nostra conversazione, puoi pensare che sia anche il nome di una mia prozia, rendendo il nome ancora più speciale per me."
+                };
+            }
+
+
+            else if (casualFarewellsKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Arrivederci! È stato bello parlare con te.",
+                "Addio, spero di rivederti presto!",
+                "A presto! Ricorda che sono qui per aiutarti quando ne hai bisogno.",
+                "Ciao! Ti auguro una buona giornata!",
+                "Buonanotte, spero tu possa riposare bene!"
+                };
+            }
+            else if (ymindfulnessPracticesKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La mindfulness è un ottimo modo per connetterti con il momento presente e ridurre lo stress.",
+                "Proviamo insieme un esercizio di respirazione per calmare la mente.",
+                "La meditazione può aiutarti a sviluppare una maggiore consapevolezza e tranquillità.",
+                "Praticare la mindfulness regolarmente può migliorare significativamente la tua salute mentale.",
+                "Attenzione plena ai tuoi pensieri e emozioni senza giudizio ti porterà pace interiore.",
+                "L'awareness del momento presente è una pratica che puoi iniziare in qualsiasi momento e luogo.",
+                "Meditare anche solo pochi minuti al giorno può aumentare significativamente la tua serenità.",
+                "Esplorare la consapevolezza mentale può offrirti una nuova prospettiva sulla vita.",
+                "La presenza mentale aiuta a mitigare ansia e stress, focalizzandoti sul qui e ora."
+                };
+            }
+            else if (yemotionalReleaseKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Esprimere liberamente le proprie emozioni è un passo cruciale verso la guarigione emotiva.",
+                "Parlare delle proprie emozioni può alleggerire il peso che senti dentro.",
+                "Accettare e riconoscere i propri sentimenti è essenziale per il benessere psicologico.",
+                "Un buon pianto può essere terapeutico e aiutare a rilasciare le tensioni accumulate.",
+                "Condividere il proprio dolore con qualcuno può aprire la strada alla comprensione e al comfort.",
+                "È importante trovare modi sani per liberarsi delle emozioni represse.",
+                "L'espressione dei sentimenti può migliorare le tue relazioni e ridurre lo stress interno.",
+                "La catarsi emotiva può essere una potente forma di purificazione interiore.",
+                "Ricorda che è normale e sano esprimere le proprie emozioni, non devi trattenerti."
+                };
+            }
+            else if (ycareerFulfillmentKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "La realizzazione professionale è fondamentale per un'esistenza soddisfacente.",
+                "Definire chiaramente i propri obiettivi professionali può guidarti verso il successo desiderato.",
+                "La soddisfazione lavorativa contribuisce significativamente alla felicità generale.",
+                "Raggiungere i propri obiettivi di carriera richiede dedizione e impegno, ma il risultato vale la pena.",
+                "La motivazione professionale spesso deriva dalla passione e dall'ambizione di migliorarsi.",
+                "La crescita nel lavoro non è solo una questione di avanzamento, ma anche di apprendimento e sviluppo personale.",
+                "È importante trovare un lavoro che non solo ti sostenga finanziariamente, ma che ti arricchisca anche personalmente.",
+                "Considera le tue aspirazioni di carriera come una mappa per il tuo percorso professionale.",
+                "Essere soddisfatti del proprio lavoro può migliorare ogni aspetto della tua vita."
+                };
+            }
+
+            else if (enhancingEmotionalIntelligenceKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[] {
+                "L'intelligenza emotiva è la chiave per comprendere te stesso e gli altri.",
+                "Praticare l'ascolto attivo può migliorare significativamente le tue relazioni.",
+                "Essere consapevoli delle proprie emozioni è il primo passo verso la loro gestione efficace.",
+                "L'empatia non solo aiuta gli altri, ma arricchisce anche la nostra vita emotiva.",
+                "Imparare a regolare le proprie emozioni può migliorare il benessere personale e professionale.",
+                "Comprendere le emozioni altrui può portare a una comunicazione più efficace.",
+                "Risolvere i conflitti in modo costruttivo è una competenza fondamentale dell'intelligenza emotiva.",
+                "Esprimere chiaramente le proprie emozioni può prevenire molti malintesi.",
+                "L'intelligenza emotiva può essere sviluppata e rafforzata con pratica e dedizione."
+                };
+            }
+            else if (overcomingProcrastinationKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[] {
+                "La procrastinazione può essere un ostacolo, ma piccoli passi possono fare una grande differenza.",
+                "Organizzarsi con un calendario può aiutarti a evitare di rimandare.",
+                "Affrontare i compiti uno alla volta può ridurre la sensazione di sovraccarico.",
+                "Impostare scadenze realistiche può aiutarti a rimanere sul pezzo senza stress aggiuntivo.",
+                "Ricorda, ogni piccolo sforzo conta e ti avvicina al tuo obiettivo.",
+                "Dare priorità ai compiti può aiutarti a focalizzarti su ciò che è davvero importante.",
+                "Prenditi del tempo per riconoscere e celebrare i tuoi successi, anche i più piccoli.",
+                "Chiediti quale piccolo passo puoi fare oggi per avanzare verso il tuo obiettivo.",
+                "La motivazione segue l'azione. Inizia con un piccolo passo per avviare il processo."
+                };
+            }
+            else if (selfsCompassionKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[] {
+                "Ricorda, trattare te stesso con gentilezza è il primo passo verso il benessere.",
+                "Essere gentili con se stessi è essenziale, proprio come lo è per gli altri.",
+                "L'amore per sé è il fondamento di una vita felice e soddisfatta.",
+                "Perdonarsi è un atto di coraggio e un passo verso la guarigione interiore.",
+                "Prendersi cura di sé non è un lusso, ma una necessità.",
+                "La gentilezza interna può trasformare il modo in cui vivi la tua giornata.",
+                "Accettare se stessi completamente è il primo passo per vivere liberamente.",
+                "Ricorda, ogni persona merita compassione, inclusa te stesso.",
+                "La cura personale non è egoismo; è rispetto per sé stessi."
                 };
             }
             else if (digitalWellnessKeywords.Any(k => message.Contains(k)))
@@ -1291,6 +2680,33 @@ namespace Whisper.Controllers
                 "Riflettere su come abbiamo gestito problemi passati può darci fiducia per il futuro. Qual è un ricordo di una sfida che hai superato che ti dà forza ora?"
                 };
             }
+            else if (expressionsOfEnthusiasmKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Fantastico! È bello vedere tanto entusiasmo.",
+                "Sono felice che tu sia così carico! Come posso contribuire alla tua emozione?",
+                "Che bello sentire che non vedi l'ora! C'è qualcosa di specifico che aspetti con impazienza?"
+                };
+            }
+            else if (expressionsOfHesitationKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "È normale avere dei dubbi. Vuoi discuterne per trovare più chiarezza?",
+                "Prenditi il tempo che ti serve per decidere. Posso aiutarti in qualche modo?",
+                "Capisco l'esitazione. A volte una piccola pausa può aiutare a vedere le cose più chiaramente."
+                };
+            }
+            else if (expressionsOfComfortKeywords.Any(k => message.ToLower().Contains(k)))
+            {
+                responses = new string[]
+                {
+                "Capisco come ti senti e sono qui per te.",
+                "Non preoccuparti, le cose si sistemeranno. Come posso supportarti al meglio?",
+                "Tranquillo, comprendo la situazione. Se c'è qualcosa che posso fare, fammelo sapere."
+                };
+            }
 
             else if (emotionalSupportKeywords.Any(k => message.Contains(k)))
             {
@@ -2319,10 +3735,27 @@ namespace Whisper.Controllers
                 responses = new string[] { "Non sono sicuro di come rispondere a questo. Potresti dirmi di più?" };
             }
 
-            // Ottiene una risposta casuale dall'array di risposte
-            string selectedResponse = responses[random.Next(responses.Length)];
+
+
+            string selectedResponse;
+
+            if (responses.Length > 1)
+            {
+                do
+                {
+                    selectedResponse = responses[random.Next(responses.Length)];
+                } 
+                while (selectedResponse == lastResponse);
+            }
+            else
+            {
+                selectedResponse = responses.Length > 0 ? responses[0] : "Nessuna risposta disponibile";
+            }
+
+            lastResponse = selectedResponse;
 
             return Json(new { Response = selectedResponse }, JsonRequestBehavior.AllowGet);
+
         }
     }
 }

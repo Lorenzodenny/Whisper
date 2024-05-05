@@ -40,7 +40,7 @@
                     <div id="loading" style="display: none;">
                         <i class="fa fa-hourglass-half fa-spin" style="color: #DAA520; font-size:24px;"></i>
                     </div>
-                    <button type="button" class="btn btn-sm btn-login" id="sendMessage">Invia</button>
+                    <button type="button" class="btn btn-sm btn-login ms-3" id="sendMessage">Invia</button>
                 </div>
             </div>
         </div>
@@ -170,13 +170,13 @@
         });
 
         $('#sendMessage').click(function () {
-            var message = $('#userInput').val();
+            var Message = $('#userInput').val();
             $('#loading').show();  // Mostra l'icona della clessidra
             $('#userInput').val('');
 
             setTimeout(function () { // Simula un ritardo per il caricamento
-                $.get('/ChatBot/GetBotResponse', { message: message }, function (data) {
-                    $('#chatArea').append('<div><span class="color-wine fw-bold">Tu:</span> ' + message + '</div>');
+                $.get('/ChatBot/GetBotResponse', { Message: Message }, function (data) {
+                    $('#chatArea').append('<div><span class="color-wine fw-bold">Tu:</span> ' + Message + '</div>');
                     $('#chatArea').append('<div class="mb-3"><span class="color-wine fw-bold">Eliza:</span> ' + data.Response + '</div>');
                     $('#loading').hide();  // Nascondi l'icona della clessidra
                 });
