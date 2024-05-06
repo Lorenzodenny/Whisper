@@ -70,16 +70,34 @@ namespace Whisper.Controllers
         }
 
         // POST: Avatars/Delete/5
+        // POST: Avatars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Avatars avatars = db.Avatars.Find(id);
-            db.Avatars.Remove(avatars);
+            Avatars avatar = db.Avatars.Find(id);
+            if (avatar == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Controlla se l'avatar è utilizzato da qualche utente
+            var usersWithAvatar = db.Users.Where(u => u.AvatarId == id).ToList();
+            if (usersWithAvatar.Any())
+            {
+                // Se l'avatar è utilizzato da almeno un utente
+                foreach (var user in usersWithAvatar)
+                {
+                    user.AvatarId = 20; 
+                }
+            }
+
+            db.Avatars.Remove(avatar);
             db.SaveChanges();
             TempData["success"] = "Avatar eliminato con successo";
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {

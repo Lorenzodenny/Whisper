@@ -36,7 +36,7 @@
                     }
                     else
                     {
-                        @Html.ActionLink("Utente del commento Bannato 💔", "Details", "Users", new { id = item.Posts.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
+                        @Html.ActionLink("Utente del commento Bannato 💔", "Details", "Users", new { id = item.Comments.UserId }, new { @class = "btn btn-sm btn-login text-shadow" })
                     }
                 }
                 else if (item.MessageId.HasValue)
