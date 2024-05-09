@@ -12,21 +12,25 @@
 </div>
 
 <div class="container mt-4">
-    @if (User.IsInRole("User"))
-    {
+    <div class="d-flex">
+        @if (User.IsInRole("User"))
+        {
+            <p>
+                @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-warning text-dark text-shadow fw-bold" })
+            </p>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                @Html.ActionLink("🎬 Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-warning text-dark text-shadow fw-bold" })
+            </p>
+        }
+
         <p>
-            @Html.ActionLink("✒ Scrivi nuovo Bisbiglio", "Create", null, new { @class = "btn btn-sm btn-warning text-dark text-shadow fw-bold" })
+            <a class="btn btn-sm btn-login ms-3 text-shadow" href="https://lorenzodenny.github.io/Snake/" target="_blank">🐍 Ti stai annoiando?</a>
         </p>
-    }
-
-    @if (User.IsInRole("Admin"))
-    {
-        <p>
-            @Html.ActionLink("🎬 Inserisci Sponsor", "Create", "Sponsors", null, new { @class = "btn btn-sm btn-warning text-dark text-shadow fw-bold" })
-        </p>
-    }
-
-
+    </div>
     <div class="row">
         <div class="col-md-9 mb-sm-3 mb-md-3" style="max-height: 90vh; overflow-y: auto;">
             @foreach (var item in Model)
